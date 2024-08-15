@@ -9,7 +9,7 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "Main",
-            "projectName": "Proyecto de programacion_145848fd",
+            "projectName": "Proyecto-programacion_f7a84793",
             "vmArgs": "--module-path \"C:/Users/agust/Downloads/javafx-sdk-22.0.2/lib\" --add-modules=javafx.controls,javafx.fxml"
         },
         {
