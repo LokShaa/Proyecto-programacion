@@ -54,7 +54,7 @@ public class Main extends Application{
 
     @Override
     public void start (Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Prototipo.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV2.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Prototipo");
         primaryStage.setScene(new Scene(root,1920,1000));
