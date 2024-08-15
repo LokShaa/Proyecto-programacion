@@ -15,32 +15,32 @@
       </Button>
       <ImageView fitHeight="288.0" fitWidth="215.0" layoutX="313.0" layoutY="371.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Downloads/Imagen1.png" />
+            <Image url="@Imagenes\Imagen1.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="582.0" layoutY="-88.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Downloads/IMG_0468-Photoroom.png" />
+            <Image url="@Imagenes\IMG_0468-Photoroom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="luzVerde" fitHeight="319.0" fitWidth="343.0" layoutX="98.0" layoutY="332.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Downloads/IMG_0465-Photoroom.png" />
+            <Image url="@Imagenes\IMG_0465-Photoroom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="luzRoja" fitHeight="319.0" fitWidth="343.0" layoutX="98.0" layoutY="332.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Downloads/IMG_0466-Photoroom.png" />
+            <Image url="@Imagenes\IMG_0466-Photoroom.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imagenCableRojo" fitHeight="129.0" fitWidth="161.0" layoutX="239.0" layoutY="72.0" onMouseClicked="#botonCableRojo" onMouseEntered="#botonCableRojo" onMouseExited="#botonCableRojo" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Downloads/Cable%20Rojo.png" />
+            <Image url="@Imagenes\Cable Rojo.png" />
          </image>
       </ImageView>
       <ImageView fx:id="imagenCableAzul" fitHeight="137.0" fitWidth="168.0" layoutX="37.0" layoutY="72.0" onMouseClicked="#botonCableAzul" onMouseDragged="#botonCableAzul" onMouseEntered="#botonCableAzul" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Downloads/Cable%20Azul.png" />
+            <Image url="@Imagenes\Cable Azul.png" />
          </image>
       </ImageView>
    </children>
