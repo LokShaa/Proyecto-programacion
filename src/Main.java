@@ -57,7 +57,7 @@ public class Main extends Application{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Prototipo");
-        primaryStage.setScene(new Scene(root,1920,1000));
+        primaryStage.setScene(new Scene(root,1920,1080));
         primaryStage.show();
     }
     public static void main(String[] args){
