@@ -12,20 +12,34 @@ import javafx.scene.effect.Glow;
 
 public class Main extends Application{
     @FXML
+    private ImageView bateriaCompleta;
+    @FXML
+    private ImageView bateriaCortada;
+    @FXML
     private Button botonBateria;
+    @FXML
+    private ImageView imagenCableAzul;
+    @FXML
+    private ImageView imagenCableRojo;
+    @FXML
+    private ImageView imagenLed;
+    @FXML
+    private ImageView imagenSwitch;
     @FXML
     private ImageView luzRoja;
     @FXML
     private ImageView luzVerde;
     @FXML
-    private ImageView imagenCableAzul;
-    @FXML
-    private ImageView imagenCableRojo;
+    private ImageView portaBaterias;
+    
 
     @FXML
     void botonConDesc(ActionEvent event) {
         luzRoja.setVisible(!luzRoja.isVisible());
         luzVerde.setVisible(luzVerde.isVisible());
+        portaBaterias.setVisible(!portaBaterias.isVisible());
+        bateriaCompleta.setVisible(!bateriaCompleta.isVisible());
+        bateriaCortada.setVisible(bateriaCortada.isVisible());
     }
     
     @FXML
@@ -52,12 +66,36 @@ public class Main extends Application{
         });
     }
 
+    @FXML
+    void botonLed(MouseEvent event) {
+        imagenLed.setOnMouseEntered(enteredEvent -> {
+            Glow glowLed = new Glow(1);
+            imagenLed.setEffect(glowLed);
+        });
+
+        imagenLed.setOnMouseExited(exitEvent -> {
+            imagenLed.setEffect(null);
+        });
+    }
+
+    @FXML
+    void botonSwitch(MouseEvent event) {
+        imagenSwitch.setOnMouseEntered(enteredEvent -> {
+            Glow glowSwitch = new Glow(1);
+            imagenSwitch.setEffect(glowSwitch);
+        });
+
+        imagenSwitch.setOnMouseExited(exitEvent -> {
+            imagenSwitch.setEffect(null);
+        });
+    }
+
     @Override
     public void start (Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Prototipo");
-        primaryStage.setScene(new Scene(root,1920,1080));
+        primaryStage.setScene(new Scene(root,1920,1000));
         primaryStage.show();
     }
     public static void main(String[] args){

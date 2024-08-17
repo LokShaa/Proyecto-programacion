@@ -8,39 +8,67 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
    <children>
-      <Button fx:id="botonBateria" layoutX="200.0" layoutY="300.0" mnemonicParsing="false" onAction="#botonConDesc" prefHeight="57.0" prefWidth="196.0" text="CONECTAR / DESCONECTAR">
+      <Button fx:id="botonBateria" layoutX="147.0" layoutY="826.0" mnemonicParsing="false" onAction="#botonConDesc" prefHeight="57.0" prefWidth="196.0" text="CONECTAR / DESCONECTAR">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <ImageView fitHeight="288.0" fitWidth="215.0" layoutX="313.0" layoutY="371.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Imagenes/Imagen1.png" />
-         </image>
-      </ImageView>
       <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="582.0" layoutY="-88.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/IMG_0468-Photoroom.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="luzVerde" fitHeight="319.0" fitWidth="343.0" layoutX="98.0" layoutY="332.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="luzVerde" fitHeight="319.0" fitWidth="343.0" layoutX="108.0" layoutY="484.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/IMG_0465-Photoroom.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="luzRoja" fitHeight="319.0" fitWidth="343.0" layoutX="98.0" layoutY="332.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bateriaCompleta" fitHeight="239.0" fitWidth="168.0" layoutX="191.0" layoutY="529.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/Imagen1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="luzRoja" fitHeight="319.0" fitWidth="343.0" layoutX="-46.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/IMG_0466-Photoroom.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="imagenCableRojo" fitHeight="129.0" fitWidth="161.0" layoutX="239.0" layoutY="72.0" onMouseClicked="#botonCableRojo" onMouseEntered="#botonCableRojo" onMouseExited="#botonCableRojo" pickOnBounds="true" preserveRatio="true">
+      <Pane layoutX="56.0" layoutY="21.0" prefHeight="417.0" prefWidth="458.0" style="-fx-background-color: #c0c0c0;">
+         <children>
+            <ImageView fx:id="imagenCableAzul" fitHeight="137.0" fitWidth="168.0" layoutX="39.0" layoutY="41.0" onMouseClicked="#botonCableAzul" onMouseDragged="#botonCableAzul" onMouseEntered="#botonCableAzul" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Cable%20Azul.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imagenCableRojo" fitHeight="129.0" fitWidth="161.0" layoutX="247.0" layoutY="41.0" onMouseClicked="#botonCableRojo" onMouseEntered="#botonCableRojo" onMouseExited="#botonCableRojo" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Cable%20Rojo.png" />
+               </image>
+            </ImageView>
+            <Pane prefHeight="20.0" prefWidth="457.0" style="-fx-background-color: #000000;" />
+            <Pane layoutX="2.0" layoutY="397.0" prefHeight="20.0" prefWidth="455.0" style="-fx-background-color: #000000;" />
+            <Pane layoutY="6.0" prefHeight="411.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
+            <ImageView fx:id="imagenLed" fitHeight="197.0" fitWidth="126.0" layoutX="262.0" layoutY="193.0" onMouseClicked="#botonLed" onMouseEntered="#botonLed" onMouseExited="#botonLed" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Imagen%20Led.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="imagenSwitch" fitHeight="220.0" fitWidth="203.0" layoutX="29.0" layoutY="189.0" onMouseClicked="#botonSwitch" onMouseEntered="#botonSwitch" onMouseExited="#botonSwitch" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Imagen%20Switch-Photoroom.png" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane layoutX="493.0" layoutY="23.0" prefHeight="396.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
+      <ImageView fx:id="bateriaCortada" fitHeight="297.0" fitWidth="147.0" layoutX="368.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagenes/Cable%20Rojo.png" />
+            <Image url="@../Imagenes/Porta%20Baterias%20con%20Bateria.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="imagenCableAzul" fitHeight="137.0" fitWidth="168.0" layoutX="37.0" layoutY="72.0" onMouseClicked="#botonCableAzul" onMouseDragged="#botonCableAzul" onMouseEntered="#botonCableAzul" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="portaBaterias" fitHeight="297.0" fitWidth="172.0" layoutX="366.0" layoutY="518.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagenes/Cable%20Azul.png" />
+            <Image url="@../Imagenes/Porta%20Baterias.png" />
          </image>
       </ImageView>
    </children>
