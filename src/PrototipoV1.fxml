@@ -71,5 +71,7 @@
             <Image url="@../Imagenes/Porta%20Baterias.png" />
          </image>
       </ImageView>
+       <Pane fx:id="paneDibujo" layoutX="582.0" layoutY="-88.0" prefHeight="1360.0" prefWidth="1300.0" style="-fx-background-color: transparent;" /> 
+
    </children>
 </Pane>

@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.Pane;
 
 public class Main extends Application{
     @FXML
@@ -32,6 +33,10 @@ public class Main extends Application{
     @FXML
     private ImageView portaBaterias;
     
+    @FXML
+    private Pane paneDibujo;
+
+    private Cables cableActual;
 
     @FXML
     void botonConDesc(ActionEvent event) {
@@ -52,6 +57,7 @@ public class Main extends Application{
         imagenCableAzul.setOnMouseExited(exitEvent -> {
             imagenCableAzul.setEffect(null);
         });
+        //FALTA AGREGAR LA CONDICION PARA DESOUES DE HACER CLICK SE EMPIECE A DIBUJAR EL CABLE AZUL
     }
 
     @FXML
@@ -64,6 +70,10 @@ public class Main extends Application{
         imagenCableRojo.setOnMouseExited(exitEvent -> {
             imagenCableRojo.setEffect(null);
         });
+        
+        paneDibujo.setOnMousePressed(mousePressedEvent -> iniciarDibujoCable(mousePressedEvent));
+        paneDibujo.setOnMouseReleased(mouseReleasedEvent -> finalizarDibujoCable(mouseReleasedEvent));
+
     }
 
     @FXML
@@ -89,6 +99,22 @@ public class Main extends Application{
             imagenSwitch.setEffect(null);
         });
     }
+    //metodo para iniciar el dibujo del cable pero falta implementarlo en la clase cable, esta es solo una prueba de como dibujar 
+    //cables sobre el protoboard
+    void iniciarDibujoCable(MouseEvent event){
+        cableActual = new Cables(paneDibujo);//Creamos un cable
+        cableActual.setStartX(event.getX());
+        cableActual.setStartY(event.getY());
+    }
+    
+    void finalizarDibujoCable(MouseEvent event){
+        if(cableActual != null){
+            cableActual.setEndX(event.getX());
+            cableActual.setEndY(event.getY());
+            cableActual = null;
+        }
+    }
+
 
     @Override
     public void start (Stage primaryStage) throws Exception {
