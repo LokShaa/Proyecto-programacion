@@ -32,94 +32,84 @@ public class Main extends Application{
     private ImageView luzVerde;
     @FXML
     private ImageView portaBaterias;
-    
     @FXML
     private Pane paneDibujo;
-
     @FXML
     private Pane botonCableAzul1;
-
     @FXML
     private Pane botonCableAzul2;
-
     @FXML
     private Pane botonCableRojo1;
-
     @FXML
     private Pane botonCableRojo2;
-
     @FXML
     private ImageView cableAzulBateriaProto1;
-
     @FXML
     private ImageView cableAzulBateriaProto2;
-
     @FXML
     private ImageView cableRojoBateriaProto1;
-
     @FXML
     private ImageView cableRojoBateriaProto2;
 
     private Cables cableActual;
 
     @FXML
-    void botonConDesc(ActionEvent event) {
-        luzRoja.setVisible(!luzRoja.isVisible());
-        luzVerde.setVisible(luzVerde.isVisible());
-        portaBaterias.setVisible(!portaBaterias.isVisible());
-        bateriaCompleta.setVisible(!bateriaCompleta.isVisible());
-        bateriaCortada.setVisible(bateriaCortada.isVisible());
+    void botonConDesc(ActionEvent event) { //Metodo para hacer aparecer y desaparecer la bateria completa y la bateria cortada, ademas las luces roja y verde
+        luzRoja.setVisible(!luzRoja.isVisible()); //Se hace invisible la luz roja
+        luzVerde.setVisible(luzVerde.isVisible()); //Se hace visible la luz verde
+        portaBaterias.setVisible(!portaBaterias.isVisible()); //Se hace invisible el porta baterias
+        bateriaCompleta.setVisible(!bateriaCompleta.isVisible()); //Se hace invisible la bateria completa
+        bateriaCortada.setVisible(bateriaCortada.isVisible()); //Se hace visible la bateria cortada
     }
     
     @FXML
-    void botonCableAzul(MouseEvent event) {
-        imagenCableAzul.setOnMouseEntered(enteredEvent -> {
+    void botonCableAzul(MouseEvent event) { //Metodo de la imagen del cable azul
+        imagenCableAzul.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
             Glow glowAzul = new Glow(1);
             imagenCableAzul.setEffect(glowAzul);
         });
 
-        imagenCableAzul.setOnMouseExited(exitEvent -> {
+        imagenCableAzul.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
             imagenCableAzul.setEffect(null);
         });
         //FALTA AGREGAR LA CONDICION PARA DESOUES DE HACER CLICK SE EMPIECE A DIBUJAR EL CABLE AZUL
     }
 
     @FXML
-    void botonCableRojo(MouseEvent event) {
-        imagenCableRojo.setOnMouseEntered(enteredEvent -> {
+    void botonCableRojo(MouseEvent event) { //Metodo de la imagen del cable rojo
+        imagenCableRojo.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
             Glow glowRojo = new Glow(1);
             imagenCableRojo.setEffect(glowRojo);
         });
 
-        imagenCableRojo.setOnMouseExited(exitEvent -> {
+        imagenCableRojo.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
             imagenCableRojo.setEffect(null);
         });
         
-        paneDibujo.setOnMousePressed(mousePressedEvent -> iniciarDibujoCable(mousePressedEvent));
-        paneDibujo.setOnMouseReleased(mouseReleasedEvent -> finalizarDibujoCable(mouseReleasedEvent));
-
+        paneDibujo.setOnMousePressed(mousePressedEvent -> iniciarDibujoCable(mousePressedEvent)); //Se inicia el dibujo del cable
+        paneDibujo.setOnMouseReleased(mouseReleasedEvent -> finalizarDibujoCable(mouseReleasedEvent)); //Se finaliza el dibujo del cable
     }
 
     @FXML
-    void botonLed(MouseEvent event) {
-        imagenLed.setOnMouseEntered(enteredEvent -> {
+    void botonLed(MouseEvent event) { //Metodo de la imagen del led
+        imagenLed.setOnMouseEntered(enteredEvent -> { //Brillo para el led
             Glow glowLed = new Glow(1);
             imagenLed.setEffect(glowLed);
         });
 
-        imagenLed.setOnMouseExited(exitEvent -> {
+        imagenLed.setOnMouseExited(exitEvent -> { //Se quita el brillo del led
             imagenLed.setEffect(null);
         });
     }
 
     @FXML
-    void botonSwitch(MouseEvent event) {
-        imagenSwitch.setOnMouseEntered(enteredEvent -> {
+    void botonSwitch(MouseEvent event) { //Metodo de la imagen del switch
+        imagenSwitch.setOnMouseEntered(enteredEvent -> { //Brillo para el switch
             Glow glowSwitch = new Glow(1);
             imagenSwitch.setEffect(glowSwitch);
         });
 
-        imagenSwitch.setOnMouseExited(exitEvent -> {
+        imagenSwitch.setOnMouseExited(exitEvent -> { //Se quita el brillo del switch
             imagenSwitch.setEffect(null);
         });
     }
@@ -131,7 +121,7 @@ public class Main extends Application{
         cableActual.setStartY(event.getY());
     }
     
-    void finalizarDibujoCable(MouseEvent event){
+    void finalizarDibujoCable(MouseEvent event){ //Metodo para finalizar el dibujo del cable
         if(cableActual != null){
             cableActual.setEndX(event.getX());
             cableActual.setEndY(event.getY());
@@ -140,76 +130,74 @@ public class Main extends Application{
     }
 
     @FXML
-    void cableAzulInferior(MouseEvent event) {
-        
-        botonCableAzul2.setOnMouseClicked(clickedEvent -> {
-            cableAzulBateriaProto1.setVisible(!cableAzulBateriaProto1.isVisible());
+    void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
+        botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
+            cableAzulBateriaProto1.setVisible(!cableAzulBateriaProto1.isVisible()); //Se hace invisible el cable azul superior
         });
 
-        botonCableAzul2.setOnMouseEntered(enteredEvent -> {
+        botonCableAzul2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul inferior
             Glow glowSwitch = new Glow(1);
             botonCableAzul2.setEffect(glowSwitch);
         });
 
-        botonCableAzul2.setOnMouseExited(exitEvent -> {
+        botonCableAzul2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul inferior
             botonCableAzul2.setEffect(null);
         });
     }
 
     @FXML
-    void cableAzulSuperior(MouseEvent event) {
-        botonCableAzul1.setOnMouseClicked(clickedEvent -> {
-            cableAzulBateriaProto2.setVisible(!cableAzulBateriaProto2.isVisible());
+    void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
+        botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
+            cableAzulBateriaProto2.setVisible(!cableAzulBateriaProto2.isVisible()); //Se hace invisible el cable azul inferior
         });
 
-        botonCableAzul1.setOnMouseEntered(enteredEvent -> {
+        botonCableAzul1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul superior
             Glow glowSwitch = new Glow(1);
             botonCableAzul1.setEffect(glowSwitch);
         });
 
-        botonCableAzul1.setOnMouseExited(exitEvent -> {
+        botonCableAzul1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul superior
             botonCableAzul1.setEffect(null);
         });
 
     }
 
     @FXML
-    void cableRojoInferior(MouseEvent event) {
-        botonCableRojo2.setOnMouseClicked(clickedEvent -> {
-            cableRojoBateriaProto1.setVisible(!cableRojoBateriaProto1.isVisible());
+    void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
+        botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
+            cableRojoBateriaProto1.setVisible(!cableRojoBateriaProto1.isVisible()); //Se hace invisible el cable rojo superior
         });
 
-        botonCableRojo2.setOnMouseEntered(enteredEvent -> {
+        botonCableRojo2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo inferior
             Glow glowSwitch = new Glow(1);
             botonCableRojo2.setEffect(glowSwitch);
         });
 
-        botonCableRojo2.setOnMouseExited(exitEvent -> {
+        botonCableRojo2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo inferior
             botonCableRojo2.setEffect(null);
         });
 
     }
 
     @FXML
-    void cableRojoSuperior(MouseEvent event) {
-        botonCableRojo1.setOnMouseClicked(clickedEvent -> {
-            cableRojoBateriaProto2.setVisible(!cableRojoBateriaProto2.isVisible());
+    void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
+        botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
+            cableRojoBateriaProto2.setVisible(!cableRojoBateriaProto2.isVisible()); //Se hace invisible el cable rojo inferior
         });
 
-        botonCableRojo1.setOnMouseEntered(enteredEvent -> {
+        botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior
             Glow glowSwitch = new Glow(1);
             botonCableRojo1.setEffect(glowSwitch);
         });
 
-        botonCableRojo1.setOnMouseExited(exitEvent -> {
+        botonCableRojo1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo superior
             botonCableRojo1.setEffect(null);
         });
 
     }
 
-
     @Override
-    public void start (Stage primaryStage) throws Exception {
+    public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Prototipo");

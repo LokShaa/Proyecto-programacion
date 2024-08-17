@@ -8,6 +8,26 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
    <children>
+      <ImageView fx:id="bateriaCortada" fitHeight="297.0" fitWidth="147.0" layoutX="368.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/Porta%20Baterias%20con%20Bateria.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="portaBaterias" fitHeight="297.0" fitWidth="172.0" layoutX="366.0" layoutY="518.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/Porta%20Baterias.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="cableAzulBateriaProto1" fitHeight="822.0" fitWidth="262.0" layoutX="390.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/cableAzul1.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="cableRojoBateriaProto1" fitHeight="781.0" fitWidth="236.0" layoutX="448.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/cableRojo1.png" />
+         </image>
+      </ImageView>
       <Button fx:id="botonBateria" layoutX="147.0" layoutY="826.0" mnemonicParsing="false" onAction="#botonConDesc" prefHeight="57.0" prefWidth="196.0" text="CONECTAR / DESCONECTAR">
          <font>
             <Font size="14.0" />
@@ -61,41 +81,19 @@
          </children>
       </Pane>
       <Pane layoutX="493.0" layoutY="23.0" prefHeight="396.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
-      <ImageView fx:id="bateriaCortada" fitHeight="297.0" fitWidth="147.0" layoutX="368.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cableAzulBateriaProto2" fitHeight="178.0" fitWidth="291.0" layoutX="400.0" layoutY="783.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagenes/Porta%20Baterias%20con%20Bateria.png" />
+            <Image url="@../Imagenes/cableAzul2.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="portaBaterias" fitHeight="297.0" fitWidth="172.0" layoutX="366.0" layoutY="518.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="cableRojoBateriaProto2" fitHeight="129.0" fitWidth="233.0" layoutX="456.0" layoutY="791.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagenes/Porta%20Baterias.png" />
+            <Image url="@../Imagenes/cableRojo2.png" />
          </image>
       </ImageView>
-       <Pane fx:id="paneDibujo" layoutX="620.0" layoutY="85.0" prefHeight="781.0" prefWidth="1212.0" style="-fx-background-color: transparent;">
-         <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="102.0" layoutY="205.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="cableAzulBateriaProto1" fitHeight="822.0" fitWidth="262.0" layoutX="-230.0" layoutY="-36.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Imagenes/cableAzul1.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="cableAzulBateriaProto2" fitHeight="178.0" fitWidth="291.0" layoutX="-220.0" layoutY="700.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Imagenes/cableAzul2.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="cableRojoBateriaProto2" fitHeight="129.0" fitWidth="233.0" layoutX="-163.0" layoutY="705.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Imagenes/cableRojo2.png" />
-               </image>
-            </ImageView>
-            <Pane fx:id="botonCableRojo2" layoutX="65.0" layoutY="818.0" onMouseClicked="#cableRojoInferior" onMouseEntered="#cableRojoInferior" onMouseExited="#cableRojoInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
-         </children></Pane>
-      <ImageView fx:id="cableRojoBateriaProto1" fitHeight="781.0" fitWidth="236.0" layoutX="448.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Imagenes/cableRojo1.png" />
-         </image>
-      </ImageView>
+      <Pane fx:id="botonCableRojo2" layoutX="684.0" layoutY="903.0" onMouseClicked="#cableRojoInferior" onMouseEntered="#cableRojoInferior" onMouseExited="#cableRojoInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
+       <Pane fx:id="paneDibujo" layoutX="620.0" layoutY="85.0" prefHeight="781.0" prefWidth="1212.0" style="-fx-background-color: transparent;" />
       <Pane fx:id="botonCableAzul2" layoutX="684.0" layoutY="929.0" onMouseClicked="#cableAzulInferior" onMouseEntered="#cableAzulInferior" onMouseExited="#cableAzulInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
       <Pane fx:id="botonCableAzul1" layoutX="583.0" layoutY="47.0" onMouseClicked="#cableAzulSuperior" onMouseEntered="#cableAzulSuperior" onMouseExited="#cableAzulSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
       <Pane fx:id="botonCableRojo1" layoutX="537.0" layoutY="46.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" /> 

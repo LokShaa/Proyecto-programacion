@@ -21,10 +21,5 @@ public class Cables extends Line{
             this.setEndX(event.getX());//Obtenemos la posicion en x donde se hizo click
             this.setEndY(event.getY());//Obtenemos la posicion en y donde se hizo click
         });
- 
-    }
-
-    
-
-    
+    }    
 }
