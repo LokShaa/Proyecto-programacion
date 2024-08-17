@@ -36,6 +36,30 @@ public class Main extends Application{
     @FXML
     private Pane paneDibujo;
 
+    @FXML
+    private Pane botonCableAzul1;
+
+    @FXML
+    private Pane botonCableAzul2;
+
+    @FXML
+    private Pane botonCableRojo1;
+
+    @FXML
+    private Pane botonCableRojo2;
+
+    @FXML
+    private ImageView cableAzulBateriaProto1;
+
+    @FXML
+    private ImageView cableAzulBateriaProto2;
+
+    @FXML
+    private ImageView cableRojoBateriaProto1;
+
+    @FXML
+    private ImageView cableRojoBateriaProto2;
+
     private Cables cableActual;
 
     @FXML
@@ -113,6 +137,74 @@ public class Main extends Application{
             cableActual.setEndY(event.getY());
             cableActual = null;
         }
+    }
+
+    @FXML
+    void cableAzulInferior(MouseEvent event) {
+        
+        botonCableAzul2.setOnMouseClicked(clickedEvent -> {
+            cableAzulBateriaProto1.setVisible(!cableAzulBateriaProto1.isVisible());
+        });
+
+        botonCableAzul2.setOnMouseEntered(enteredEvent -> {
+            Glow glowSwitch = new Glow(1);
+            botonCableAzul2.setEffect(glowSwitch);
+        });
+
+        botonCableAzul2.setOnMouseExited(exitEvent -> {
+            botonCableAzul2.setEffect(null);
+        });
+    }
+
+    @FXML
+    void cableAzulSuperior(MouseEvent event) {
+        botonCableAzul1.setOnMouseClicked(clickedEvent -> {
+            cableAzulBateriaProto2.setVisible(!cableAzulBateriaProto2.isVisible());
+        });
+
+        botonCableAzul1.setOnMouseEntered(enteredEvent -> {
+            Glow glowSwitch = new Glow(1);
+            botonCableAzul1.setEffect(glowSwitch);
+        });
+
+        botonCableAzul1.setOnMouseExited(exitEvent -> {
+            botonCableAzul1.setEffect(null);
+        });
+
+    }
+
+    @FXML
+    void cableRojoInferior(MouseEvent event) {
+        botonCableRojo2.setOnMouseClicked(clickedEvent -> {
+            cableRojoBateriaProto1.setVisible(!cableRojoBateriaProto1.isVisible());
+        });
+
+        botonCableRojo2.setOnMouseEntered(enteredEvent -> {
+            Glow glowSwitch = new Glow(1);
+            botonCableRojo2.setEffect(glowSwitch);
+        });
+
+        botonCableRojo2.setOnMouseExited(exitEvent -> {
+            botonCableRojo2.setEffect(null);
+        });
+
+    }
+
+    @FXML
+    void cableRojoSuperior(MouseEvent event) {
+        botonCableRojo1.setOnMouseClicked(clickedEvent -> {
+            cableRojoBateriaProto2.setVisible(!cableRojoBateriaProto2.isVisible());
+        });
+
+        botonCableRojo1.setOnMouseEntered(enteredEvent -> {
+            Glow glowSwitch = new Glow(1);
+            botonCableRojo1.setEffect(glowSwitch);
+        });
+
+        botonCableRojo1.setOnMouseExited(exitEvent -> {
+            botonCableRojo1.setEffect(null);
+        });
+
     }
 
 
