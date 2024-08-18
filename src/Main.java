@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 public class Main extends Application{
     @FXML
@@ -52,6 +53,7 @@ public class Main extends Application{
     private ImageView cableRojoBateriaProto2;
 
     private Cables cableActual;
+    private Color colorActual;
 
     @FXML
     void botonConDesc(ActionEvent event) { //Metodo para hacer aparecer y desaparecer la bateria completa y la bateria cortada, ademas las luces roja y verde
@@ -72,9 +74,14 @@ public class Main extends Application{
         imagenCableAzul.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
             imagenCableAzul.setEffect(null);
         });
-        //FALTA AGREGAR LA CONDICION PARA DESOUES DE HACER CLICK SE EMPIECE A DIBUJAR EL CABLE AZUL
+        imagenCableAzul.setOnMouseClicked(clickedEvent ->{
+            colorActual = Color.BLUE;//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            configurarEventosDeDibujo();//LLAMAMOS A LA FUNCION QUE CONFIGURA LOS EVENTOS DE DIBUJO
+        });
+ 
     }
 
+    
     @FXML
     void botonCableRojo(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableRojo.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -85,9 +92,28 @@ public class Main extends Application{
         imagenCableRojo.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
             imagenCableRojo.setEffect(null);
         });
-        
-        paneDibujo.setOnMousePressed(mousePressedEvent -> iniciarDibujoCable(mousePressedEvent)); //Se inicia el dibujo del cable
-        paneDibujo.setOnMouseReleased(mouseReleasedEvent -> finalizarDibujoCable(mouseReleasedEvent)); //Se finaliza el dibujo del cable
+
+        imagenCableRojo.setOnMouseClicked(clickedEvent ->{
+            colorActual = Color.RED;//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            configurarEventosDeDibujo();//LLAMAMOS A LA FUNCION QUE CONFIGURA LOS EVENTOS DE DIBUJO
+        });
+    }
+
+    //metodo para donde se configuran las condiciones para ver que cable dibujaremos 
+    private void configurarEventosDeDibujo(){
+        paneDibujo.setOnMouseClicked(mouseClickedEvent ->{
+            if(cableActual == null){//iniciamos con la condicion si no existe un cable actual
+                double startX = mouseClickedEvent.getX();
+                double startY = mouseClickedEvent.getY();
+                cableActual = new Cables(paneDibujo, colorActual, startX, startY);//creamos una clase cable con el color y los atributos de coordenadas donde fue el click
+                cableActual.iniciarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());//iniciamos el dibujo del cable
+            } else {
+                cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
+                cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+
+            }
+        });
+
     }
 
     @FXML
@@ -113,21 +139,8 @@ public class Main extends Application{
             imagenSwitch.setEffect(null);
         });
     }
-    //metodo para iniciar el dibujo del cable pero falta implementarlo en la clase cable, esta es solo una prueba de como dibujar 
-    //cables sobre el protoboard
-    void iniciarDibujoCable(MouseEvent event){
-        cableActual = new Cables(paneDibujo);//Creamos un cable
-        cableActual.setStartX(event.getX());
-        cableActual.setStartY(event.getY());
-    }
+   
     
-    void finalizarDibujoCable(MouseEvent event){ //Metodo para finalizar el dibujo del cable
-        if(cableActual != null){
-            cableActual.setEndX(event.getX());
-            cableActual.setEndY(event.getY());
-            cableActual = null;
-        }
-    }
 
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
