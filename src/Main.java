@@ -81,7 +81,6 @@ public class Main extends Application{
  
     }
 
-    
     @FXML
     void botonCableRojo(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableRojo.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -110,10 +109,25 @@ public class Main extends Application{
             } else {
                 cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
                 cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
-
             }
         });
-
+    }
+    private void cablesBateriaProtoboard(){
+        paneDibujo.setOnMouseClicked(mouseClickedEvent ->{
+            if(cableActual == null){//iniciamos con la condicion si no existe un cable actual
+                double startX = mouseClickedEvent.getX();
+                double startY = mouseClickedEvent.getY();
+                cableActual = new Cables(paneDibujo, colorActual, startX, startY);//creamos una clase cable con el color y los atributos de coordenadas donde fue el click
+                cableActual.iniciarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());//iniciamos el dibujo del cable
+            } else {
+                cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
+                cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+                botonCableAzul2.toFront();
+                botonCableRojo1.toFront();
+                botonCableAzul1.toFront();
+                botonCableRojo2.toFront();    
+            }
+        });
     }
 
     @FXML
@@ -140,14 +154,17 @@ public class Main extends Application{
         });
     }
    
-    
-
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
+        
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
             cableAzulBateriaProto1.setVisible(!cableAzulBateriaProto1.isVisible()); //Se hace invisible el cable azul superior
+            botonCableAzul1.setVisible(!botonCableAzul1.isVisible()); //Se hace invisible el boton del cable azul superior
+            paneDibujo.toFront();
+            colorActual = Color.BLUE;//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            cablesBateriaProtoboard();//LLAMAMOS A LA FUNCION QUE CONFIGURA LOS EVENTOS DE DIBUJO
         });
-
+        
         botonCableAzul2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul inferior
             Glow glowSwitch = new Glow(1);
             botonCableAzul2.setEffect(glowSwitch);
@@ -162,6 +179,7 @@ public class Main extends Application{
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
             cableAzulBateriaProto2.setVisible(!cableAzulBateriaProto2.isVisible()); //Se hace invisible el cable azul inferior
+            botonCableAzul2.setVisible(!botonCableAzul2.isVisible()); //Se hace invisible el boton del cable azul inferior
         });
 
         botonCableAzul1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul superior
@@ -172,13 +190,13 @@ public class Main extends Application{
         botonCableAzul1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul superior
             botonCableAzul1.setEffect(null);
         });
-
     }
 
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
             cableRojoBateriaProto1.setVisible(!cableRojoBateriaProto1.isVisible()); //Se hace invisible el cable rojo superior
+            botonCableRojo1.setVisible(!botonCableRojo1.isVisible()); //Se hace invisible el boton del cable rojo superior
         });
 
         botonCableRojo2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo inferior
@@ -196,6 +214,7 @@ public class Main extends Application{
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
             cableRojoBateriaProto2.setVisible(!cableRojoBateriaProto2.isVisible()); //Se hace invisible el cable rojo inferior
+            botonCableRojo2.setVisible(!botonCableRojo2.isVisible()); //Se hace invisible el boton del cable rojo inferior
         });
 
         botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior
