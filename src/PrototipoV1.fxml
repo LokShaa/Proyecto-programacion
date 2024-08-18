@@ -8,6 +8,12 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
    <children>
+      <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="582.0" layoutY="-88.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/IMG_0468-Photoroom.png" />
+         </image>
+      </ImageView>
+       <Pane fx:id="paneDibujo" layoutX="532.0" layoutY="38.0" prefHeight="908.0" prefWidth="1243.0" style="-fx-background-color: transparent;" />
       <ImageView fx:id="bateriaCortada" fitHeight="297.0" fitWidth="147.0" layoutX="368.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/Porta%20Baterias%20con%20Bateria.png" />
@@ -33,11 +39,6 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="582.0" layoutY="-88.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Imagenes/IMG_0468-Photoroom.png" />
-         </image>
-      </ImageView>
       <ImageView fx:id="luzVerde" fitHeight="319.0" fitWidth="343.0" layoutX="108.0" layoutY="484.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/IMG_0465-Photoroom.png" />
@@ -93,7 +94,6 @@
          </image>
       </ImageView>
       <Pane fx:id="botonCableRojo2" layoutX="684.0" layoutY="903.0" onMouseClicked="#cableRojoInferior" onMouseEntered="#cableRojoInferior" onMouseExited="#cableRojoInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
-       <Pane fx:id="paneDibujo" layoutX="620.0" layoutY="85.0" prefHeight="781.0" prefWidth="1212.0" style="-fx-background-color: transparent;" />
       <Pane fx:id="botonCableAzul2" layoutX="684.0" layoutY="929.0" onMouseClicked="#cableAzulInferior" onMouseEntered="#cableAzulInferior" onMouseExited="#cableAzulInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
       <Pane fx:id="botonCableAzul1" layoutX="583.0" layoutY="47.0" onMouseClicked="#cableAzulSuperior" onMouseEntered="#cableAzulSuperior" onMouseExited="#cableAzulSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
       <Pane fx:id="botonCableRojo1" layoutX="537.0" layoutY="46.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" /> 

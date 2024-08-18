@@ -28,7 +28,7 @@ public class Cables extends Line{
     public Cables(Pane pane,Color color, double startX, double startY){ //Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
         this.pane = pane;
         this.setStroke(color);
-        this.setStrokeWidth(4);
+        this.setStrokeWidth(7);
 
         // Inicializamos las coordenadas del cable
         this.setStartX(startX);
