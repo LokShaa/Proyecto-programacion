@@ -56,7 +56,26 @@ public class Main extends Application{
 
     private Cables cableActual;
     private Color colorActual;
+
+
     
+    @FXML
+    private Pane matrizPane;
+    @FXML
+    private Pane matrizPane1;
+
+    private Pane[][]matrix = null;
+  
+
+    @FXML
+    void initialize(){
+        Protoboard matrizCentralProtoboard1 = new Protoboard();
+        Protoboard matrizCentralProtoboard2 = new Protoboard();
+
+        matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane, matrix);
+        matrizCentralProtoboard2.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane1, matrix);
+    }
+
     @FXML
     void botonConDesc(ActionEvent event) {
         Bateria bateria = new Bateria();
