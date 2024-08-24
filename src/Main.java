@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Main extends Application{
@@ -115,14 +117,8 @@ public class Main extends Application{
 
     @FXML
     void botonLed(MouseEvent event) { //Metodo de la imagen del led
-        imagenLed.setOnMouseEntered(enteredEvent -> { //Brillo para el led
-            Glow glowLed = new Glow(1);
-            imagenLed.setEffect(glowLed);
-        });
-
-        imagenLed.setOnMouseExited(exitEvent -> { //Se quita el brillo del led
-            imagenLed.setEffect(null);
-        });
+        Led led = new Led();
+        led.brilloLed(imagenLed);
     }
 
     @FXML
@@ -217,11 +213,11 @@ public class Main extends Application{
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
-        
         primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(root,1920,1000));
         primaryStage.show();
     }
+
     public static void main(String[] args){
         launch(args);
     }
