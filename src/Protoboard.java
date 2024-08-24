@@ -18,7 +18,8 @@ public class Protoboard {
             matrix[i][j] = cell;
             // Añadir evento a cada celda
             cell.setOnMouseClicked(event -> {
-                //AQUI IRAN LOS METODOS PARA HACER LAS INTERACCIONES DE LA MATRIZ
+                //AQUI IRAN LOS METODOS PARA HACER LAS INTERACCIONES DE LA MATRIZ\
+                cell.setStyle("-fx-background-color: purple;");
                 
             });
         }
