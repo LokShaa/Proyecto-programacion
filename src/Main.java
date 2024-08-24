@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -54,7 +55,23 @@ public class Main extends Application{
 
     private Cables cableActual;
     private Color colorActual;
+
+
     
+    @FXML
+    private Pane matrizPane;
+
+    private Pane[][]matrix = null;
+  
+
+    @FXML
+    void initialize(){
+        Protoboard matrizCentralProtoboard = new Protoboard();
+        matrizCentralProtoboard.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane, matrix);
+
+   
+    }
+
     @FXML
     void botonConDesc(ActionEvent event) {
         Bateria bateria = new Bateria();
