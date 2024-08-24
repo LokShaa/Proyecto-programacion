@@ -9,9 +9,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 public class Main extends Application{
@@ -65,16 +63,16 @@ public class Main extends Application{
     private Pane matrizPane2;
     @FXML
     private Pane matrizPane21;
-  
+
+    Protoboard matrizCentralProtoboard1 = new Protoboard();
+    Protoboard matrizCentralProtoboard2 = new Protoboard();
+    Protoboard matrizSuperior = new Protoboard();
+    Protoboard matrizInferior = new Protoboard();
+
 
     @FXML
     void initialize(){
-        Protoboard matrizCentralProtoboard1 = new Protoboard();
-        Protoboard matrizCentralProtoboard2 = new Protoboard();
-        Protoboard matrizSuperior = new Protoboard();
-        Protoboard matrizInferior = new Protoboard();
-
-        matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane );
+        matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane);
         matrizCentralProtoboard2.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane1 );
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
@@ -129,16 +127,32 @@ public class Main extends Application{
     }
 
     //METODO QUE FUNCIONA SOLO PARA LOS CABLES AZUL Y ROJO DONDE EXISTE EL METODO SOLO PARA QUE SE COLOQUE UN CABLE
-    private void configurarEventosDeDibujoCables(Runnable onComplete){
-        paneDibujo.setOnMouseClicked(mouseClickedEvent ->{
+    private void configurarEventosDeDibujoCables(Runnable onComplete) {
+        matrizPane.setOnMouseClicked(mouseClickedEvent ->{
             if(cableActual == null){//iniciamos con la condicion si no existe un cable actual
                 double startX = mouseClickedEvent.getX();
                 double startY = mouseClickedEvent.getY();
-                cableActual = new Cables(paneDibujo, colorActual, startX, startY);//creamos una clase cable con el color y los atributos de coordenadas donde fue el click
-                cableActual.iniciarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());//iniciamos el dibujo del cable
+                if(matrizCentralProtoboard1.comprobarCuadrado(5,30,20, 20, 18.6, 20,matrizPane,startX,startY) == true){
+                    cableActual = new Cables(matrizPane, colorActual, startX, startY);//creamos una clase cable con el color y los atributos de coordenadas donde fue el click
+                    cableActual.iniciarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());//iniciamos el dibujo del cable
+                }
+
             } else {
-                cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
-                cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+                double startX = mouseClickedEvent.getX();
+                double startY = mouseClickedEvent.getY();
+                if(matrizCentralProtoboard1.comprobarCuadrado(5,30,20, 20, 18.6, 20,matrizPane,startX,startY) == true){
+                    cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
+                    cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+                }
+                else{
+                    startX = mouseClickedEvent.getX();
+                    startY = mouseClickedEvent.getY();
+                    if(matrizCentralProtoboard1.comprobarCuadrado(5,30,20, 20, 18.6, 20,matrizPane,startX,startY) == true){
+                        cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
+                        cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+                    }
+                }
+                
                 botonCableAzul1.toFront();
                 botonCableAzul2.toFront();
                 botonCableRojo1.toFront();
@@ -147,11 +161,10 @@ public class Main extends Application{
             }
         });
     }
-      
 
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo() {
-        paneDibujo.setOnMouseClicked(null);
+        matrizPane.setOnMouseClicked(null);
     }
 
     @FXML
