@@ -28,6 +28,8 @@ public class Main extends Application{
     @FXML
     private ImageView imagenLed;
     @FXML
+    private ImageView imagenLed2;
+    @FXML
     private ImageView imagenSwitch;
     @FXML
     private ImageView luzRoja;
@@ -142,10 +144,41 @@ public class Main extends Application{
 
     @FXML
     void botonLed(MouseEvent event) { //Metodo de la imagen del led
-        Led led = new Led();
-        led.brilloLed(imagenLed);
-    }
+        imagenLed.setOnMouseEntered(enteredEvent -> { // Brillo para el led
+            Glow glowLed = new Glow(1);
+            imagenLed.setEffect(glowLed);
+        });
 
+        imagenLed.setOnMouseExited(exitEvent -> { // Se quita el brillo del led
+            imagenLed.setEffect(null);
+        });
+
+        imagenLed.setOnMouseClicked(clickedEvent -> { // Crear imagen arrastrable
+            ImageView nuevoLed = new ImageView(imagenLed2.getImage());
+            nuevoLed.setX(200); // Posición inicial X
+            nuevoLed.setY(200); // Posición inicial Y
+
+            // Establecer el tamaño del led
+            nuevoLed.setFitWidth(75); // Ancho deseado
+            nuevoLed.setFitHeight(110); // Alto deseado
+
+            paneDibujo.getChildren().add(nuevoLed);
+
+            // Hacer el led arrastrable
+            nuevoLed.setOnMousePressed(pressEvent -> {
+            nuevoLed.setUserData(new double[]{pressEvent.getSceneX(), pressEvent.getSceneY(), nuevoLed.getLayoutX(), nuevoLed.getLayoutY()});
+            });
+
+            nuevoLed.setOnMouseDragged(dragEvent -> {
+                double[] data = (double[]) nuevoLed.getUserData();
+                double deltaX = dragEvent.getSceneX() - data[0];
+                double deltaY = dragEvent.getSceneY() - data[1];
+                nuevoLed.setLayoutX(data[2] + deltaX);
+                nuevoLed.setLayoutY(data[3] + deltaY);
+            });
+        });
+    }
+/* 
     @FXML
     void botonSwitch(MouseEvent event) { //Metodo de la imagen del switch
         imagenSwitch.setOnMouseEntered(enteredEvent -> { //Brillo para el switch
@@ -157,7 +190,44 @@ public class Main extends Application{
             imagenSwitch.setEffect(null);
         });
     }
-   
+*/
+
+@FXML
+void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+    imagenSwitch.setOnMouseEntered(enteredEvent -> { // Brillo para el switch
+        Glow glowSwitch = new Glow(1);
+        imagenSwitch.setEffect(glowSwitch);
+    });
+
+    imagenSwitch.setOnMouseExited(exitEvent -> { // Se quita el brillo del switch
+        imagenSwitch.setEffect(null);
+    });
+
+    imagenSwitch.setOnMouseClicked(clickedEvent -> { // Crear imagen arrastrable
+        ImageView nuevoSwitch = new ImageView(imagenSwitch.getImage());
+        nuevoSwitch.setX(200); // Posición inicial X
+        nuevoSwitch.setY(200); // Posición inicial Y
+
+        // Establecer el tamaño del switch
+        nuevoSwitch.setFitWidth(75); // Ancho deseado
+        nuevoSwitch.setFitHeight(94); // Alto deseado
+
+        paneDibujo.getChildren().add(nuevoSwitch);
+
+        // Hacer el switch arrastrable
+        nuevoSwitch.setOnMousePressed(pressEvent -> {
+            nuevoSwitch.setUserData(new double[]{pressEvent.getSceneX(), pressEvent.getSceneY(), nuevoSwitch.getLayoutX(), nuevoSwitch.getLayoutY()});
+        });
+
+        nuevoSwitch.setOnMouseDragged(dragEvent -> {
+            double[] data = (double[]) nuevoSwitch.getUserData();
+            double deltaX = dragEvent.getSceneX() - data[0];
+            double deltaY = dragEvent.getSceneY() - data[1];
+            nuevoSwitch.setLayoutX(data[2] + deltaX);
+            nuevoSwitch.setLayoutY(data[3] + deltaY);
+        });
+    });
+}
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior

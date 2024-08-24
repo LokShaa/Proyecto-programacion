@@ -62,6 +62,11 @@
       </ImageView>
       <Pane layoutX="56.0" layoutY="21.0" prefHeight="417.0" prefWidth="458.0" style="-fx-background-color: #c0c0c0;">
          <children>
+            <ImageView fx:id="imagenLed2" fitHeight="127.0" fitWidth="60.0" layoutX="280.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Imagen%20Led2.png" />
+               </image>
+            </ImageView>
             <ImageView fx:id="imagenCableAzul" fitHeight="137.0" fitWidth="168.0" layoutX="39.0" layoutY="41.0" onMouseClicked="#botonCableAzul" onMouseDragged="#botonCableAzul" onMouseEntered="#botonCableAzul" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Cable%20Azul.png" />
@@ -80,7 +85,7 @@
                   <Image url="@../Imagenes/Imagen%20Led.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenSwitch" fitHeight="220.0" fitWidth="203.0" layoutX="29.0" layoutY="189.0" onMouseClicked="#botonSwitch" onMouseEntered="#botonSwitch" onMouseExited="#botonSwitch" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenSwitch" fitHeight="190.0" fitWidth="121.0" layoutX="63.0" layoutY="212.0" onMouseClicked="#botonSwitch" onMouseEntered="#botonSwitch" onMouseExited="#botonSwitch" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Imagen%20Switch-Photoroom.png" />
                </image>
