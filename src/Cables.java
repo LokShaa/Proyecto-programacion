@@ -1,29 +1,16 @@
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;//libreria para controlar los eventos del mouse
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.scene.image.ImageView;
 
 public class Cables extends Line{
     private String tipo;//Atributo para saber si es cable positivo o negativo   
     private Pane pane;//Atributo para saber en que pane se dibujara el cable
 
-
-    /*  public Cables(Pane pane){ //Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
-        this.setStroke(Color.RED);//Color del cable
-        this.setStrokeWidth(3);//Grosor del cable
-
-        pane.getChildren().add(this);//Agregamos el cable al pane
-        
-        pane.setOnMousePressed((MouseEvent event) ->{
-            this.setStartX(event.getX());//Obtenemos la posicion en x donde se hizo click
-            this.setStartY(event.getY());//Obtenemos la posicion en y donde se hizo click
-        });
-
-        pane.setOnMouseReleased((MouseEvent event) ->{
-            this.setEndX(event.getX());//Obtenemos la posicion en x donde se hizo click
-            this.setEndY(event.getY());//Obtenemos la posicion en y donde se hizo click
-        });
-        */
+    public Cables(){
+    }
 
     public Cables(Pane pane,Color color, double startX, double startY){ //Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
         this.pane = pane;
@@ -47,4 +34,5 @@ public class Cables extends Line{
         this.setEndX(endX);
         this.setEndY(endY);
     }
+
 }

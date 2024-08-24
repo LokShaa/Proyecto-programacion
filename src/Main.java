@@ -54,16 +54,13 @@ public class Main extends Application{
 
     private Cables cableActual;
     private Color colorActual;
-
-    @FXML
-    void botonConDesc(ActionEvent event) { //Metodo para hacer aparecer y desaparecer la bateria completa y la bateria cortada, ademas las luces roja y verde
-        luzRoja.setVisible(!luzRoja.isVisible()); //Se hace invisible la luz roja
-        luzVerde.setVisible(luzVerde.isVisible()); //Se hace visible la luz verde
-        portaBaterias.setVisible(!portaBaterias.isVisible()); //Se hace invisible el porta baterias
-        bateriaCompleta.setVisible(!bateriaCompleta.isVisible()); //Se hace invisible la bateria completa
-        bateriaCortada.setVisible(bateriaCortada.isVisible()); //Se hace visible la bateria cortada
-    }
     
+    @FXML
+    void botonConDesc(ActionEvent event) {
+        Bateria bateria = new Bateria();
+        bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
+    }
+
     @FXML
     void botonCableAzul(MouseEvent event) { //Metodo de la imagen del cable azul
         imagenCableAzul.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -75,12 +72,11 @@ public class Main extends Application{
             imagenCableAzul.setEffect(null);
         });
         imagenCableAzul.setOnMouseClicked(clickedEvent ->{
-            colorActual = Color.BLUE;//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            colorActual = Color.rgb(2,113,245);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
             configurarEventosDeDibujo();//LLAMAMOS A LA FUNCION QUE CONFIGURA LOS EVENTOS DE DIBUJO
         });
     }
 
-    
     @FXML
     void botonCableRojo(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableRojo.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -93,7 +89,7 @@ public class Main extends Application{
         });
 
         imagenCableRojo.setOnMouseClicked(clickedEvent ->{
-            colorActual = Color.RED;//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            colorActual = Color.rgb(236,63,39);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
             configurarEventosDeDibujo();//LLAMAMOS A LA FUNCION QUE CONFIGURA LOS EVENTOS DE DIBUJO
         });
     }
@@ -109,29 +105,12 @@ public class Main extends Application{
             } else {
                 cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
                 cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
-
-            }
-        });
-
-    }
-
-    private void cablesBateriaProtoboard(){ //metodo que permite dibujar desde los botones de los cables q van desde el portabaterias a la alimentacio positiva o negativa del protoboard 
-        paneDibujo.setOnMouseClicked(mouseClickedEvent ->{
-            if(cableActual == null){//iniciamos con la condicion si no existe un cable actual
-                double startX = mouseClickedEvent.getX();
-                double startY = mouseClickedEvent.getY();
-                cableActual = new Cables(paneDibujo, colorActual, startX, startY);//creamos una clase cable con el color y los atributos de coordenadas donde fue el click
-                cableActual.iniciarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());//iniciamos el dibujo del cable
-            } else {
-                cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
-                cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+                botonCableAzul1.toFront();
                 botonCableAzul2.toFront();
                 botonCableRojo1.toFront();
-                botonCableAzul1.toFront();
-                botonCableRojo2.toFront();    
+                botonCableRojo2.toFront();
             }
         });
-
     }
 
     @FXML
@@ -158,16 +137,12 @@ public class Main extends Application{
         });
     }
    
-    
-
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
-            cableAzulBateriaProto1.setVisible(!cableAzulBateriaProto1.isVisible()); //Se hace invisible el cable azul superior
-            botonCableAzul1.setVisible(!botonCableAzul1.isVisible()); //Se hace invisible el boton del cable azul superior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            cablesBateriaProtoboard();//Llamamos al metodo para poder dibujar los cables
+            configurarEventosDeDibujo();//Llamamos al metodo para poder dibujar los cables
             botonCableAzul2.setVisible(!botonCableAzul2.isVisible()); //Se hace invisible el boton del cable azul inferior
         });
 
@@ -184,11 +159,9 @@ public class Main extends Application{
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
-            cableAzulBateriaProto2.setVisible(!cableAzulBateriaProto2.isVisible()); //Se hace invisible el cable azul inferior
-            botonCableAzul2.setVisible(!botonCableAzul2.isVisible()); //Se hace invisible el boton del cable azul superior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            cablesBateriaProtoboard();//Llamamos al metodo para poder dibujar los cables
+            configurarEventosDeDibujo();//Llamamos al metodo para poder dibujar los cables
             botonCableAzul1.setVisible(!botonCableAzul1.isVisible()); //Se hace invisible el boton del cable azul superior
         });
 
@@ -200,17 +173,14 @@ public class Main extends Application{
         botonCableAzul1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul superior
             botonCableAzul1.setEffect(null);
         });
-
     }
 
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
-            cableRojoBateriaProto1.setVisible(!cableRojoBateriaProto1.isVisible()); //Se hace invisible el cable rojo superior
-            botonCableRojo1.setVisible(!botonCableRojo1.isVisible()); //Se hace invisible el boton del cable azul superior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            cablesBateriaProtoboard();//Llamamos al metodo para poder dibujar los cables
+            configurarEventosDeDibujo();//Llamamos al metodo para poder dibujar los cables
             botonCableRojo2.setVisible(!botonCableRojo2.isVisible()); //Se hace invisible el boton del cable azul inferior
         });
 
@@ -222,18 +192,15 @@ public class Main extends Application{
         botonCableRojo2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo inferior
             botonCableRojo2.setEffect(null);
         });
-
     }
 
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
-        cableRojoBateriaProto2.setVisible(!cableRojoBateriaProto2.isVisible()); //Se hace invisible el cable rojo inferior
-        botonCableRojo2.setVisible(!botonCableRojo2.isVisible()); //Se hace invisible el boton del cable azul superior
-        paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
-        colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-        cablesBateriaProtoboard();//Llamamos al metodo para poder dibujar los cables
-        botonCableRojo1.setVisible(!botonCableRojo1.isVisible()); //Se hace invisible el boton del cable azul superior
+            paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
+            colorActual = Color.rgb(236,63,39);//Le damos el color del cable
+            configurarEventosDeDibujo();//Llamamos al metodo para poder dibujar los cables
+            botonCableRojo1.setVisible(!botonCableRojo1.isVisible()); //Se hace invisible el boton del cable azul superior
         });
 
         botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior
@@ -244,14 +211,16 @@ public class Main extends Application{
         botonCableRojo1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo superior
             botonCableRojo1.setEffect(null);
         });
-
     }
 
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
+        //Bateria bateria = loader.getController();
+        //bateria.botonConDesc(new ActionEvent());
         Parent root = loader.load();
-        primaryStage.setTitle("Prototipo");
+        
+        primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(root,1920,1000));
         primaryStage.show();
     }
