@@ -60,7 +60,6 @@ public class Protoboard{
                 });
             }
         }
-
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
