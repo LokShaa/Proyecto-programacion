@@ -18,12 +18,14 @@ public class Protoboard {
             matrix[i][j] = cell;
             // Añadir evento a cada celda
             cell.setOnMouseClicked(event -> {
-                cell.setStyle("-fx-background-color: red;");
+                //AQUI IRAN LOS METODOS PARA HACER LAS INTERACCIONES DE LA MATRIZ
+                
             });
         }
     }
      // Ajustar el tamaño del pane matrizPane
      matrizPane.setPrefSize(cols * (cellAncho + padding1), rows * (cellAlt + padding2));
-
     }
+
 }
+
