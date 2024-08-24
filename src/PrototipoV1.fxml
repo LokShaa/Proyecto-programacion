@@ -4,6 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
@@ -107,7 +108,20 @@
       <Pane fx:id="botonCableRojo2" layoutX="684.0" layoutY="903.0" onMouseClicked="#cableRojoInferior" onMouseEntered="#cableRojoInferior" onMouseExited="#cableRojoInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
       <Pane fx:id="botonCableAzul2" layoutX="684.0" layoutY="929.0" onMouseClicked="#cableAzulInferior" onMouseEntered="#cableAzulInferior" onMouseExited="#cableAzulInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
       <Pane fx:id="botonCableAzul1" layoutX="583.0" layoutY="47.0" onMouseClicked="#cableAzulSuperior" onMouseEntered="#cableAzulSuperior" onMouseExited="#cableAzulSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
-      <Pane fx:id="botonCableRojo1" layoutX="537.0" layoutY="46.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" /> 
+      <Pane fx:id="botonCableRojo1" layoutX="537.0" layoutY="46.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
+      <Pane fx:id="paneSwitch" layoutX="125.0" layoutY="465.0" prefHeight="83.0" prefWidth="66.0">
+         <children>
+            <ImageView fx:id="imagenSwitch2" fitHeight="91.0" fitWidth="73.0" layoutX="-2.0" layoutY="-4.0" onMouseClicked="#botonSwitch" onMouseEntered="#botonSwitch" onMouseExited="#botonSwitch" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Imagen%20Switch-Photoroom.png" />
+               </image>
+            </ImageView>
+            <Circle fx:id="switchIzq1" layoutX="5.0" layoutY="2.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="switchDer1" layoutX="59.0" layoutY="2.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="switchIzq2" layoutX="5.0" layoutY="81.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="switchDer2" layoutX="59.0" layoutY="81.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </Pane> 
 
    </children>
 </Pane>
