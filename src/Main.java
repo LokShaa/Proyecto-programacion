@@ -63,8 +63,6 @@ public class Main extends Application{
     private Pane matrizPane;
     @FXML
     private Pane matrizPane1;
-
-    private Pane[][]matrix = null;
   
 
     @FXML
@@ -72,8 +70,8 @@ public class Main extends Application{
         Protoboard matrizCentralProtoboard1 = new Protoboard();
         Protoboard matrizCentralProtoboard2 = new Protoboard();
 
-        matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane, matrix);
-        matrizCentralProtoboard2.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane1, matrix);
+        matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane );
+        matrizCentralProtoboard2.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane1 );
     }
 
     @FXML
