@@ -17,6 +17,8 @@
          <children>
             <Pane fx:id="matrizPane" layoutX="155.0" layoutY="203.0" prefHeight="190.0" prefWidth="1147.0" style="-fx-background-color: transparent;" />
             <Pane fx:id="matrizPane1" layoutX="151.0" layoutY="469.0" prefHeight="190.0" prefWidth="1147.0" style="-fx-background-color: transparent;" />
+            <Pane fx:id="matrizPane2" layoutX="151.0" layoutY="51.0" prefHeight="83.0" prefWidth="1154.0" style="-fx-background-color: transparent;" />
+            <Pane fx:id="matrizPane21" layoutX="152.0" layoutY="738.0" prefHeight="83.0" prefWidth="1154.0" style="-fx-background-color: transparent;" />
          </children></Pane>
       <ImageView fx:id="bateriaCortada" fitHeight="297.0" fitWidth="147.0" layoutX="368.0" layoutY="520.0" pickOnBounds="true" preserveRatio="true">
          <image>

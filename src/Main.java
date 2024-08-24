@@ -63,15 +63,22 @@ public class Main extends Application{
     private Pane matrizPane;
     @FXML
     private Pane matrizPane1;
+    @FXML
+    private Pane matrizPane2;
+    @FXML
+    private Pane matrizPane21;
   
 
     @FXML
     void initialize(){
         Protoboard matrizCentralProtoboard1 = new Protoboard();
         Protoboard matrizCentralProtoboard2 = new Protoboard();
+        Protoboard matrizSuperior = new Protoboard();
+
 
         matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane );
         matrizCentralProtoboard2.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane1 );
+        matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
     }
 
     @FXML
