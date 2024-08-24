@@ -1,9 +1,6 @@
-import javafx.scene.effect.Glow;
-import javafx.scene.input.MouseEvent;//libreria para controlar los eventos del mouse
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.image.ImageView;
 
 public class Cables extends Line{
     private String tipo;//Atributo para saber si es cable positivo o negativo   
@@ -34,5 +31,4 @@ public class Cables extends Line{
         this.setEndX(endX);
         this.setEndY(endY);
     }
-
 }

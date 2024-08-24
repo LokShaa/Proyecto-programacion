@@ -216,8 +216,6 @@ public class Main extends Application{
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
-        //Bateria bateria = loader.getController();
-        //bateria.botonConDesc(new ActionEvent());
         Parent root = loader.load();
         
         primaryStage.setTitle("Protoboard");
