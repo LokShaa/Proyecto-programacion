@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class Main extends Application{
     @FXML
@@ -25,6 +26,8 @@ public class Main extends Application{
     private ImageView imagenCableRojo;
     @FXML
     private ImageView imagenLed;
+    @FXML
+    private ImageView imagenLed2;
     @FXML
     private ImageView imagenSwitch;
     @FXML
@@ -43,6 +46,14 @@ public class Main extends Application{
     private Pane botonCableRojo1;
     @FXML
     private Pane botonCableRojo2;
+    @FXML
+    private Circle switchDer1;
+    @FXML
+    private Circle switchDer2;
+    @FXML
+    private Circle switchIzq1;
+    @FXML
+    private Circle switchIzq2;
     @FXML
     private ImageView cableAzulBateriaProto1;
     @FXML
@@ -192,21 +203,15 @@ public class Main extends Application{
     @FXML
     void botonLed(MouseEvent event) { //Metodo de la imagen del led
         Led led = new Led();
-        led.brilloLed(imagenLed);
+        led.metodosLed(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
-    void botonSwitch(MouseEvent event) { //Metodo de la imagen del switch
-        imagenSwitch.setOnMouseEntered(enteredEvent -> { //Brillo para el switch
-            Glow glowSwitch = new Glow(1);
-            imagenSwitch.setEffect(glowSwitch);
-        });
-
-        imagenSwitch.setOnMouseExited(exitEvent -> { //Se quita el brillo del switch
-            imagenSwitch.setEffect(null);
-        });
+    void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+        Switch switch1 = new Switch();
+        switch1.metodosSwitch(imagenSwitch, paneDibujo);
+        
     }
-   
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
