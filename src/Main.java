@@ -98,9 +98,21 @@ public class Main extends Application{
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
             colorActual = Color.rgb(2, 113, 245);
-            configurarEventosDeDibujoCables(() -> {
+            configurarEventosDeDibujoCables(matrizPane,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo();
+                desactivarEventosDeDibujo(matrizPane);
+            });
+            configurarEventosDeDibujoCables(matrizPane1,() -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                desactivarEventosDeDibujo(matrizPane1);
+            });
+            configurarEventosDeDibujoCables(matrizPane2,() -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                desactivarEventosDeDibujo(matrizPane2);
+            });
+            configurarEventosDeDibujoCables(matrizPane21,() -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                desactivarEventosDeDibujo(matrizPane21);
             });
         });
     }
@@ -119,52 +131,62 @@ public class Main extends Application{
         imagenCableRojo.setOnMouseClicked(clickedEvent ->{
             colorActual = Color.rgb(236,63,39);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
             // Configura los eventos de dibujo y desactívalos una vez que se coloque un cable
-            configurarEventosDeDibujoCables(() -> {
+            configurarEventosDeDibujoCables(matrizPane,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo();
+                desactivarEventosDeDibujo(matrizPane);
+            });
+            configurarEventosDeDibujoCables(matrizPane1,() -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                desactivarEventosDeDibujo(matrizPane1);
+            });
+            configurarEventosDeDibujoCables(matrizPane2,() -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                desactivarEventosDeDibujo(matrizPane2);
+            });
+            configurarEventosDeDibujoCables(matrizPane21,() -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                desactivarEventosDeDibujo(matrizPane21);
             });
         });
     }
 
     //METODO QUE FUNCIONA SOLO PARA LOS CABLES AZUL Y ROJO DONDE EXISTE EL METODO SOLO PARA QUE SE COLOQUE UN CABLE
-    private void configurarEventosDeDibujoCables(Runnable onComplete) {
-        matrizPane.setOnMouseClicked(mouseClickedEvent ->{
-            if(cableActual == null){//iniciamos con la condicion si no existe un cable actual
-                double startX = mouseClickedEvent.getX();
-                double startY = mouseClickedEvent.getY();
-                if(matrizCentralProtoboard1.comprobarCuadrado(5,30,20, 20, 18.6, 20,matrizPane,startX,startY) == true){
-                    cableActual = new Cables(matrizPane, colorActual, startX, startY);//creamos una clase cable con el color y los atributos de coordenadas donde fue el click
-                    cableActual.iniciarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());//iniciamos el dibujo del cable
-                }
+    private void configurarEventosDeDibujoCables(Pane matriz, Runnable onComplete) {
+        matriz.setOnMouseClicked(mouseClickedEvent -> {
+            double x = mouseClickedEvent.getX();
+            double y = mouseClickedEvent.getY();
+            boolean cableIniciado = false;
 
+            if (cableActual == null) {
+                // Iniciar el dibujo del cable
+                if (matrizCentralProtoboard1.comprobarCuadrado(5, 30, 20, 20, 18.6, 20, matriz, x, y)) {
+                    cableActual = new Cables(matriz, colorActual, x, y);
+                    cableActual.iniciarDibujoCable(x, y);
+                    cableIniciado = true;
+                }
             } else {
-                double startX = mouseClickedEvent.getX();
-                double startY = mouseClickedEvent.getY();
-                if(matrizCentralProtoboard1.comprobarCuadrado(5,30,20, 20, 18.6, 20,matrizPane,startX,startY) == true){
-                    cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
-                    cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
+                // Finalizar el dibujo del cable
+                if (matrizCentralProtoboard1.comprobarCuadrado(5, 30, 20, 20, 18.6, 20, matriz, x, y)) {
+                    cableActual.finalizarDibujoCable(x, y);
+                    cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                    botonCableAzul1.toFront();
+                    botonCableAzul2.toFront();
+                    botonCableRojo1.toFront();
+                    botonCableRojo2.toFront();
+                    onComplete.run();
                 }
-                else{
-                    startX = mouseClickedEvent.getX();
-                    startY = mouseClickedEvent.getY();
-                    if(matrizCentralProtoboard1.comprobarCuadrado(5,30,20, 20, 18.6, 20,matrizPane,startX,startY) == true){
-                        cableActual.finalizarDibujoCable(mouseClickedEvent.getX(), mouseClickedEvent.getY());
-                        cableActual = null;//finalizamos el dibujo del cable haciendo que sea null otra vez
-                    }
-                }
-                
-                botonCableAzul1.toFront();
-                botonCableAzul2.toFront();
-                botonCableRojo1.toFront();
-                botonCableRojo2.toFront();
-                onComplete.run();
+            }
+
+            if (!cableIniciado && cableActual != null) {
+                // Si no se inició el cable y cableActual no es null, reiniciar cableActual
+                cableActual = null;
             }
         });
     }
 
     // Método para desactivar los eventos de dibujo
-    private void desactivarEventosDeDibujo() {
-        matrizPane.setOnMouseClicked(null);
+    private void desactivarEventosDeDibujo(Pane matriz) {
+        matriz.setOnMouseClicked(null);
     }
 
     @FXML
@@ -190,10 +212,10 @@ public class Main extends Application{
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            configurarEventosDeDibujoCables(() -> {
+            /*configurarEventosDeDibujoCables(() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo();
-            });
+            });*/
             botonCableAzul2.setVisible(!botonCableAzul2.isVisible()); //Se hace invisible el boton del cable azul inferior
         });
 
@@ -212,10 +234,10 @@ public class Main extends Application{
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            configurarEventosDeDibujoCables(() -> {
+            /*configurarEventosDeDibujoCables(() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo();
-            });
+            });*/
             botonCableAzul1.setVisible(!botonCableAzul1.isVisible()); //Se hace invisible el boton del cable azul superior
         });
 
@@ -234,10 +256,10 @@ public class Main extends Application{
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            configurarEventosDeDibujoCables(() -> {
+            /*configurarEventosDeDibujoCables(() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo();
-            });
+            });*/
             botonCableRojo2.setVisible(!botonCableRojo2.isVisible()); //Se hace invisible el boton del cable azul inferior
         });
 
@@ -256,10 +278,10 @@ public class Main extends Application{
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
             paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            configurarEventosDeDibujoCables(() -> {
+            /*configurarEventosDeDibujoCables(() -> {
                 //Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo();
-            });
+            });*/
             botonCableRojo1.setVisible(!botonCableRojo1.isVisible()); //Se hace invisible el boton del cable azul superior
         });
 
