@@ -33,8 +33,6 @@ public class Main extends Application{
     @FXML
     private ImageView imagenSwitch;
     @FXML
-    private ImageView imagenSwitch2;
-    @FXML
     private ImageView luzRoja;
     @FXML
     private ImageView luzVerde;
@@ -42,8 +40,6 @@ public class Main extends Application{
     private ImageView portaBaterias;
     @FXML
     private Pane paneDibujo;
-    @FXML
-    private Pane paneSwitch;
     @FXML
     private Pane botonCableAzul1;
     @FXML

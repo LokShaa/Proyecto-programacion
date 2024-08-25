@@ -4,11 +4,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 
 public class Switch {
+
     public void metodosSwitch(ImageView imagenSwitch, Pane paneDibujo){
         imagenSwitch.setOnMouseEntered(enteredEvent -> { // Brillo para el switch
             Glow glowSwitch = new Glow(1);
             imagenSwitch.setEffect(glowSwitch);
         });
+    
 
         imagenSwitch.setOnMouseExited(exitEvent -> { // Se quita el brillo del switch
             imagenSwitch.setEffect(null);
@@ -17,7 +19,7 @@ public class Switch {
         imagenSwitch.setOnMouseClicked(clickedEvent -> { // Crear pane/imagen arrastrable
             Pane nuevoPaneSwitch = new Pane();
             nuevoPaneSwitch.setPrefSize(75, 95); // Tamaño del pane switch
-            nuevoPaneSwitch.setStyle("-fx-background-color: green;"); // Fondo transparente
+            nuevoPaneSwitch.setStyle("-fx-background-color: transparent;"); // Color transparente del pane
             nuevoPaneSwitch.setLayoutX(200); // Posición inicial X del nuevo Pane
             nuevoPaneSwitch.setLayoutY(200); // Posición inicial Y del nuevo Pane
             
@@ -36,19 +38,19 @@ public class Switch {
             Circle circuloSwitchIzq1 = new Circle(8, 5, 5);// Crea el círculo izquierdo superior del switch
             circuloSwitchIzq1.setStyle("-fx-fill: black;"); // Color del circulo
 
-            Circle circuloSwitchDer1 = new Circle(8, 0, 5);// Crea el círculo derecho superior del switch
+            Circle circuloSwitchDer1 = new Circle(67, 5, 5);// Crea el círculo derecho superior del switch
             circuloSwitchDer1.setStyle("-fx-fill: black;"); // Color del circulo
 
-            Circle circuloSwitchIzq2 = new Circle(67, 5, 5);// Crea el círculo izquierdo inferior del switch
+            Circle circuloSwitchIzq2 = new Circle(8, 90, 5);// Crea el círculo izquierdo inferior del switch
             circuloSwitchIzq2.setStyle("-fx-fill: black;"); // Color del circulo
 
-            Circle circuloSwitchDer2 = new Circle(37.5, 0, 5); // Crea el círculo derecho inferior del switch
+            Circle circuloSwitchDer2 = new Circle(67, 90, 5); // Crea el círculo derecho inferior del switch
             circuloSwitchDer2.setStyle("-fx-fill: black;"); // Color del circulo
 
             nuevoPaneSwitch.getChildren().add(circuloSwitchIzq1);// Agregar el pane del switch al Pane principal
-            //nuevoPaneSwitch.getChildren().add(circuloSwitchDer1);// Agregar el pane del switch al Pane principal
+            nuevoPaneSwitch.getChildren().add(circuloSwitchDer1);// Agregar el pane del switch al Pane principal
             nuevoPaneSwitch.getChildren().add(circuloSwitchIzq2);// Agregar el pane del switch al Pane principal
-            //nuevoPaneSwitch.getChildren().add(circuloSwitchDer2);// Agregar el pane del switch al Pane principal
+            nuevoPaneSwitch.getChildren().add(circuloSwitchDer2);// Agregar el pane del switch al Pane principal
 
 
 
@@ -63,9 +65,10 @@ public class Switch {
                 double deltaY = dragEvent.getSceneY() - data[1];
                 nuevoPaneSwitch.setLayoutX(data[2] + deltaX);
                 nuevoPaneSwitch.setLayoutY(data[3] + deltaY);
+                
             });
-        
         });
+    };
     
-    }
+    
 }
