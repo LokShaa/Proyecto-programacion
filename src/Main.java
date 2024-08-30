@@ -69,22 +69,18 @@ public class Main extends Application{
     @FXML
     private Pane matrizPane;
     @FXML
-    private Pane matrizPane1;
-    @FXML
     private Pane matrizPane2;
     @FXML
     private Pane matrizPane21;
 
-    Protoboard matrizCentralProtoboard1 = new Protoboard();
-    Protoboard matrizCentralProtoboard2 = new Protoboard();
+    Protoboard matrizCentralProtoboard = new Protoboard();
     Protoboard matrizSuperior = new Protoboard();
     Protoboard matrizInferior = new Protoboard();
 
 
     @FXML
     void initialize(){
-        matrizCentralProtoboard1.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane);
-        matrizCentralProtoboard2.inicializarMatriz(5, 30, 20, 20, 18.6, 20, matrizPane1 );
+        matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
     }
@@ -112,10 +108,6 @@ public class Main extends Application{
             configurarEventosDeDibujoCables(matrizPane,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo(matrizPane);
-            });
-            configurarEventosDeDibujoCables(matrizPane1,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane1);
             });
             configurarEventosDeDibujoCables(matrizPane2,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
@@ -146,10 +138,7 @@ public class Main extends Application{
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo(matrizPane);
             });
-            configurarEventosDeDibujoCables(matrizPane1,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane1);
-            });
+            
             configurarEventosDeDibujoCables(matrizPane2,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 desactivarEventosDeDibujo(matrizPane2);
@@ -170,14 +159,14 @@ public class Main extends Application{
 
             if (cableActual == null) {
                 // Iniciar el dibujo del cable
-                if (matrizCentralProtoboard1.comprobarCuadrado(5, 30, 20, 20, 18.6, 20, matriz, x, y)) {
+                if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matriz, x, y)) {
                     cableActual = new Cables(matriz, colorActual, x, y);
                     cableActual.iniciarDibujoCable(x, y);
                     cableIniciado = true;
                 }
             } else {
                 // Finalizar el dibujo del cable
-                if (matrizCentralProtoboard1.comprobarCuadrado(5, 30, 20, 20, 18.6, 20, matriz, x, y)) {
+                if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matriz, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y)) {
                     cableActual.finalizarDibujoCable(x, y);
                     cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                     botonCableAzul1.toFront();

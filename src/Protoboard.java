@@ -4,9 +4,10 @@ public class Protoboard{
     //Declara matrix como atributo de la clase
     private Pane[][] matriz;
 
-    public void inicializarMatriz(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
+    public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         for (int i = 0; i < filas; i++) {
+            
             for (int j = 0; j < columnas; j++) {
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
@@ -15,6 +16,11 @@ public class Protoboard{
                 // Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
+                
+                if (i >= 5) {
+                    y +=  55 + padding2; // Añadir espacio adicional
+                }
+
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
                 matrizPane.getChildren().add(cell);
@@ -32,7 +38,14 @@ public class Protoboard{
         }
 
         // Ajustar el tamaño del pane matrizPane
-        matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                if (i >= 5) {
+                    matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2)+55);
+                }
+                matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
+            }
+        }
     }
 
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
