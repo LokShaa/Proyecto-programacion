@@ -82,6 +82,7 @@ public class Protoboard{
 
         for (int i = 0; i < fila; i++) {
             for (int j = 0; j < columna; j++) {
+            
                 // Obtener las coordenadas del cuadrado
                 double squareX = matriz[i][j].getLayoutX();
                 double squareY = matriz[i][j].getLayoutY();
