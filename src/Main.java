@@ -86,6 +86,7 @@ public class Main extends Application{
     Protoboard matrizCablesInferiores = new Protoboard();
     private List<Pane> matricesProto;
     private List<Pane> matricesCables;
+
     @FXML
     void initialize(){
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
@@ -95,7 +96,7 @@ public class Main extends Application{
         matrizCablesInferiores.inicializarMatrizCablesBateria(2,1, 15, 17, 31, 8, matrizPaneCablesInferiores);
         matrizPaneCablesInferiores.setVisible(false);
         matrizPaneCablesSuperiores.setVisible(false);
-
+        
         matricesCables = new ArrayList<>();
         matricesCables.add(matrizPaneCablesSuperiores);
         matricesCables.add(matrizPaneCablesInferiores);
@@ -275,13 +276,14 @@ public class Main extends Application{
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
-            paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
+            matrizPaneCablesSuperiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
             colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            /*configurarEventosDeDibujoCables(() -> {
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo();
-            });*/
-            botonCableAzul1.setVisible(!botonCableAzul1.isVisible()); //Se hace invisible el boton del cable azul superior
+                for (Pane matriz : matricesProto) {
+                    desactivarEventosDeDibujo(matriz);
+                }
+            });
         });
 
         botonCableAzul1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul superior
@@ -297,13 +299,14 @@ public class Main extends Application{
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
-            paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
+            matrizPaneCablesInferiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            /*configurarEventosDeDibujoCables(() -> {
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo();
-            });*/
-            botonCableRojo2.setVisible(!botonCableRojo2.isVisible()); //Se hace invisible el boton del cable azul inferior
+                for (Pane matriz : matricesProto) {
+                    desactivarEventosDeDibujo(matriz);
+                }
+            });
         });
 
         botonCableRojo2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo inferior
@@ -319,13 +322,14 @@ public class Main extends Application{
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
-            paneDibujo.toFront();//Llevamos al frente el pane para poder dibujar y que deje de ser clickeable el boton
+            matrizPaneCablesSuperiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            /*configurarEventosDeDibujoCables(() -> {
-                //Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo();
-            });*/
-            botonCableRojo1.setVisible(!botonCableRojo1.isVisible()); //Se hace invisible el boton del cable azul superior
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
+                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                for (Pane matriz : matricesProto) {
+                    desactivarEventosDeDibujo(matriz);
+                }
+            });
         });
 
         botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior
