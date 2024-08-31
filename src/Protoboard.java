@@ -17,12 +17,13 @@ public class Protoboard{
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
                 
-                if (i >= 5) {
-                    y +=  55 + padding2; // Añadir espacio adicional
+                if (i > 4) {
+                    y +=  75; // Añadir espacio adicional
                 }
 
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
+                
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
 
@@ -40,10 +41,15 @@ public class Protoboard{
         // Ajustar el tamaño del pane matrizPane
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                if (i >= 5) {
-                    matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2)+55);
+                double ancho = columnas * (cellAncho + padding1);
+                double alto = filas * (cellAlt + padding2);
+                if (i > 4) {
+                    alto += 75;
+                    matrizPane.setPrefSize(ancho, alto);
                 }
-                matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
+                else{
+                    matrizPane.setPrefSize(ancho, alto);
+                }
             }
         }
     }
@@ -59,11 +65,12 @@ public class Protoboard{
                 // Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
+                
+                matriz[i][j] = cell;
+                matrizPane.getChildren().add(cell);
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-                matrizPane.getChildren().add(cell);
-                matriz[i][j] = cell;
-
+                
                 /*final int fila = i; // Necesario para usar dentro del lambda
                 cell.setOnMouseClicked(event -> {
                     // Cambiar el color de toda la columna
@@ -71,6 +78,66 @@ public class Protoboard{
                         matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
                     }
                 });*/
+            }
+        }
+        // Ajustar el tamaño del pane matrizPane
+        matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
+    }
+    public void inicializarMatrizCablesBateria(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
+        matriz = new Pane[filas][columnas];
+        if(filas == 1){
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Pane cell = new Pane();
+                    cell.setPrefSize(cellAncho, cellAlt);
+                    if (j == 0) {
+                        cell.setStyle("-fx-border-color: red; -fx-border-width: 1; -fx-background-color: red;");
+                    }
+                    else{
+                        cell.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-background-color: blue;");
+                    }
+
+                    // Calcular la posición de la celda
+                    double x = j * (cellAncho + padding1);
+                    double y = i * (cellAlt + padding2);
+                    
+                    matriz[i][j] = cell;
+                    matrizPane.getChildren().add(cell);
+                    cell.setLayoutX(x);
+                    cell.setLayoutY(y);
+                    
+                    /*final int fila = i; // Necesario para usar dentro del lambda
+                    cell.setOnMouseClicked(event -> {
+                        // Cambiar el color de toda la columna
+                        for (int col = 0; col < columnas; col++) {
+                            matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
+                        }
+                    });*/
+                }
+            }
+        }
+        if (filas == 2) {
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Pane cell = new Pane();
+                    cell.setPrefSize(cellAncho, cellAlt);
+                    if (i == 0) {
+                        cell.setStyle("-fx-border-color: red; -fx-border-width: 1; -fx-background-color: red;");
+                    }
+                    else{
+                        cell.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-background-color: blue;");
+                    }
+
+                    // Calcular la posición de la celda
+                    double x = j * (cellAncho + padding1);
+                    double y = i * (cellAlt + padding2);
+                    
+                    matriz[i][j] = cell;
+                    matrizPane.getChildren().add(cell);
+                    cell.setLayoutX(x);
+                    cell.setLayoutY(y);
+                    
+                }
             }
         }
         // Ajustar el tamaño del pane matrizPane
@@ -97,5 +164,9 @@ public class Protoboard{
             }
         }
         return false;
+        
+    }
+    public Pane[][] getMatriz() {
+        return matriz;
     }
 }

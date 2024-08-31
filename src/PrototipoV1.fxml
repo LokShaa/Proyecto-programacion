@@ -106,7 +106,9 @@
       <Pane fx:id="botonCableRojo2" layoutX="684.0" layoutY="903.0" onMouseClicked="#cableRojoInferior" onMouseEntered="#cableRojoInferior" onMouseExited="#cableRojoInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
       <Pane fx:id="botonCableAzul2" layoutX="684.0" layoutY="929.0" onMouseClicked="#cableAzulInferior" onMouseEntered="#cableAzulInferior" onMouseExited="#cableAzulInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
       <Pane fx:id="botonCableAzul1" layoutX="583.0" layoutY="47.0" onMouseClicked="#cableAzulSuperior" onMouseEntered="#cableAzulSuperior" onMouseExited="#cableAzulSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
-      <Pane fx:id="botonCableRojo1" layoutX="537.0" layoutY="46.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" /> 
+      <Pane fx:id="botonCableRojo1" layoutX="537.0" layoutY="46.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
+      <Pane fx:id="matrizPaneCablesSuperiores" layoutX="535.0" layoutY="40.0" prefHeight="20.0" prefWidth="60.0" />
+      <Pane fx:id="matrizPaneCablesInferiores" layoutX="683.0" layoutY="899.0" prefHeight="43.0" prefWidth="20.0" /> 
 
    </children>
 </Pane>
