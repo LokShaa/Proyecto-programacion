@@ -80,15 +80,14 @@ public class Main extends Application{
     Protoboard matrizInferior = new Protoboard();
     private List<Pane> matrices;
 
-    
-
     @FXML
     void initialize(){
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
+
         matrices = new ArrayList<>();
-    // Agrega las matrices a la lista
+        // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
         matrices.add(matrizPane);
         matrices.add(matrizPane2);
         matrices.add(matrizPane21);
@@ -114,18 +113,6 @@ public class Main extends Application{
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
             colorActual = Color.rgb(2, 113, 245);
-            /*configurarEventosDeDibujoCables(matrizPane,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane);
-            });
-            configurarEventosDeDibujoCables(matrizPane2,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane2);
-            });
-            configurarEventosDeDibujoCables(matrizPane21,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane21);
-            });*/
             configurarEventosDeDibujoCables(matrices, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matrices) {
@@ -148,48 +135,40 @@ public class Main extends Application{
 
         imagenCableRojo.setOnMouseClicked(clickedEvent ->{
             colorActual = Color.rgb(236,63,39);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
-            // Configura los eventos de dibujo y desactívalos una vez que se coloque un cable
-            /*configurarEventosDeDibujoCables(matrizPane,() -> {
+            configurarEventosDeDibujoCables(matrices, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane);
+                for (Pane matriz : matrices) {
+                    desactivarEventosDeDibujo(matriz);
+                }
             });
-            
-            configurarEventosDeDibujoCables(matrizPane2,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane2);
-            });
-            configurarEventosDeDibujoCables(matrizPane21,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                desactivarEventosDeDibujo(matrizPane21);
-            });*/
         });
     }
+    
     private void configurarEventosDeDibujoCables(List<Pane> matrices, Runnable onComplete) {
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
-                double x = mouseClickedEvent.getX();
-                double y = mouseClickedEvent.getY();
-                boolean cableIniciado = false;
-    
+                // Convertir las coordenadas del clic a coordenadas de la escena
+                double xEscena = mouseClickedEvent.getSceneX();
+                double yEscena = mouseClickedEvent.getSceneY();
                 if (cableActual == null) {
-                    // Iniciar el dibujo del cable
-                    for (Pane m : matrices) {
-                        if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || 
-                            matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || 
-                            matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y)) {
-                            cableActual = new Cables(m, colorActual, x, y);
-                            cableActual.iniciarDibujoCable(x, y);
-                            cableIniciado = true;
+                    for (Pane matrizActual : matrices) {
+                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                            cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
+                            cableActual.iniciarDibujoCable(xLocal, yLocal);
                             break;
                         }
                     }
                 } else {
-                    // Finalizar el dibujo del cable
-                    for (Pane m : matrices) {
-                        if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || 
-                            matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || 
-                            matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y)) {
-                            cableActual.finalizarDibujoCable(x, y);
+                    for (Pane matrizActual : matrices) {
+                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                            if (cableActual.getPane() != matrizActual) {
+                                cableActual.actualizarPane(matrizActual);
+                            }
+                            cableActual.finalizarDibujoCable(xLocal, yLocal);
                             cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                             onComplete.run();
                             break;
@@ -199,67 +178,11 @@ public class Main extends Application{
             });
         }
     }
-    //METODO QUE FUNCIONA SOLO PARA LOS CABLES AZUL Y ROJO DONDE EXISTE EL METODO SOLO PARA QUE SE COLOQUE UN CABLE
-    /*private void configurarEventosDeDibujoCables(Pane matriz, Runnable onComplete) {
-        matriz.setOnMouseClicked(mouseClickedEvent -> {
-            double x = mouseClickedEvent.getX();
-            double y = mouseClickedEvent.getY();
-            boolean cableIniciado = false;
-
-            if (cableActual == null) {
-                // Iniciar el dibujo del cable
-                if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matriz, x, y)) {
-                    cableActual = new Cables(matriz, colorActual, x, y);
-                    cableActual.iniciarDibujoCable(x, y);
-                    cableIniciado = true;
-                }
-            } else {
-                // Finalizar el dibujo del cable
-                if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matriz, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y)) {
-                    cableActual.finalizarDibujoCable(x, y);
-                    cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                    botonCableAzul1.toFront();
-                    botonCableAzul2.toFront();
-                    botonCableRojo1.toFront();
-                    botonCableRojo2.toFront();
-                    onComplete.run();
-                }
-            }
-
-            if (!cableIniciado && cableActual != null) {
-                // Si no se inició el cable y cableActual no es null, reiniciar cableActual
-                cableActual = null;
-            }
-        });
-    }*/
-    /*private void configurarEventosDeDibujoCables(List<Pane> matrices, Runnable onComplete) {
-        for (Pane matriz : matrices) {
-            matriz.setOnMouseClicked(mouseClickedEvent -> {
-                double x = mouseClickedEvent.getX();
-                double y = mouseClickedEvent.getY();
-                boolean cableIniciado = false;
     
-                if (cableActual == null) {
-                    // Iniciar el dibujo del cable
-                    if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matriz, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y) || 
-                    matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y)) {
-                        cableActual = new Cables(matriz, colorActual, x, y);
-                        cableActual.iniciarDibujoCable(x, y);
-                        cableIniciado = true;
-                    }
-                } else {
-                    // Finalizar el dibujo del cable
-                    if (matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matriz, x, y) || 
-                        matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y) || 
-                        matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, matriz, x, y)) {
-                        cableActual.finalizarDibujoCable(x, y);
-                        cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                        onComplete.run();
-                    }
-                }
-            });
-        }
-    }*/
+    // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
+    private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
+        return matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y);
+    }
 
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
