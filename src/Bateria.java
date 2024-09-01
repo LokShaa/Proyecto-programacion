@@ -1,7 +1,9 @@
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 
-public class Bateria {
+public class Bateria{
+    private int voltaje = 5; //Atributo para saber el voltaje de la bateria
+    
 
     @FXML
     public void botonConectadoDesconectado(ImageView luzRoja,ImageView luzVerde, ImageView bateriaCortada,ImageView bateriaCompleta,ImageView portaBaterias) { //Metodo para hacer aparecer y desaparecer la bateria completa y la bateria cortada, ademas las luces roja y verde
