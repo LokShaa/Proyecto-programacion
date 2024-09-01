@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.geometry.Bounds;
 
 public class Main extends Application{
     @FXML
@@ -84,9 +85,17 @@ public class Main extends Application{
     Protoboard matrizInferior = new Protoboard();
     Protoboard matrizCablesSuperiores = new Protoboard();
     Protoboard matrizCablesInferiores = new Protoboard();
+
     private List<Pane> matricesProto;
     private List<Pane> matricesCables;
 
+    // Método para comprobar si el clic está dentro de los límites de un Pane específico
+private boolean esClickEnPane(Pane pane, double x, double y) {
+    Bounds bounds = pane.getBoundsInParent();
+    return x >= bounds.getMinX() && x <= bounds.getMaxX() && y >= bounds.getMinY() && y <= bounds.getMaxY();
+}
+   
+    
     @FXML
     void initialize(){
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
@@ -171,6 +180,7 @@ public class Main extends Application{
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
                             cableActual.iniciarDibujoCable(xLocal, yLocal);
+                            
                             break;
                         }
                     }
@@ -178,6 +188,7 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             if (cableActual.getPane() != matrizActual) {
                                 cableActual.actualizarPane(matrizActual);
@@ -227,15 +238,13 @@ public class Main extends Application{
             });
         }
     }
-    
-    // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
-    private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
-        return matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y);
-    }
-
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
         matriz.setOnMouseClicked(null);
+    }
+    // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
+    private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
+        return matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y);
     }
 
     @FXML
@@ -249,7 +258,6 @@ public class Main extends Application{
         Switch switch1 = new Switch();
         switch1.metodosSwitch(imagenSwitch, paneDibujo);
     }
-    
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
@@ -272,7 +280,6 @@ public class Main extends Application{
             botonCableAzul2.setEffect(null);
         });
     }
-
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
@@ -295,7 +302,6 @@ public class Main extends Application{
             botonCableAzul1.setEffect(null);
         });
     }
-
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
@@ -318,7 +324,6 @@ public class Main extends Application{
             botonCableRojo2.setEffect(null);
         });
     }
-
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
@@ -341,7 +346,7 @@ public class Main extends Application{
             botonCableRojo1.setEffect(null);
         });
     }
-
+    
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
