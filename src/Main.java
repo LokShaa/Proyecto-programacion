@@ -241,13 +241,15 @@ public class Main extends Application{
     @FXML
     void botonLed(MouseEvent event) { //Metodo de la imagen del led
         Led led = new Led();
-        led.metodosLed(imagenLed, imagenLed2, paneDibujo);
+        led.brilloLed(imagenLed);
+        led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
     void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
         Switch switch1 = new Switch();
-        switch1.metodosSwitch(imagenSwitch, paneDibujo);
+        switch1.brilloSwitch(imagenSwitch);
+        switch1.switchArrastrable(imagenSwitch, paneDibujo);
     }
     
     @FXML

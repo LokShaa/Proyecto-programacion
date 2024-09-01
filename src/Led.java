@@ -3,7 +3,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public class Led {
-    public void metodosLed(ImageView imagenLed, ImageView imagenLed2, Pane paneDibujo){
+    public void brilloLed(ImageView imagenLed){
         imagenLed.setOnMouseEntered(enteredEvent -> { //Brillo para el led
             Glow glowLed = new Glow(1);
             imagenLed.setEffect(glowLed);
@@ -12,7 +12,9 @@ public class Led {
         imagenLed.setOnMouseExited(exitEvent -> { //Se quita el brillo del led
             imagenLed.setEffect(null);
         });
+    }
 
+    public void ledArrastrable(ImageView imagenLed, ImageView imagenLed2, Pane paneDibujo){
         imagenLed.setOnMouseClicked(clickedEvent -> { // Crear imagen arrastrable
             ImageView nuevoLed = new ImageView(imagenLed2.getImage());
             nuevoLed.setX(200); // Posición inicial X
