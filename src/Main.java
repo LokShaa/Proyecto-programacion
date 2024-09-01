@@ -104,17 +104,11 @@ public class Main extends Application{
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
 
-        //matricesCables.add(matrizPaneCablesSuperiores);
-        //matricesCables.add(matrizPaneCablesInferiores);
         matricesProto = new ArrayList<>();
         // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
         matricesProto.add(matrizPane);
         matricesProto.add(matrizPane2);
         matricesProto.add(matrizPane21);
-        //matricesProto.add(matrizPaneCableInferiorAzul);
-        //matricesProto.add(matrizPaneCableSuperiorAzul);
-        //matricesProto.add(matrizPaneCableInferiorRojo);
-        //matricesProto.add(matrizPaneCableSuperiorRojo);
     }
 
     @FXML
