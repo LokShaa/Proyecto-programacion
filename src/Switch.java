@@ -3,25 +3,39 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 
-public class Switch {
+
+public class Switch{
+    private Circle selectedCircle = null;
+
+    /* 
     //metodo q crea un circulo con las coordenadas y radio que se le pasan y brilla cuando se pasa el mouse por encima
     public Circle circulosSwitch(int x, int y, int r){
 
         Circle circuloSwitch = new Circle(x,y,r);// Crea un círculo para el switch
         circuloSwitch.setStyle("-fx-fill: black;"); // Color del circulo
-        circuloSwitch.setStyle("-fx-fill: black;"); // Color del circulo
         circuloSwitch.setOnMouseEntered(enteredEvent -> { // Brillo para el switch
             Glow glowSwitch = new Glow(1);
-            circuloSwitch.setStyle("-fx-fill: black;"); // Color del circulo
+            circuloSwitch.setStyle("-fx-fill: yellow;"); // Color del circulo
             circuloSwitch.setEffect(glowSwitch);
         });
         circuloSwitch.setOnMouseExited(exitEvent -> { // Se quita el brillo del switch
             circuloSwitch.setEffect(null);
+            circuloSwitch.setStyle("-fx-fill: black;"); // Color del circulo
         });
         return circuloSwitch;
     }
+    */
+    public Circle circulosSwitch(double x, double y, double radius) {
+        Circle circle = new Circle(x, y, radius);
+        circle.setFill(Color.TRANSPARENT);
+        circle.setStroke(Color.BLACK);
+        circle.setOnMouseClicked(event -> {
+            selectedCircle = circle;
+        });
+        return circle;
+    }
+
 
     public void brilloSwitch(ImageView imagenSwitch){
 
@@ -36,62 +50,9 @@ public class Switch {
 
     }
 
-    public boolean comprobarCirculo (Circle circulo, double startX, double startY, Pane paneSwitch) {
-        double centerX = circulo.getLayoutX() + circulo.getRadius();
-        double centerY = circulo.getLayoutY() + circulo.getRadius();
-        double radius = circulo.getRadius();
-    
-        // Verificar si el clic está dentro del círculo
-        double distance = Math.sqrt(Math.pow(startX - centerX, 2) + Math.pow(startY - centerY, 2));
-        if (distance <= radius) {
-            // Dibujar el cable desde el círculo hasta el paneMatriz
-            Line cable = new Line(centerX, centerY, startX, startY);
-            paneSwitch.getChildren().add(cable);
-            return true; // El clic está dentro del círculo
-        }
-        return false; // El clic no está dentro del círculo
-    }
+    private boolean movido = false; // bandera para que el pane del switch no se vuelva a mover despues de soltar el mouse
 
-    public void dibujarCablesSwitch(boolean comprobarCirculo,Circle circulo, Pane paneSwitch, Runnable onComplete, Cables cableActual, Color colorActual) {
-        circulo.setOnMouseClicked(mouseClickedEvent -> {
-            final Cables[] cableActualEspecial = {cableActual};//solo pq no está en el main es necesario esto
-            double x = mouseClickedEvent.getX();
-            double y = mouseClickedEvent.getY();
-            boolean cableIniciado = false;
-
-            if (cableActual == null) {
-                // Iniciar el dibujo del cable
-                if (comprobarCirculo(circulo,x,y,paneSwitch)) {
-                    cableActualEspecial[0] = new Cables(paneSwitch, colorActual, x, y);
-                    cableActualEspecial[0].iniciarDibujoCable(x, y);
-                    cableIniciado = true;
-                }
-            } else {
-                // Finalizar el dibujo del cable
-                if (comprobarCirculo(circulo,x,y,paneSwitch)) {
-                    cableActualEspecial[0].finalizarDibujoCable(x, y);
-                    cableActualEspecial[0] = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                    //botonCableAzul1.toFront();
-                    //botonCableAzul2.toFront();
-                    //botonCableRojo1.toFront();
-                    //botonCableRojo2.toFront();
-                    onComplete.run();
-                }
-            }
-
-            if (!cableIniciado && cableActual != null) {
-                // Si no se inició el cable y cableActual no es null, reiniciar cableActual
-                cableActualEspecial[0] = null;
-            }
-        });
-    }
-
-    // Método para desactivar los eventos de dibujo
-    private void desactivarDibujoSwitch(Pane paneSwitch) {
-        paneSwitch.setOnMouseClicked(null);
-    }
-
-    public void switchArrastrable(ImageView imagenSwitch, Pane paneDibujo){
+    public void switchArrastrable(ImageView imagenSwitch, Pane paneDibujo, Protoboard matrizCentral){
 
         imagenSwitch.setOnMouseClicked(clickedEvent -> { // Crear pane/imagen arrastrable
             Pane nuevoPaneSwitch = new Pane();
@@ -111,12 +72,12 @@ public class Switch {
             nuevoSwitch.setFitHeight(94); // Alto
 
             nuevoPaneSwitch.getChildren().add(nuevoSwitch); //Agregar la imagen del Switch a nuevoPaneSwitch
-
             Circle circuloSwitchIzq1 = circulosSwitch(8, 5, 5);// Crea el círculo izquierdo superior del switch
             Circle circuloSwitchDer1 = circulosSwitch(67, 5, 5);// Crea el círculo derecho superior del switch
             Circle circuloSwitchIzq2 = circulosSwitch(8, 90, 5);// Crea el círculo izquierdo inferior del switch
             Circle circuloSwitchDer2 = circulosSwitch(67, 90, 5);// Crea el círculo derecho inferior del switch
             nuevoPaneSwitch.getChildren().addAll(circuloSwitchIzq1, circuloSwitchDer1, circuloSwitchIzq2, circuloSwitchDer2); // Agrega los panes de los circulos del switch al Pane principal
+
 
             // Hace el pane del switch arrastrable
             nuevoPaneSwitch.setOnMousePressed(pressEvent -> {
@@ -124,13 +85,31 @@ public class Switch {
             });
 
             nuevoSwitch.setOnMouseDragged(dragEvent -> {
-                double[] data = (double[]) nuevoPaneSwitch.getUserData();
-                double deltaX = dragEvent.getSceneX() - data[0];
-                double deltaY = dragEvent.getSceneY() - data[1];
-                nuevoPaneSwitch.setLayoutX(data[2] + deltaX);
-                nuevoPaneSwitch.setLayoutY(data[3] + deltaY);
-                
+                if(!movido){
+                    double[] data = (double[]) nuevoPaneSwitch.getUserData();
+                    double deltaX = dragEvent.getSceneX() - data[0];
+                    double deltaY = dragEvent.getSceneY() - data[1];
+                    nuevoPaneSwitch.setLayoutX(data[2] + deltaX);
+                    nuevoPaneSwitch.setLayoutY(data[3] + deltaY);
+                }
             });
+
+            nuevoPaneSwitch.setOnMouseReleased(releaseEvent -> {
+                if (!movido) {
+                    movido = true; // Marcar que el pane ha sido movido después de soltar el mouse
+                }
+            });
+        
         });
+
+
     };
+    public Circle getSelectedCircle() {
+        return selectedCircle;
+    }
+
+    public void setSelectedCircle(Circle selectedCircle) {
+        this.selectedCircle = selectedCircle;
+    }
+
 }

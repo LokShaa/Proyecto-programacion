@@ -1,7 +1,8 @@
 import javafx.scene.layout.Pane;
 
 public class Protoboard{
-    //Declara matrix como atributo de la clase
+
+    //Declara matriz como atributo de la clase
     private Pane[][] matriz;
 
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {

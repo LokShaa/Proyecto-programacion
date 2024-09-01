@@ -15,6 +15,9 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
 
+///////////////
+import javafx.scene.shape.Line;
+
 public class Main extends Application{
     @FXML
     private ImageView bateriaCompleta;
@@ -87,6 +90,10 @@ public class Main extends Application{
     private List<Pane> matricesProto;
     private List<Pane> matricesCables;
 
+    ///////////////
+    private Switch switch1 = new Switch();
+    //private Pane [][] matrizCentralProtoboard;
+
     @FXML
     void initialize(){
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
@@ -105,6 +112,24 @@ public class Main extends Application{
         matricesProto.add(matrizPane);
         matricesProto.add(matrizPane2);
         matricesProto.add(matrizPane21);
+
+        /////////////////
+                // Agregar eventos de clic a las celdas de matrizCentralProtoboard
+                Pane[][] matriz = matrizCentralProtoboard.getMatriz();
+                for (int i = 0; i < matriz.length; i++) {
+                    for (int j = 0; j < matriz[i].length; j++) {
+                        Pane cell = matriz[i][j];
+                        cell.setOnMouseClicked(event -> {
+                            Circle selectedCircle = switch1.getSelectedCircle();
+                            if (selectedCircle != null) {
+                                drawCable(selectedCircle, cell);
+                                switch1.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
+                            }
+                        });
+                    }
+                }
+
+
     }
 
     @FXML
@@ -227,6 +252,29 @@ public class Main extends Application{
             });
         }
     }
+
+    // Método para configurar eventos de clic en los círculos del switch
+private void configurarEventosDeClicEnCirculos(Circle... circulos) {
+    for (Circle circulo : circulos) {
+        circulo.setOnMouseClicked(mouseClickedEvent -> {
+            double xEscena = mouseClickedEvent.getSceneX();
+            double yEscena = mouseClickedEvent.getSceneY();
+            Pane matrizActual = (Pane) circulo.getParent();
+            double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+            double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+            if (cableActual == null) {
+                cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
+                cableActual.iniciarDibujoCable(xLocal, yLocal);
+            } else {
+                if (cableActual.getPane() != matrizActual) {
+                    cableActual.actualizarPane(matrizActual);
+                }
+                cableActual.finalizarDibujoCable(xLocal, yLocal);
+                cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+            }
+        });
+    }
+}
     
     // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
     private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
@@ -247,9 +295,45 @@ public class Main extends Application{
 
     @FXML
     void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+        /* 
+        cableActual = null;
+        colorActual = Color.BLACK; // Asume un color por defecto
+
         Switch switch1 = new Switch();
         switch1.brilloSwitch(imagenSwitch);
-        switch1.switchArrastrable(imagenSwitch, paneDibujo);
+        switch1.switchArrastrable(imagenSwitch, paneDibujo, matrizCentralProtoboard);
+        
+        Circle circuloSwitchIzq1 = switch1.circulosSwitch(8, 5, 5);
+        Circle circuloSwitchDer1 = switch1.circulosSwitch(67, 5, 5);
+        Circle circuloSwitchIzq2 = switch1.circulosSwitch(8, 90, 5);
+        Circle circuloSwitchDer2 = switch1.circulosSwitch(67, 90, 5);
+        //switch1.switchArrastrable.nuevoPaneSwitch.getChildren().addAll(circuloSwitchIzq1, circuloSwitchDer1, circuloSwitchIzq2, circuloSwitchDer2); // Agrega los panes de los circulos del switch al Pane principal
+        // Configurar eventos de clic en los círculos del switch
+        configurarEventosDeClicEnCirculos(circuloSwitchIzq1, circuloSwitchDer1, circuloSwitchIzq2, circuloSwitchDer2);
+        */
+        switch1.switchArrastrable(imagenSwitch, paneDibujo, matrizCentralProtoboard);
+    }
+
+    private void drawCable(Circle circle, Pane cell) {
+        double startX = circle.getParent().getLayoutX() + circle.getCenterX();
+        double startY = circle.getParent().getLayoutY() + circle.getCenterY();
+        double endX = cell.getParent().getLayoutX() + cell.getLayoutX() + cell.getWidth() / 2;
+        double endY = cell.getParent().getLayoutY() + cell.getLayoutY() + cell.getHeight() / 2;
+
+        double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+        if (distance <= 60) {
+            Line cable = new Line();
+            cable.setStartX(startX);
+            cable.setStartY(startY);
+            cable.setEndX(endX);
+            cable.setEndY(endY);
+            cable.setStroke(Color.YELLOW);
+            cable.setStrokeWidth(5);
+            paneDibujo.getChildren().add(cable);
+        } else {
+            System.out.println("La distancia es mayor a 100 píxeles. No se dibuja el cable.");
+        }
     }
     
     @FXML
