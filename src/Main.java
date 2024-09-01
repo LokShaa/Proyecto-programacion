@@ -113,8 +113,7 @@ public class Main extends Application{
         matricesProto.add(matrizPane2);
         matricesProto.add(matrizPane21);
 
-        /////////////////
-        // Agregar eventos de clic a las celdas de matrizCentralProtoboard
+        // Agregar eventos de clic a las celdas de matrizCentralProtoboard para dibujar cables desde el switch
         Pane[][] matriz = matrizCentralProtoboard.getMatriz();
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
@@ -253,6 +252,35 @@ public class Main extends Application{
         }
     }
 
+    private void dibujarCableSwitch(Circle circle, Pane cell) {
+
+        // Verificar si el cable ya fue dibujado desde este círculo
+        if (switch1.isCableDibujado(circle)) {
+            return;
+        }
+
+        double startX = circle.getParent().getLayoutX() + circle.getCenterX();
+        double startY = circle.getParent().getLayoutY() + circle.getCenterY();
+        double endX = cell.getParent().getLayoutX() + cell.getLayoutX() + cell.getWidth() / 2;
+        double endY = cell.getParent().getLayoutY() + cell.getLayoutY() + cell.getHeight() / 2;
+
+        double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+
+        if (distance <= 60) {
+            Line cable = new Line();
+            cable.setStartX(startX);
+            cable.setStartY(startY);
+            cable.setEndX(endX);
+            cable.setEndY(endY);
+            cable.setStroke(Color.YELLOW);
+            cable.setStrokeWidth(5);
+            paneDibujo.getChildren().add(cable);
+            switch1.setCableDibujado(circle, true); // Marcar que el cable ha sido dibujado desde este círculo
+        } else {
+            System.out.println("La distancia es mayor a 60 píxeles. No se dibuja el cable.");
+        }
+    }
+
     
     // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
     private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
@@ -273,30 +301,10 @@ public class Main extends Application{
 
     @FXML
     void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
-        switch1.switchArrastrable(imagenSwitch, paneDibujo, matrizCentralProtoboard);
+        switch1.switchArrastrable(imagenSwitch, paneDibujo);
     }
 
-    private void dibujarCableSwitch(Circle circle, Pane cell) {
-        double startX = circle.getParent().getLayoutX() + circle.getCenterX();
-        double startY = circle.getParent().getLayoutY() + circle.getCenterY();
-        double endX = cell.getParent().getLayoutX() + cell.getLayoutX() + cell.getWidth() / 2;
-        double endY = cell.getParent().getLayoutY() + cell.getLayoutY() + cell.getHeight() / 2;
 
-        double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-
-        if (distance <= 60) {
-            Line cable = new Line();
-            cable.setStartX(startX);
-            cable.setStartY(startY);
-            cable.setEndX(endX);
-            cable.setEndY(endY);
-            cable.setStroke(Color.YELLOW);
-            cable.setStrokeWidth(5);
-            paneDibujo.getChildren().add(cable);
-        } else {
-            System.out.println("La distancia es mayor a 60 píxeles. No se dibuja el cable.");
-        }
-    }
     
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior

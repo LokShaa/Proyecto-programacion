@@ -7,6 +7,10 @@ import javafx.scene.shape.Circle;
 
 public class Switch{
     private Circle selectedCircle = null;
+    private boolean cableDibujadoIzq1 = false; // bandera para saber si el cable izquierdo 1 ya fue dibujado
+    private boolean cableDibujadoDer1 = false; // bandera para saber si el cable derecho 1 ya fue dibujado
+    private boolean cableDibujadoIzq2 = false; // bandera para saber si el cable izquierdo 2 ya fue dibujado
+    private boolean cableDibujadoDer2 = false; // bandera para saber si el cable derecho 2 ya fue dibujado
 
     public Circle circulosSwitch(double x, double y, double radius) {
         Circle circle = new Circle(x, y, radius);
@@ -36,9 +40,17 @@ public class Switch{
 
     private boolean movido = false; // bandera para que el pane del switch no se vuelva a mover despues de soltar el mouse
 
-    public void switchArrastrable(ImageView imagenSwitch, Pane paneDibujo, Protoboard matrizCentral){
+
+
+    public void switchArrastrable(ImageView imagenSwitch, Pane paneDibujo){
 
         imagenSwitch.setOnMouseClicked(clickedEvent -> { // Crear pane/imagen arrastrable
+            movido = false; // Reiniciar la bandera para que el pane del switch se pueda mover nuevamente
+            cableDibujadoDer1 = false; // Reiniciar la bandera para que el cable derecho 1 se pueda dibujar nuevamente
+            cableDibujadoDer2 = false; // Reiniciar la bandera para que el cable derecho 2 se pueda dibujar nuevamente
+            cableDibujadoIzq1 = false; // Reiniciar la bandera para que el cable izquierdo 1 se pueda dibujar nuevamente
+            cableDibujadoIzq2 = false; // Reiniciar la bandera para que el cable izquierdo 2 se pueda dibujar nuevamente
+            
             Pane nuevoPaneSwitch = new Pane();
             nuevoPaneSwitch.setPrefSize(75, 95); // Tamaño del pane switch
             nuevoPaneSwitch.setStyle("-fx-background-color: transparent;"); // Color transparente del pane
@@ -103,12 +115,39 @@ public class Switch{
 
 
     };
+
+    // Getters y Setters para los circulos generados
     public Circle getSelectedCircle() {
         return selectedCircle;
     }
 
     public void setSelectedCircle(Circle selectedCircle) {
         this.selectedCircle = selectedCircle;
+    }
+
+    public boolean isCableDibujado(Circle circle) {
+        if (circle.getCenterX() == 8 && circle.getCenterY() == 5) {
+            return cableDibujadoIzq1;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 5) {
+            return cableDibujadoDer1;
+        } else if (circle.getCenterX() == 8 && circle.getCenterY() == 90) {
+            return cableDibujadoIzq2;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 90) {
+            return cableDibujadoDer2;
+        }
+        return false;
+    }
+
+    public void setCableDibujado(Circle circle, boolean dibujado) {
+        if (circle.getCenterX() == 8 && circle.getCenterY() == 5) {
+            cableDibujadoIzq1 = dibujado;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 5) {
+            cableDibujadoDer1 = dibujado;
+        } else if (circle.getCenterX() == 8 && circle.getCenterY() == 90) {
+            cableDibujadoIzq2 = dibujado;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 90) {
+            cableDibujadoDer2 = dibujado;
+        }
     }
 
 }
