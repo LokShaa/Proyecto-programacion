@@ -118,7 +118,7 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonCableAzul(MouseEvent event) {
+    void botonCableAzul(MouseEvent event){
         imagenCableAzul.setOnMouseEntered(enteredEvent -> {
             Glow glowAzul = new Glow(1);
             imagenCableAzul.setEffect(glowAzul);
@@ -131,7 +131,7 @@ public class Main extends Application{
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
             colorActual = Color.rgb(2, 113, 245);
-            configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
+            configurarEventosDeDibujoCables(matrizPane,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
@@ -155,6 +155,9 @@ public class Main extends Application{
             colorActual = Color.rgb(236,63,39);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                for (Pane matriz : matricesProto) {
+                    desactivarEventosDeDibujo(matriz);
+                }
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
@@ -249,16 +252,17 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonLed(MouseEvent event) { //Metodo de la imagen del led
+    void botonLed(MouseEvent event){ //Metodo de la imagen del led
         Led led = new Led();
         led.metodosLed(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
-    void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+    void botonSwitch(MouseEvent event){ // Metodo de la imagen del switch
         Switch switch1 = new Switch();
         switch1.metodosSwitch(imagenSwitch, paneDibujo);
     }
+    
     
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
@@ -272,6 +276,7 @@ public class Main extends Application{
                 desactivarEventosDeDibujo(matrizPaneCableInferiorAzul); // Desactivar también en la matriz inicial
             });
         });
+            
 
         botonCableAzul2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul inferior
             Glow glowSwitch = new Glow(1);
@@ -282,7 +287,7 @@ public class Main extends Application{
             botonCableAzul2.setEffect(null);
         });
     }
-
+    
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
@@ -305,7 +310,7 @@ public class Main extends Application{
             botonCableAzul1.setEffect(null);
         });
     }
-
+   
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
@@ -328,7 +333,7 @@ public class Main extends Application{
             botonCableRojo2.setEffect(null);
         });
     }
-
+   
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
@@ -351,7 +356,7 @@ public class Main extends Application{
             botonCableRojo1.setEffect(null);
         });
     }
-
+    
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
