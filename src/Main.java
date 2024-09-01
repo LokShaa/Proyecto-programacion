@@ -127,7 +127,7 @@ public class Main extends Application{
     
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
-            colorActual = Color.RED;
+            colorActual = Color.BLUE;
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
@@ -149,7 +149,7 @@ public class Main extends Application{
         });
 
         imagenCableRojo.setOnMouseClicked(clickedEvent ->{
-            colorActual = Color.rgb(236,63,39);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            colorActual = Color.RED;//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {

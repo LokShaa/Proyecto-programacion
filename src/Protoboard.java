@@ -16,7 +16,7 @@ public class Protoboard{
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
 
-                // Calcular la posición de la celda
+                //Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
                 
@@ -29,10 +29,6 @@ public class Protoboard{
                 
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
-                
-                final int fila = i; 
-                final int columna = j;
-                cell.setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna));
             
             }
         }
@@ -51,11 +47,23 @@ public class Protoboard{
                 }
             }
         }
+        configurarManejadoresDeEventos();
     }
     
+    //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
+    private void configurarManejadoresDeEventos() {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                final int fila = i;
+                final int columna = j;
+                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna));
+            }
+        }
+        imprimirMatrizEnteros();
+    }
     //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
     public void manejarClickMatrizCentral(int fila, int columna) {
-        if (fila >=0 && fila <= 5){
+        if (fila >=0 && fila < 5){
             //Cambiar la columna completa (1-5) a 1 y a amarillo
             for (int i = 0; i < 5; i++) {
                 matrizEnteros[i][columna] = 1;
@@ -200,7 +208,20 @@ public class Protoboard{
         }
         System.out.println("------------------------------------------------------");
     }
-
+    
+    public void actualizarMatriz(int valor) {
+        for (int i = 0; i < matrizEnteros.length; i++) {
+            for (int j = 0; j < matrizEnteros[i].length; j++) {
+                if (matrizEnteros[i][j] == 0) { // Solo actualizar celdas que aún no han sido cambiadas
+                    matrizEnteros[i][j] = valor;
+                    String color = valor == 1 ? "red" : "blue";
+                    matriz[i][j].setStyle("-fx-border-color: black; -fx-background-color: " + color + ";");
+                }
+            }
+        }
+        imprimirMatrizEnteros();
+    }
+    
     public Pane[][] getMatriz() {
         return matriz;
     }
