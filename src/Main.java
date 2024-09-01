@@ -115,7 +115,7 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonCableAzul(MouseEvent event) {
+    void botonCableAzul(MouseEvent event){
         imagenCableAzul.setOnMouseEntered(enteredEvent -> {
             Glow glowAzul = new Glow(1);
             imagenCableAzul.setEffect(glowAzul);
@@ -127,7 +127,7 @@ public class Main extends Application{
     
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
-            colorActual = Color.rgb(2, 113, 245);
+            colorActual = Color.RED;
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {

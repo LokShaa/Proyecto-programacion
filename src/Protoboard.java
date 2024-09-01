@@ -32,14 +32,8 @@ public class Protoboard{
                 
                 final int fila = i; 
                 final int columna = j;
-                cell.setOnMouseClicked(event -> {
-                    //CAMBIAMOS LA MATRIZ DE ENTEROS AL VALOR 1
-                    matrizEnteros[fila][columna] = 1;
-                    //CAMBIAMOS LA CELDA A AMARILLO PARA VER SI FUNCIONA EL CLICK 
-                    cell.setStyle("-fx-background-color: yellow;");//CAMBIAR EL COLOR PARA PROBAR EL CLICK
-                    //METODO PARA IMPRIMIR LA MATRIZ EN CONSOLA Y VER QUE SE ACTUALICEN LOS VALORES
-                    imprimirMatrizEnteros();
-                });
+                cell.setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna));
+            
             }
         }
 
@@ -58,6 +52,26 @@ public class Protoboard{
             }
         }
     }
+    
+    //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
+    public void manejarClickMatrizCentral(int fila, int columna) {
+        if (fila >=0 && fila <= 5){
+            //Cambiar la columna completa (1-5) a 1 y a amarillo
+            for (int i = 0; i < 5; i++) {
+                matrizEnteros[i][columna] = 1;
+                matriz[i][columna].setStyle("-fx-border-color: black; -fx-background-color: yellow;");
+            }
+
+        } 
+        if(fila>= 5  && fila<=10){
+            //Cambiar la columna completa (6-10) a 1 y a amarillo
+            for (int i = 5; i < 10; i++) {
+                matrizEnteros[i][columna] = 1;
+                matriz[i][columna].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;");
+            }
+        }
+        imprimirMatrizEnteros();
+    }
 
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
@@ -65,12 +79,12 @@ public class Protoboard{
 
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 0; //inicializar matriz con 0
+                matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 1
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
 
-                // Calcular la posición de la celda
+                //Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
                 
@@ -79,10 +93,10 @@ public class Protoboard{
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
 
-                final int fila = i; //usamos solo la fila ya que en la matriz de 2x30 se cambia solo la fila
+                final int fila = i;//usamos solo la fila ya que en la matriz de 2x30 se cambia solo la fila
 
-                cell.setOnMouseClicked(event -> {
-                    // Cambiar toda la fila en la matriz de enteros a 1
+                cell.setOnMouseClicked(event ->{
+                    //Cambiar toda la fila en la matriz de enteros a 1
                 for (int col = 0; col < columnas; col++) {
                     matrizEnteros[fila][col] = 1;
                     matriz[fila][col].setStyle("-fx-background-color: yellow;");
@@ -120,13 +134,6 @@ public class Protoboard{
                     cell.setLayoutX(x);
                     cell.setLayoutY(y);
                     
-                    /*final int fila = i; // Necesario para usar dentro del lambda
-                    cell.setOnMouseClicked(event -> {
-                        // Cambiar el color de toda la columna
-                        for (int col = 0; col < columnas; col++) {
-                            matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
-                        }
-                    });*/
                 }
             }
         }
@@ -181,14 +188,17 @@ public class Protoboard{
         
     }
    
-    public void imprimirMatrizEnteros() {
-        for (int i = 0; i < matrizEnteros.length; i++) {
+    public void imprimirMatrizEnteros(){
+        for (int i = 0; i < matrizEnteros.length; i++){
+            if(i == 5){
+                System.out.println("------------------------------------------------------");
+            }
             for (int j = 0; j < matrizEnteros[i].length; j++) {
                 System.out.print(matrizEnteros[i][j] + " ");
             }
             System.out.println();
         }
-        System.out.println("---------");
+        System.out.println("------------------------------------------------------");
     }
 
     public Pane[][] getMatriz() {
