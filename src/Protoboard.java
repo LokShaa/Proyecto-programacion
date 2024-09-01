@@ -108,8 +108,6 @@ public class Protoboard{
                 matrizPane.getChildren().add(cell);
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-                matrizPane.getChildren().add(cell);
-                matriz[i][j] = cell;
 
                 /*final int fila = i; // Necesario para usar dentro del lambda
                 cell.setOnMouseClicked(event -> {
@@ -120,6 +118,7 @@ public class Protoboard{
                 });*/
             }
         }
+
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }

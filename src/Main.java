@@ -98,7 +98,6 @@ public class Main extends Application{
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
-        //matrizCablesSuperiores.inicializarMatrizCablesBateria(1,2, 15, 17, 31, 20, matrizPaneCablesSuperiores);
         matrizCableInferiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableInferiorAzul);
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
@@ -260,7 +259,6 @@ public class Main extends Application{
         Switch switch1 = new Switch();
         switch1.metodosSwitch(imagenSwitch, paneDibujo);
     }
-    
     
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
