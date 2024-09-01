@@ -3,7 +3,9 @@ import javafx.scene.layout.Pane;
 public class Protoboard{
     //Declara matrix como atributo de la clase
     private Pane[][] matriz;
-
+    public boolean[][] estado;
+    public int[][] conectividad;
+    
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         for (int i = 0; i < filas; i++) {
@@ -20,7 +22,6 @@ public class Protoboard{
                 if (i > 4) {
                     y +=  75; // Añadir espacio adicional
                 }
-
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
                 
