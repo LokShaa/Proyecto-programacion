@@ -145,6 +145,7 @@ public class Protoboard{
     }
 
     public boolean comprobarCuadrado(int fila, int columna, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane,double startX, double startY){
+        
         // Obtener las coordenadas del click
 
         for (int i = 0; i < fila; i++) {

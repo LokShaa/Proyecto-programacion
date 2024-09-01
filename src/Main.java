@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.geometry.Bounds;
 
 public class Main extends Application{
     @FXML
@@ -89,13 +88,6 @@ public class Main extends Application{
     private List<Pane> matricesProto;
     private List<Pane> matricesCables;
 
-    // Método para comprobar si el clic está dentro de los límites de un Pane específico
-private boolean esClickEnPane(Pane pane, double x, double y) {
-    Bounds bounds = pane.getBoundsInParent();
-    return x >= bounds.getMinX() && x <= bounds.getMaxX() && y >= bounds.getMinY() && y <= bounds.getMaxY();
-}
-   
-    
     @FXML
     void initialize(){
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
