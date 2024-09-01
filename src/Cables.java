@@ -4,8 +4,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Cables extends Line {
-    private String tipo; // Atributo para saber si es cable positivo o negativo
-    private Pane pane; // Atributo para saber en que pane se dibujara el cable
+    private String tipo;//Atributo para saber si es cable positivo o negativo
+    private Pane pane; //Atributo para saber en que pane se dibujara el cable
 
     public Cables() {//Constructor de la clase
     }

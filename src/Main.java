@@ -240,16 +240,17 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonLed(MouseEvent event) { //Metodo de la imagen del led
+    void botonLed(MouseEvent event){ //Metodo de la imagen del led
         Led led = new Led();
         led.metodosLed(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
-    void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+    void botonSwitch(MouseEvent event){ // Metodo de la imagen del switch
         Switch switch1 = new Switch();
         switch1.metodosSwitch(imagenSwitch, paneDibujo);
     }
+    
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
@@ -272,6 +273,7 @@ public class Main extends Application{
             botonCableAzul2.setEffect(null);
         });
     }
+    
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
@@ -294,6 +296,7 @@ public class Main extends Application{
             botonCableAzul1.setEffect(null);
         });
     }
+   
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
@@ -316,6 +319,7 @@ public class Main extends Application{
             botonCableRojo2.setEffect(null);
         });
     }
+   
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
