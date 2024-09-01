@@ -8,30 +8,14 @@ import javafx.scene.shape.Circle;
 public class Switch{
     private Circle selectedCircle = null;
 
-    /* 
-    //metodo q crea un circulo con las coordenadas y radio que se le pasan y brilla cuando se pasa el mouse por encima
-    public Circle circulosSwitch(int x, int y, int r){
-
-        Circle circuloSwitch = new Circle(x,y,r);// Crea un círculo para el switch
-        circuloSwitch.setStyle("-fx-fill: black;"); // Color del circulo
-        circuloSwitch.setOnMouseEntered(enteredEvent -> { // Brillo para el switch
-            Glow glowSwitch = new Glow(1);
-            circuloSwitch.setStyle("-fx-fill: yellow;"); // Color del circulo
-            circuloSwitch.setEffect(glowSwitch);
-        });
-        circuloSwitch.setOnMouseExited(exitEvent -> { // Se quita el brillo del switch
-            circuloSwitch.setEffect(null);
-            circuloSwitch.setStyle("-fx-fill: black;"); // Color del circulo
-        });
-        return circuloSwitch;
-    }
-    */
     public Circle circulosSwitch(double x, double y, double radius) {
         Circle circle = new Circle(x, y, radius);
         circle.setFill(Color.TRANSPARENT);
         circle.setStroke(Color.BLACK);
         circle.setOnMouseClicked(event -> {
             selectedCircle = circle;
+            Glow glow = new Glow(1);
+            circle.setEffect(glow);
         });
         return circle;
     }
@@ -77,6 +61,21 @@ public class Switch{
             Circle circuloSwitchIzq2 = circulosSwitch(8, 90, 5);// Crea el círculo izquierdo inferior del switch
             Circle circuloSwitchDer2 = circulosSwitch(67, 90, 5);// Crea el círculo derecho inferior del switch
             nuevoPaneSwitch.getChildren().addAll(circuloSwitchIzq1, circuloSwitchDer1, circuloSwitchIzq2, circuloSwitchDer2); // Agrega los panes de los circulos del switch al Pane principal
+
+            //Circulo grande central para que al hacer click en el cambie el color inficando que esta activo o inactivo
+            Circle circuloSwitchCentral = new Circle(38, 47, 20);
+            circuloSwitchCentral.setFill(Color.RED);
+            circuloSwitchCentral.setStroke(Color.BLACK);
+            
+            circuloSwitchCentral.setOnMouseClicked(event -> {
+                if (circuloSwitchCentral.getFill() == Color.RED) {
+                    circuloSwitchCentral.setFill(Color.GREEN);
+                } else {
+                    circuloSwitchCentral.setFill(Color.RED);
+                }
+            });
+            nuevoPaneSwitch.getChildren().add(circuloSwitchCentral);
+
 
 
             // Hace el pane del switch arrastrable
