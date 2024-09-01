@@ -90,9 +90,10 @@ public class Main extends Application{
     private List<Pane> matricesProto;
     private List<Pane> matricesCables;
 
-    ///////////////
+
+    //Variables que se ocupan para la creacion de los objetos arrastrables
     private Switch switch1 = new Switch();
-    //private Pane [][] matrizCentralProtoboard;
+    private Led led = new Led();
 
     @FXML
     void initialize(){
@@ -120,9 +121,14 @@ public class Main extends Application{
                 Pane cell = matriz[i][j];
                 cell.setOnMouseClicked(event -> {
                     Circle selectedCircle = switch1.getSelectedCircle();
+                    Circle selectedCircle2 = led.getSelectedCircle();
                     if (selectedCircle != null) {
-                        dibujarCableSwitch(selectedCircle, cell);
+                        dibujarCableSwitch_Led(selectedCircle, cell);
                         switch1.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
+                    }
+                    if(selectedCircle2 != null){
+                        dibujarCableSwitch_Led(selectedCircle2, cell);
+                        led.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
                     }
                 });
             }
@@ -252,32 +258,39 @@ public class Main extends Application{
         }
     }
 
-    private void dibujarCableSwitch(Circle circle, Pane cell) {
-
+    // Método para dibujar un cable desde un círculo de un switch a una celda de la matriz central de la protoboard
+    private void dibujarCableSwitch_Led(Circle circle, Pane cell) {
         // Verificar si el cable ya fue dibujado desde este círculo
         if (switch1.isCableDibujado(circle)) {
             return;
         }
+        if (led.isCableDibujado(circle)) {
+            return;
+        }
 
+        // Calcular las coordenadas de inicio y fin del cable
         double startX = circle.getParent().getLayoutX() + circle.getCenterX();
         double startY = circle.getParent().getLayoutY() + circle.getCenterY();
         double endX = cell.getParent().getLayoutX() + cell.getLayoutX() + cell.getWidth() / 2;
         double endY = cell.getParent().getLayoutY() + cell.getLayoutY() + cell.getHeight() / 2;
 
+        // Calcular la distancia entre los puntos de inicio y fin
         double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
 
-        if (distance <= 60) {
+        // Dibujar el cable si la distancia es menor o igual a 60 píxeles
+        if (distance <= 70) {
             Line cable = new Line();
             cable.setStartX(startX);
             cable.setStartY(startY);
             cable.setEndX(endX);
             cable.setEndY(endY);
-            cable.setStroke(Color.YELLOW);
+            cable.setStroke(Color.rgb(178, 180, 181));
             cable.setStrokeWidth(5);
             paneDibujo.getChildren().add(cable);
             switch1.setCableDibujado(circle, true); // Marcar que el cable ha sido dibujado desde este círculo
+            led.setCableDibujado(circle, true); // Marcar que el cable ha sido dibujado desde este círculo|
         } else {
-            System.out.println("La distancia es mayor a 60 píxeles. No se dibuja el cable.");
+            System.out.println("La distancia es mayor a 70 píxeles. No se dibuja el cable.");
         }
     }
 
@@ -294,13 +307,15 @@ public class Main extends Application{
 
     @FXML
     void botonLed(MouseEvent event) { //Metodo de la imagen del led
-        Led led = new Led();
+        //Led led = new Led();
         led.brilloLed(imagenLed);
         led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
     void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+        //Switch switch1 = new Switch();
+        switch1.brilloSwitch(imagenSwitch);
         switch1.switchArrastrable(imagenSwitch, paneDibujo);
     }
 
