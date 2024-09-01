@@ -131,7 +131,7 @@ public class Main extends Application{
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
             colorActual = Color.rgb(2, 113, 245);
-            configurarEventosDeDibujoCables(matrizPane,() -> {
+            configurarEventosDeDibujoCablesProtoboard(matricesProto,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
@@ -158,9 +158,7 @@ public class Main extends Application{
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
+
             });
         });
     }

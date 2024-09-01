@@ -123,7 +123,65 @@ public class Protoboard{
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
+    public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
+        matriz = new Pane[filas][columnas];
+        
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Pane cell = new Pane();
+                    cell.setPrefSize(cellAncho, cellAlt);
+                    cell.setStyle("-fx-border-color: red; -fx-border-width: 1; -fx-background-color: red;");
+            
+                    // Calcular la posición de la celda
+                    double x = j * (cellAncho + padding1);
+                    double y = i * (cellAlt + padding2);
+                    
+                    matriz[i][j] = cell;
+                    matrizPane.getChildren().add(cell);
+                    cell.setLayoutX(x);
+                    cell.setLayoutY(y);
 
+                    /*final int fila = i; // Necesario para usar dentro del lambda
+                    cell.setOnMouseClicked(event -> {
+                        // Cambiar el color de toda la columna
+                        for (int col = 0; col < columnas; col++) {
+                            matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
+                        }
+                    });*/
+                }
+            }
+        // Ajustar el tamaño del pane matrizPane
+        matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
+    }
+    public void inicializarMatrizCablesBateriaAzul(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
+        matriz = new Pane[filas][columnas];
+        
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Pane cell = new Pane();
+                    cell.setPrefSize(cellAncho, cellAlt);
+                    cell.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-background-color: blue;");
+                    // Calcular la posición de la celda
+                    double x = j * (cellAncho + padding1);
+                    double y = i * (cellAlt + padding2);
+                    
+                    matriz[i][j] = cell;
+                    matrizPane.getChildren().add(cell);
+                    cell.setLayoutX(x);
+                    cell.setLayoutY(y);
+
+                    /*final int fila = i; // Necesario para usar dentro del lambda
+                    cell.setOnMouseClicked(event -> {
+                        // Cambiar el color de toda la columna
+                        for (int col = 0; col < columnas; col++) {
+                            matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
+                        }
+                    });*/
+                }
+            }
+        // Ajustar el tamaño del pane matrizPane
+        matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
+    }
     public boolean comprobarCuadrado(int fila, int columna, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane,double startX, double startY){
 
         // Obtener las coordenadas del click

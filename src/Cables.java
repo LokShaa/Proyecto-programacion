@@ -70,6 +70,7 @@ public class Cables extends Line {
         
         pane.toFront(); //Traer el cable al frente
     }
+
     //metodo para asignar el tipo de cable
     public void setTipo(Color color) {
         if (color.equals(Color.RED)) {
@@ -78,6 +79,7 @@ public class Cables extends Line {
             this.tipo = "Negativo";
         }
     }
+    
     public Pane getPane(){
         return pane;
     }
