@@ -3,11 +3,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
-public class Cables extends Line {
+public class Cables extends Line{
     private String tipo;//Atributo para saber si es cable positivo o negativo
     private Pane pane; //Atributo para saber en que pane se dibujara el cable
 
-    public Cables() {//Constructor de la clase
+    public Cables(){//Constructor de la clase
     }
 
     public Cables(Pane pane, Color color, double startX, double startY) { // Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
@@ -20,8 +20,8 @@ public class Cables extends Line {
         this.setStartY(startY);
         this.setEndX(startX); //Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea
         this.setEndY(startY);
-        this.setMouseTransparent(true);
-        pane.getChildren().add(this); // Añadimos el cable al pane
+        this.setMouseTransparent(false);
+        pane.getChildren().add(this); //Añadimos el cable al pane
 
         // Agregar EventHandler para detectar clic derecho
         this.setOnMouseClicked(event -> {

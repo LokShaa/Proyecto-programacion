@@ -4,11 +4,12 @@ public class Protoboard{
     //Declara matrix como atributo de la clase
     private Pane[][] matriz;
     private int [][] matrizEnteros;
+    
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
-        
+
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
                 matrizEnteros[i][j] = 0; //inicializar matriz con 0
@@ -30,14 +31,6 @@ public class Protoboard{
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
 
-                // Añadir evento a cada celda
-                /*final int col = j; // Necesario para usar dentro del lambda
-                cell.setOnMouseClicked(event -> {
-                    // Cambiar el color de toda la columna
-                    for (int row = 0; row < filas; row++) {
-                        matriz[row][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
-                    }
-                });*/
             }
         }
 
@@ -55,47 +48,70 @@ public class Protoboard{
                 }
             }
         }
-        configurarManejadoresDeEventos();
     }
-    
+
     //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
-    private void configurarManejadoresDeEventos() {
+    public void configurarManejadoresDeEventos(int valor){
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
                 final int columna = j;
-                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna));
+                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna, valor));
             }
         }
-        imprimirMatrizEnteros();
     }
     //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
-    public void manejarClickMatrizCentral(int fila, int columna) {
+    public void manejarClickMatrizCentral(int fila, int columna,int energia){
         if (fila >=0 && fila < 5){
             //Cambiar la columna completa (1-5) a 1 y a amarillo
             for (int i = 0; i < 5; i++) {
-                matrizEnteros[i][columna] = 1;
-                matriz[i][columna].setStyle("-fx-border-color: black; -fx-background-color: yellow;");
+                matrizEnteros[i][columna] = energia;
+                matriz[i][columna].setStyle("-fx-background-color: yellow;");
             }
 
         } 
         if(fila>= 5  && fila<=10){
             //Cambiar la columna completa (6-10) a 1 y a amarillo
             for (int i = 5; i < 10; i++) {
-                matrizEnteros[i][columna] = 1;
-                matriz[i][columna].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;");
+                matrizEnteros[i][columna] = energia;
+                matriz[i][columna].setStyle("-fx-background-color: yellow;");
             }
         }
         imprimirMatrizEnteros();
     }
 
+    public void manejarClickMatrizSupInf(int fila, int columna, int energia){
+        for (int col = 0; col < 30; col++) {
+            if(energia == 1){
+                matrizEnteros[fila][col] = 1; 
+                matriz[fila][col].setStyle("-fx-background-color: red ;");
+            }
+            if(energia == -1){
+                matrizEnteros[fila][col] = -1;
+                matriz[fila][col].setStyle("-fx-background-color: blue ;");
+            }
+        }
+        imprimirMatrizEnteros();
+    }
+
+    //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
+    public void configurarManejadoresDeEventosSupInf(int energia){
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++){
+                final int fila = i;
+                final int columna = j;
+                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizSupInf(fila, columna, energia));
+            }
+        }
+    }
+    
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
 
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 1
+                matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -108,20 +124,13 @@ public class Protoboard{
                 matrizPane.getChildren().add(cell);
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-
-                /*final int fila = i; // Necesario para usar dentro del lambda
-                cell.setOnMouseClicked(event -> {
-                    // Cambiar el color de toda la columna
-                    for (int col = 0; col < columnas; col++) {
-                        matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
-                    }
-                });*/
             }
         }
 
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
+   
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
@@ -152,6 +161,7 @@ public class Protoboard{
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
+    
     public void inicializarMatrizCablesBateriaAzul(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
@@ -181,6 +191,7 @@ public class Protoboard{
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
+    
     public boolean comprobarCuadrado(int fila, int columna, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane,double startX, double startY){
 
         // Obtener las coordenadas del click
