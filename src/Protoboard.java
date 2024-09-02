@@ -7,7 +7,7 @@ public class Protoboard{
     private int [][] matrizEnteros;
     
     //metodo para iniciar la matriz central de panes
-
+    //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
@@ -22,14 +22,14 @@ public class Protoboard{
                 //Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
-                
+
                 if (i > 4) {
                     y +=  75; // Añadir espacio adicional
                 }
 
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-                
+
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
 
@@ -62,6 +62,7 @@ public class Protoboard{
             }
         }
     }
+
     //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
     public void manejarClickMatrizCentral(int fila, int columna,int energia){
         if (fila >=0 && fila < 5){

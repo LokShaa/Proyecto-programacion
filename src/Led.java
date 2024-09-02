@@ -88,29 +88,29 @@ public class Led {
         
         });
     }
-        // Getters y Setters para los circulos generados
-        public Circle getSelectedCircle() {
-            return selectedCircle;
+    // Getters y Setters para los circulos generados
+    public Circle getSelectedCircle() {
+        return selectedCircle;
+    }
+
+    public void setSelectedCircle(Circle selectedCircle) {
+        this.selectedCircle = selectedCircle;
+    }
+
+    public boolean isCableDibujado(Circle circle) {
+        if (circle.getCenterX() == 10 && circle.getCenterY() == 42) {
+            return cableDibujadoIzq;
+        } else if (circle.getCenterX() == 20 && circle.getCenterY() == 42) {
+            return cableDibujadoDer;
         }
-    
-        public void setSelectedCircle(Circle selectedCircle) {
-            this.selectedCircle = selectedCircle;
+        return false;
+    }
+
+    public void setCableDibujado(Circle circle, boolean dibujado) {
+        if (circle.getCenterX() == 10 && circle.getCenterY() == 42) {
+            cableDibujadoIzq = dibujado;
+        } else if (circle.getCenterX() == 10 && circle.getCenterY() == 42) {
+            cableDibujadoDer = dibujado;
         }
-    
-        public boolean isCableDibujado(Circle circle) {
-            if (circle.getCenterX() == 10 && circle.getCenterY() == 42) {
-                return cableDibujadoIzq;
-            } else if (circle.getCenterX() == 20 && circle.getCenterY() == 42) {
-                return cableDibujadoDer;
-            }
-            return false;
-        }
-    
-        public void setCableDibujado(Circle circle, boolean dibujado) {
-            if (circle.getCenterX() == 10 && circle.getCenterY() == 42) {
-                cableDibujadoIzq = dibujado;
-            } else if (circle.getCenterX() == 10 && circle.getCenterY() == 42) {
-                cableDibujadoDer = dibujado;
-            }
-        }
+    }
 }
