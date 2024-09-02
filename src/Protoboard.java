@@ -1,11 +1,13 @@
 import javafx.scene.layout.Pane;
 
 public class Protoboard{
-    //Declara matrix como atributo de la clase
+
+    //Declara matriz como atributo de la clase
     private Pane[][] matriz;
     private int [][] matrizEnteros;
     
     //metodo para iniciar la matriz central de panes
+
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
@@ -124,12 +126,22 @@ public class Protoboard{
                 matrizPane.getChildren().add(cell);
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
+
+                
+                /*final int fila = i; // Necesario para usar dentro del lambda
+                cell.setOnMouseClicked(event -> {
+                    // Cambiar el color de toda la columna
+                    for (int col = 0; col < columnas; col++) {
+                        matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
+                    }
+                });*/
             }
         }
 
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
+
    
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];

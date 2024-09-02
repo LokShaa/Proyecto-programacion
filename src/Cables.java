@@ -79,7 +79,7 @@ public class Cables extends Line{
             this.tipo = "Negativo";
         }
     }
-    
+
     public Pane getPane(){
         return pane;
     }
