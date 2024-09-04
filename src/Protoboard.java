@@ -30,15 +30,6 @@ public class Protoboard{
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
 
-                if (i > 4) {
-                    y +=  75; // Añadir espacio adicional
-                }
-
-                cell.setLayoutX(x);
-                cell.setLayoutY(y);
-
-                matrizPane.getChildren().add(cell);
-                matriz[i][j] = cell;
             }
         }
 
@@ -261,5 +252,14 @@ public class Protoboard{
     }
     public Pane[][] getMatriz() {
         return matriz;
+    }
+    public void desactivarEventosDeDibujo() {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                matriz[i][j].setOnMouseClicked(null);
+                matriz[i][j].setOnMouseEntered(null);
+                matriz[i][j].setOnMouseExited(null);
+            }
+        }
     }
 }
