@@ -14,8 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
-
-///////////////
 import javafx.scene.shape.Line;
 
 public class Main extends Application{
@@ -25,6 +23,22 @@ public class Main extends Application{
     private ImageView bateriaCortada;
     @FXML
     private Button botonBateria;
+    @FXML
+    private Pane botonCableAzul1;
+    @FXML
+    private Pane botonCableAzul2;
+    @FXML
+    private Pane botonCableRojo1;
+    @FXML
+    private Pane botonCableRojo2;
+    @FXML
+    private ImageView cableAzulBateriaProto1;
+    @FXML
+    private ImageView cableAzulBateriaProto2;
+    @FXML
+    private ImageView cableRojoBateriaProto1;
+    @FXML
+    private ImageView cableRojoBateriaProto2;
     @FXML
     private ImageView imagenCableAzul;
     @FXML
@@ -40,56 +54,37 @@ public class Main extends Application{
     @FXML
     private ImageView luzVerde;
     @FXML
-    private ImageView portaBaterias;
-    @FXML
-    private Pane paneDibujo;
-    @FXML
-    private Pane botonCableAzul1;
-    @FXML
-    private Pane botonCableAzul2;
-    @FXML
-    private Pane botonCableRojo1;
-    @FXML
-    private Pane botonCableRojo2;
-    @FXML
-    private Circle switchDer1;
-    @FXML
-    private Circle switchDer2;
-    @FXML
-    private Circle switchIzq1;
-    @FXML
-    private Circle switchIzq2;
-    @FXML
-    private ImageView cableAzulBateriaProto1;
-    @FXML
-    private ImageView cableAzulBateriaProto2;
-    @FXML
-    private ImageView cableRojoBateriaProto1;
-    @FXML
-    private ImageView cableRojoBateriaProto2;
-
-    private Cables cableActual;
-    private Color colorActual;
-
-    @FXML
     private Pane matrizPane;
     @FXML
     private Pane matrizPane2;
     @FXML
     private Pane matrizPane21;
     @FXML
-    private Pane matrizPaneCablesInferiores;
+    private Pane matrizPaneCableInferiorAzul;
     @FXML
-    private Pane matrizPaneCablesSuperiores;
+    private Pane matrizPaneCableInferiorRojo;
+    @FXML
+    private Pane matrizPaneCableSuperiorAzul;
+    @FXML
+    private Pane matrizPaneCableSuperiorRojo;
+    @FXML
+    private Pane paneDibujo;
+    @FXML
+    private ImageView portaBaterias;
+
+    private Cables cableActual;
+    private Color colorActual;
 
     Protoboard matrizCentralProtoboard = new Protoboard();
     Protoboard matrizSuperior = new Protoboard();
     Protoboard matrizInferior = new Protoboard();
-    Protoboard matrizCablesSuperiores = new Protoboard();
-    Protoboard matrizCablesInferiores = new Protoboard();
-    private List<Pane> matricesProto;
-    private List<Pane> matricesCables;
+    Protoboard matrizCableSuperiorAzul = new Protoboard();
+    Protoboard matrizCableInferiorAzul = new Protoboard();
+    Protoboard matrizCableSuperiorRojo = new Protoboard();
+    Protoboard matrizCableInferiorRojo = new Protoboard();
 
+
+    private List<Pane> matricesProto;
 
     //Variables que se ocupan para la creacion de los objetos arrastrables
     private Switch switch1 = new Switch();
@@ -100,14 +95,11 @@ public class Main extends Application{
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
-        matrizCablesSuperiores.inicializarMatrizCablesBateria(1,2, 15, 17, 31, 20, matrizPaneCablesSuperiores);
-        matrizCablesInferiores.inicializarMatrizCablesBateria(2,1, 15, 17, 31, 8, matrizPaneCablesInferiores);
-        matrizPaneCablesInferiores.setVisible(false);
-        matrizPaneCablesSuperiores.setVisible(false);
-        
-        matricesCables = new ArrayList<>();
-        matricesCables.add(matrizPaneCablesSuperiores);
-        matricesCables.add(matrizPaneCablesInferiores);
+        matrizCableInferiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableInferiorAzul);
+        matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
+        matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
+        matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
+
         matricesProto = new ArrayList<>();
         // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
         matricesProto.add(matrizPane);
@@ -133,8 +125,6 @@ public class Main extends Application{
                 });
             }
         }
-
-
     }
 
     @FXML
@@ -149,11 +139,11 @@ public class Main extends Application{
             Glow glowAzul = new Glow(1);
             imagenCableAzul.setEffect(glowAzul);
         });
-    
+
         imagenCableAzul.setOnMouseExited(exitEvent -> {
             imagenCableAzul.setEffect(null);
         });
-    
+
         imagenCableAzul.setOnMouseClicked(clickedEvent -> {
             // Configura el color actual para el cable azul
             colorActual = Color.rgb(2, 113, 245);
@@ -163,6 +153,9 @@ public class Main extends Application{
                     desactivarEventosDeDibujo(matriz);
                 }
             });
+
+            //Configura los manejadores de eventos para cambiar los valores de la matriz a -1
+            matrizCentralProtoboard.configurarManejadoresDeEventos(-1);
         });
     }
 
@@ -185,6 +178,7 @@ public class Main extends Application{
                     desactivarEventosDeDibujo(matriz);
                 }
             });
+            matrizCentralProtoboard.configurarManejadoresDeEventos(1);
         });
     }
     
@@ -223,39 +217,53 @@ public class Main extends Application{
         }
     }
     
-    private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matricesC, List<Pane> matricesProtoboard,Runnable onComplete) {
-        for (Pane matriz : matricesC) {
-            matriz.setOnMouseClicked(mouseClickedEvent -> {
-                // Convertir las coordenadas del clic a coordenadas de la escena
+    private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
+        matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
+            // Convertir las coordenadas del clic a coordenadas de la escena
+            double xEscena = mouseClickedEvent.getSceneX();
+            double yEscena = mouseClickedEvent.getSceneY();
+            double xLocal = matrizInicial.sceneToLocal(xEscena, yEscena).getX();
+            double yLocal = matrizInicial.sceneToLocal(xEscena, yEscena).getY();
+
+            if (cableActual == null) {
+                if (comprobarCuadradoEnMatricesBateria(matrizInicial, xLocal, yLocal)) {
+                    cableActual = new Cables(matrizInicial, colorActual, xLocal, yLocal);
+                    cableActual.iniciarDibujoCable(xLocal, yLocal);
+                }
+            }
+        });
+        
+        for (Pane matriz : matrices) {
+            matriz.setOnMouseClicked(mouseClickedEvent ->{
+                //Convertir las coordenadas del clic a coordenadas de la escena
+
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
-                if (cableActual == null) {
-                    for (Pane matrizActual : matricesC) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        //if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
-                            cableActual.iniciarDibujoCable(xLocal, yLocal);
-                            break;
-                        //}
-                    }
-                } else {
-                    for (Pane matrizActual : matricesProtoboard) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            if (cableActual.getPane() != matrizActual) {
-                                cableActual.actualizarPane(matrizActual);
-                            }
-                            cableActual.finalizarDibujoCable(xLocal, yLocal);
-                            cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                            onComplete.run();
-                            break;
+                double xLocal = matriz.sceneToLocal(xEscena, yEscena).getX();
+                double yLocal = matriz.sceneToLocal(xEscena, yEscena).getY();
+            
+                if (cableActual != null) {
+                    if (comprobarCuadradoEnMatrices(matriz, xLocal, yLocal)) {
+                        if (cableActual.getPane() != matriz) {
+                            cableActual.actualizarPane(matriz);
                         }
+                        cableActual.finalizarDibujoCable(xLocal, yLocal);
+                        cableActual = null; //Finalizamos el dibujo del cable haciendo que sea null otra vez
+                        onComplete.run();
                     }
-                }
+                } 
             });
         }
+    }
+
+    // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
+    private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
+        return matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y);
+    }
+
+    private boolean comprobarCuadradoEnMatricesBateria(Pane m, double x, double y) {;
+        return matrizCableInferiorAzul.comprobarCuadrado(1, 1, 10, 10, 0, 0, m, x, y) ;
+
     }
 
     // Método para dibujar un cable desde un círculo de un switch a una celda de la matriz central de la protoboard
@@ -294,12 +302,6 @@ public class Main extends Application{
         }
     }
 
-    
-    // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
-    private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
-        return matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y);
-    }
-
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
         matriz.setOnMouseClicked(null);
@@ -307,30 +309,30 @@ public class Main extends Application{
 
     @FXML
     void botonLed(MouseEvent event) { //Metodo de la imagen del led
-        //Led led = new Led();
+        Led led = new Led();
         led.brilloLed(imagenLed);
         led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
     void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
-        //Switch switch1 = new Switch();
+        Switch switch1 = new Switch();
         switch1.brilloSwitch(imagenSwitch);
         switch1.switchArrastrable(imagenSwitch, paneDibujo);
     }
 
-
-    
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
-        botonCableAzul2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul inferior
-            matrizPaneCablesInferiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
-            colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
+        botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior
+            matrizInferior.configurarManejadoresDeEventosSupInf(-1);
+            matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
+            colorActual = Color.rgb(2, 113, 245); // Le damos el color del cable
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableInferiorAzul, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
+                desactivarEventosDeDibujo(matrizPaneCableInferiorAzul); // Desactivar también en la matriz inicial
             });
         });
 
@@ -343,17 +345,19 @@ public class Main extends Application{
             botonCableAzul2.setEffect(null);
         });
     }
-
+    
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
-            matrizPaneCablesSuperiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
             colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
+            matrizInferior.configurarManejadoresDeEventosSupInf(-1);
+            matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorAzul,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
+                desactivarEventosDeDibujo(matrizPaneCableSuperiorAzul);
             });
         });
 
@@ -366,17 +370,19 @@ public class Main extends Application{
             botonCableAzul1.setEffect(null);
         });
     }
-
+   
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
-            matrizPaneCablesInferiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
+            matrizInferior.configurarManejadoresDeEventosSupInf(1);
+            matrizSuperior.configurarManejadoresDeEventosSupInf(1);
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto,matrizPaneCableInferiorRojo, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
+                desactivarEventosDeDibujo(matrizPaneCableInferiorRojo);
             });
         });
 
@@ -389,17 +395,19 @@ public class Main extends Application{
             botonCableRojo2.setEffect(null);
         });
     }
-
+   
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
-            matrizPaneCablesSuperiores.setVisible(true);//Hacemos visible la matriz de cables inferiores
             colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesCables,matricesProto, () -> {
+            matrizInferior.configurarManejadoresDeEventosSupInf(1);
+            matrizSuperior.configurarManejadoresDeEventosSupInf(1);
+            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorRojo,() -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
+                desactivarEventosDeDibujo(matrizPaneCableSuperiorRojo);
             });
         });
 
@@ -412,7 +420,7 @@ public class Main extends Application{
             botonCableRojo1.setEffect(null);
         });
     }
-
+    
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
