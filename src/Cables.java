@@ -1,15 +1,16 @@
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 public class Cables extends Line{
-    private String tipo;//Atributo para saber si es cable positivo o negativo   
-    private Pane pane;//Atributo para saber en que pane se dibujara el cable
+    private String tipo;//Atributo para saber si es cable positivo o negativo
+    private Pane pane; //Atributo para saber en que pane se dibujara el cable
 
-    public Cables(){
+    public Cables(){//Constructor de la clase
     }
 
-    public Cables(Pane pane,Color color, double startX, double startY){ //Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
+    public Cables(Pane pane, Color color, double startX, double startY) { // Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
         this.pane = pane;
         this.setStroke(color);
         this.setStrokeWidth(10);
@@ -17,17 +18,26 @@ public class Cables extends Line{
         // Inicializamos las coordenadas del cable
         this.setStartX(startX);
         this.setStartY(startY);
-        this.setEndX(startX);  // Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea 
+        this.setEndX(startX); //Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea
         this.setEndY(startY);
-        this.setMouseTransparent(true);
+
+        this.setMouseTransparent(false);
         pane.getChildren().add(this); // Añadimos el cable al pane
 
-    }    
-    public void iniciarDibujoCable(double startX, double startY){
+        // Agregar EventHandler para detectar clic derecho
+        this.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {//Veriicar si es clic derecho
+                pane.getChildren().remove(this); //Eliminar el cable del pane
+            }
+        });
+    }
+
+    public void iniciarDibujoCable(double startX, double startY) {
         this.setStartX(startX);
         this.setStartY(startY);
     }
-    public void finalizarDibujoCable(double endX,double endY){
+
+    public void finalizarDibujoCable(double endX, double endY) {
         this.setEndX(endX);
         this.setEndY(endY);
     }
@@ -60,6 +70,15 @@ public class Cables extends Line{
         this.setEndY(yLocalesFinales);
         
         pane.toFront(); //Traer el cable al frente
+    }
+
+    //metodo para asignar el tipo de cable
+    public void setTipo(Color color) {
+        if (color.equals(Color.RED)) {
+            this.tipo = "Positivo";
+        } else if (color.equals(Color.BLUE)) {
+            this.tipo = "Negativo";
+        }
     }
 
     public Pane getPane(){
