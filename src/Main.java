@@ -40,9 +40,7 @@ public class Main extends Application{
     @FXML
     private ImageView cableRojoBateriaProto2;
     @FXML
-    private ImageView imagenCableAzul;
-    @FXML
-    private ImageView imagenCableRojo;
+    private ImageView imagenCableGris;
     @FXML
     private ImageView imagenLed;
     @FXML
@@ -89,6 +87,12 @@ public class Main extends Application{
     //Variables que se ocupan para la creacion de los objetos arrastrables
     private Switch switch1 = new Switch();
     private Led led = new Led();
+    private boolean celdasClickeables = true;
+
+    public boolean banderaCableAzulInferiorBateria = false;
+    public boolean banderaCableAzulSuperiorBateria = false;
+    public boolean banderaCableRojoInferiorBateria = false;
+    public boolean banderaCableRojoSuperiorBateria = false;
 
     @FXML
     void initialize(){
@@ -134,51 +138,26 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonCableAzul(MouseEvent event) {
-        imagenCableAzul.setOnMouseEntered(enteredEvent -> {
-            Glow glowAzul = new Glow(1);
-            imagenCableAzul.setEffect(glowAzul);
-        });
-
-        imagenCableAzul.setOnMouseExited(exitEvent -> {
-            imagenCableAzul.setEffect(null);
-        });
-
-        imagenCableAzul.setOnMouseClicked(clickedEvent -> {
-            // Configura el color actual para el cable azul
-            colorActual = Color.rgb(2, 113, 245);
-            configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
-            });
-
-            //Configura los manejadores de eventos para cambiar los valores de la matriz a -1
-            matrizCentralProtoboard.configurarManejadoresDeEventos(-1);
-        });
-    }
-
-    @FXML
-    void botonCableRojo(MouseEvent event) { //Metodo de la imagen del cable rojo
-        imagenCableRojo.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
+    void botonCableGris(MouseEvent event) { //Metodo de la imagen del cable rojo
+        imagenCableGris.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
             Glow glowRojo = new Glow(1);
-            imagenCableRojo.setEffect(glowRojo);
+            imagenCableGris.setEffect(glowRojo);
         });
 
-        imagenCableRojo.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
-            imagenCableRojo.setEffect(null);
+        imagenCableGris.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
+            imagenCableGris.setEffect(null);
         });
 
-        imagenCableRojo.setOnMouseClicked(clickedEvent ->{
-            colorActual = Color.rgb(236,63,39);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+        imagenCableGris.setOnMouseClicked(clickedEvent ->{
+            colorActual = Color.rgb(128,128,128);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            matrizCentralProtoboard.manejadorDeClick();
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
                     desactivarEventosDeDibujo(matriz);
                 }
             });
-            matrizCentralProtoboard.configurarManejadoresDeEventos(1);
+            
         });
     }
     
@@ -219,6 +198,7 @@ public class Main extends Application{
     
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
+            
             // Convertir las coordenadas del clic a coordenadas de la escena
             double xEscena = mouseClickedEvent.getSceneX();
             double yEscena = mouseClickedEvent.getSceneY();
@@ -305,6 +285,8 @@ public class Main extends Application{
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
         matriz.setOnMouseClicked(null);
+        matriz.setOnMouseEntered(null);
+        matriz.setOnMouseExited(null);
     }
 
     @FXML
@@ -324,16 +306,21 @@ public class Main extends Application{
     @FXML
     void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior
-            matrizInferior.configurarManejadoresDeEventosSupInf(-1);
-            matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
-            colorActual = Color.rgb(2, 113, 245); // Le damos el color del cable
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableInferiorAzul, () -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
-                desactivarEventosDeDibujo(matrizPaneCableInferiorAzul); // Desactivar también en la matriz inicial
-            });
+            if (banderaCableAzulInferiorBateria == false){
+                matrizInferior.configurarManejadoresDeEventosSupInf(-1);
+                
+                colorActual = Color.rgb(2, 113, 245); // Le damos el color del cable
+                configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableInferiorAzul, () -> {
+                    // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                    for (Pane matriz : matricesProto) {
+                        desactivarEventosDeDibujo(matriz);
+                    }
+                    desactivarEventosDeDibujo(matrizPaneCableInferiorAzul); // Desactivar también en la matriz inicial
+                    matrizInferior.desactivarEventosDeDibujo(); // Desactivar eventos en la matriz inferior
+                    matrizSuperior.desactivarEventosDeDibujo();
+                });
+                banderaCableAzulInferiorBateria = true;
+            }
         });
 
         botonCableAzul2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul inferior
@@ -349,16 +336,21 @@ public class Main extends Application{
     @FXML
     void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
-            colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-            matrizInferior.configurarManejadoresDeEventosSupInf(-1);
-            matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorAzul,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
-                desactivarEventosDeDibujo(matrizPaneCableSuperiorAzul);
-            });
+            if(banderaCableAzulSuperiorBateria == false){
+                colorActual = Color.rgb(2,113,245);//Le damos el color del cable
+                
+                matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
+                configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorAzul,() -> {
+                    // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                    for (Pane matriz : matricesProto) {
+                        desactivarEventosDeDibujo(matriz);
+                    }
+                    desactivarEventosDeDibujo(matrizPaneCableSuperiorAzul);
+                    matrizInferior.desactivarEventosDeDibujo(); // Desactivar eventos en la matriz inferior
+                    matrizSuperior.desactivarEventosDeDibujo();
+                });
+                banderaCableAzulSuperiorBateria = true;
+            }
         });
 
         botonCableAzul1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul superior
@@ -374,16 +366,21 @@ public class Main extends Application{
     @FXML
     void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
-            colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            matrizInferior.configurarManejadoresDeEventosSupInf(1);
-            matrizSuperior.configurarManejadoresDeEventosSupInf(1);
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto,matrizPaneCableInferiorRojo, () -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
-                desactivarEventosDeDibujo(matrizPaneCableInferiorRojo);
-            });
+            if (banderaCableRojoInferiorBateria == false){
+                colorActual = Color.rgb(236,63,39);//Le damos el color del cable
+                matrizInferior.configurarManejadoresDeEventosSupInf(1);
+                matrizSuperior.configurarManejadoresDeEventosSupInf(1);
+                configurarEventosDeDibujoCablesProtoboardBateria(matricesProto,matrizPaneCableInferiorRojo, () -> {
+                    // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                    for (Pane matriz : matricesProto) {
+                        desactivarEventosDeDibujo(matriz);
+                    }
+                    desactivarEventosDeDibujo(matrizPaneCableInferiorRojo);
+                    matrizInferior.desactivarEventosDeDibujo(); // Desactivar eventos en la matriz inferior
+                    matrizSuperior.desactivarEventosDeDibujo();
+                });
+                banderaCableRojoInferiorBateria = true;
+            }
         });
 
         botonCableRojo2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo inferior
@@ -399,16 +396,21 @@ public class Main extends Application{
     @FXML
     void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
-            colorActual = Color.rgb(236,63,39);//Le damos el color del cable
-            matrizInferior.configurarManejadoresDeEventosSupInf(1);
-            matrizSuperior.configurarManejadoresDeEventosSupInf(1);
-            configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorRojo,() -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
-                desactivarEventosDeDibujo(matrizPaneCableSuperiorRojo);
-            });
+            if (banderaCableRojoSuperiorBateria == false){
+                colorActual = Color.rgb(236,63,39);//Le damos el color del cable
+                matrizInferior.configurarManejadoresDeEventosSupInf(1);
+                matrizSuperior.configurarManejadoresDeEventosSupInf(1);
+                configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorRojo,() -> {
+                    // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
+                    for (Pane matriz : matricesProto) {
+                        desactivarEventosDeDibujo(matriz);
+                    }
+                    desactivarEventosDeDibujo(matrizPaneCableSuperiorRojo);
+                    matrizInferior.desactivarEventosDeDibujo(); // Desactivar eventos en la matriz inferior
+                    matrizSuperior.desactivarEventosDeDibujo();
+                });
+                banderaCableRojoSuperiorBateria = true;
+            }
         });
 
         botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior

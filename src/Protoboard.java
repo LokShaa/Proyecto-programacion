@@ -1,9 +1,11 @@
 import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
 
 public class Protoboard{
     //Declara matriz como atributo de la clase
     private Pane[][] matriz;
     private int [][] matrizEnteros;
+    private Integer valorTemporal = null;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -12,7 +14,7 @@ public class Protoboard{
 
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 0; //inicializar matriz con 0
+                matrizEnteros[i][j] = 8; //inicializar matriz con 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -49,17 +51,44 @@ public class Protoboard{
         }
     }
 
-    //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
-    public void configurarManejadoresDeEventos(int valor){
+    public int obtenerValorMatrizEnteros(MouseEvent event) {
+        Pane celdaClickeada = (Pane) event.getSource();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                if (matriz[i][j] == celdaClickeada) {
+                    return matrizEnteros[i][j];
+                }
+            }
+        }
+        return -1;
+    }
+
+
+    public void manejadorDeClick() {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
                 final int columna = j;
-                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna, valor));
+                matriz[i][j].setOnMouseClicked(event -> {
+                    if (valorTemporal == null) {
+                        // Primer clic: almacenar el valor de la celda clickeada
+                        valorTemporal = obtenerValorMatrizEnteros(event);
+                        System.out.println("Valor temporal almacenado: " + valorTemporal);
+                    } else {
+                        // Segundo clic: aplicar el valor almacenado en la nueva celda
+                        manejarClickMatrizCentral(fila, columna, valorTemporal);
+                        matriz[fila][columna].setStyle("-fx-background-color: yellow;");
+                        System.out.println("Valor aplicado en [" + fila + "][" + columna + "]: " + valorTemporal);
+    
+                        // Resetear el valor temporal
+                        valorTemporal = null;
+                        imprimirMatrizEnteros();
+                    } 
+                });
             }
         }
     }
-
+    
     //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
     public void manejarClickMatrizCentral(int fila, int columna,int energia){
         if (fila >=0 && fila < 5){
@@ -82,11 +111,11 @@ public class Protoboard{
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
-            if(energia == 1){
+            if(energia == 1 && Bateria.banderaBateria == true){
                 matrizEnteros[fila][col] = 1; 
                 matriz[fila][col].setStyle("-fx-background-color: red ;");
             }
-            if(energia == -1){
+            if(energia == -1 && Bateria.banderaBateria == true){
                 matrizEnteros[fila][col] = -1;
                 matriz[fila][col].setStyle("-fx-background-color: blue ;");
             }
@@ -252,5 +281,14 @@ public class Protoboard{
     }
     public Pane[][] getMatriz() {
         return matriz;
+    }
+    public void desactivarEventosDeDibujo() {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                matriz[i][j].setOnMouseClicked(null);
+                matriz[i][j].setOnMouseEntered(null);
+                matriz[i][j].setOnMouseExited(null);
+            }
+        }
     }
 }

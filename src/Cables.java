@@ -68,7 +68,6 @@ public class Cables extends Line{
         this.setStartY(yLocalesIniciales);
         this.setEndX(xLocalesFinales);
         this.setEndY(yLocalesFinales);
-        
     }
 
     //metodo para asignar el tipo de cable
