@@ -41,6 +41,7 @@ public class Cables extends Line{
         this.setEndX(endX);
         this.setEndY(endY);
     }
+    
     public void actualizarPane(Pane nuevoPane) {
         // Guardar las coordenadas globales del cable
         double xGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getX();

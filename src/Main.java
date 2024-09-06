@@ -290,21 +290,21 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonLed(MouseEvent event) { //Metodo de la imagen del led
+    void botonLed(MouseEvent event){ //Metodo de la imagen del led
         Led led = new Led();
         led.brilloLed(imagenLed);
         led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
-    void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+    void botonSwitch(MouseEvent event){ // Metodo de la imagen del switch
         Switch switch1 = new Switch();
         switch1.brilloSwitch(imagenSwitch);
         switch1.switchArrastrable(imagenSwitch, paneDibujo);
     }
 
     @FXML
-    void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
+    void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior
             if (banderaCableAzulInferiorBateria == false){
                 matrizInferior.configurarManejadoresDeEventosSupInf(-1);
@@ -334,7 +334,7 @@ public class Main extends Application{
     }
     
     @FXML
-    void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
+    void cableAzulSuperior(MouseEvent event){ //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
             if(banderaCableAzulSuperiorBateria == false){
                 colorActual = Color.rgb(2,113,245);//Le damos el color del cable
@@ -364,7 +364,7 @@ public class Main extends Application{
     }
    
     @FXML
-    void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
+    void cableRojoInferior(MouseEvent event){ //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
             if (banderaCableRojoInferiorBateria == false){
                 colorActual = Color.rgb(236,63,39);//Le damos el color del cable
@@ -394,7 +394,7 @@ public class Main extends Application{
     }
    
     @FXML
-    void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
+    void cableRojoSuperior(MouseEvent event){ //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
             if (banderaCableRojoSuperiorBateria == false){
                 colorActual = Color.rgb(236,63,39);//Le damos el color del cable

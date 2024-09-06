@@ -63,7 +63,6 @@ public class Protoboard{
         return -1;
     }
 
-
     public void manejadorDeClick() {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
@@ -83,7 +82,7 @@ public class Protoboard{
                         // Resetear el valor temporal
                         valorTemporal = null;
                         imprimirMatrizEnteros();
-                    } 
+                    }
                 });
             }
         }
@@ -111,11 +110,11 @@ public class Protoboard{
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
-            if(energia == 1 && Bateria.banderaBateria == true){
+            if(energia == 1 ){
                 matrizEnteros[fila][col] = 1; 
                 matriz[fila][col].setStyle("-fx-background-color: red ;");
             }
-            if(energia == -1 && Bateria.banderaBateria == true){
+            if(energia == -1 ){
                 matrizEnteros[fila][col] = -1;
                 matriz[fila][col].setStyle("-fx-background-color: blue ;");
             }
@@ -154,14 +153,6 @@ public class Protoboard{
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
 
-                
-                /*final int fila = i; // Necesario para usar dentro del lambda
-                cell.setOnMouseClicked(event -> {
-                    // Cambiar el color de toda la columna
-                    for (int col = 0; col < columnas; col++) {
-                        matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
-                    }
-                });*/
             }
         }
 
@@ -169,7 +160,6 @@ public class Protoboard{
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
 
-   
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
@@ -282,7 +272,7 @@ public class Protoboard{
     public Pane[][] getMatriz() {
         return matriz;
     }
-    public void desactivarEventosDeDibujo() {
+    public void desactivarEventosDeDibujo(){
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 matriz[i][j].setOnMouseClicked(null);

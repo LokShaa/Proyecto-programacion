@@ -1,5 +1,6 @@
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import javafx.scene.paint.Color;
@@ -79,12 +80,17 @@ public class Led {
                     nuevoPaneLed.setLayoutY(data[3] + deltaY);
                 }
             });
-
+      
             nuevoPaneLed.setOnMouseReleased(releaseEvent -> {
                 if (!movido) {
                     movido = true; // Marcar que el pane ha sido movido después de soltar el mouse
                 }
             });
+            nuevoPaneLed.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) { // Verificar si el clic es con el botón derecho
+             paneDibujo.getChildren().remove(nuevoPaneLed); // Eliminar el pane del switch
+    }
+});
         
         });
     }

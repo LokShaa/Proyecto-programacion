@@ -3,7 +3,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
+import javafx.scene.input.MouseButton;
 
 public class Switch{
     private Circle selectedCircle = null;
@@ -39,8 +39,6 @@ public class Switch{
     }
 
     private boolean movido = false; // bandera para que el pane del switch no se vuelva a mover despues de soltar el mouse
-
-
 
     public void switchArrastrable(ImageView imagenSwitch, Pane paneDibujo){
 
@@ -110,10 +108,13 @@ public class Switch{
                     movido = true; // Marcar que el pane ha sido movido después de soltar el mouse
                 }
             });
-        
+            nuevoPaneSwitch.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY) { // Verificar si el clic es con el botón derecho
+                    paneDibujo.getChildren().remove(nuevoPaneSwitch); // Eliminar el pane del switch
+                }
+            });
         });
-
-
+        
     };
 
     // Getters y Setters para los circulos generados
