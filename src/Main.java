@@ -93,7 +93,10 @@ public class Main extends Application{
     public boolean banderaCableRojoInferiorBateria = false;
     public boolean banderaCableRojoSuperiorBateria = false;
     private static Main instance;
-    private Protoboard protoboard;
+
+   
+    
+
     @FXML
     void initialize(){
         instance = this;
@@ -166,7 +169,7 @@ public class Main extends Application{
         });
     }
     
-    private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
+    /*private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
                 // Convertir las coordenadas del clic a coordenadas de la escena
@@ -199,8 +202,85 @@ public class Main extends Application{
                 }
             });
         }
-    }
+    }*/
+
     
+    private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
+        final int cellAlt = 20; // Altura de la celda
+        final int cellAncho = 20; // Ancho de la celda
+    
+        for (Pane matriz : matrices) {
+            matriz.setOnMouseClicked(mouseClickedEvent -> {
+                // Convertir las coordenadas del clic a coordenadas de la escena
+                double xEscena = mouseClickedEvent.getSceneX();
+                double yEscena = mouseClickedEvent.getSceneY();
+                if (cableActual == null) {
+                    for (Pane matrizActual : matrices) {
+                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
+                        int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+                        System.out.println("Fila: " + fila + ", Columna: " + columna);
+                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                            fila -= fila/2;
+                            if (fila >= 7){
+                                fila -=2;
+                            }
+                            columna -= columna/2;
+                            if (columna > 20 ){
+                                columna += 1;
+                            }
+                            System.out.println("Fila: " + fila + ", Columna: " + columna);
+                            if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
+                                if (Protoboard.matrizCables[fila][columna] == 1) {
+                                    // Si ya hay un cable en esta celda, no permitir iniciar el dibujo
+                                    return;
+                                }
+    
+                                cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
+                                cableActual.iniciarDibujoCable(xLocal, yLocal);
+                                Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    for (Pane matrizActual : matrices) {
+                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
+                        int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                            fila -= fila/2;
+                            if (fila >= 7){
+                                fila -=2;
+                            }
+                            columna -=columna/2;
+                            if (columna > 20 ){
+                                columna += 1;
+                            }
+                            System.out.println("Fila: " + fila + ", Columna: " + columna);
+                            if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
+                                if (Protoboard.matrizCables[fila][columna] == 1) {
+                                    return;
+                                }
+    
+                                if (cableActual.getPane() != matrizActual) {
+                                    cableActual.actualizarPane(matrizActual);
+                                }
+                                cableActual.finalizarDibujoCable(xLocal, yLocal);
+                                Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
+                                cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                                onComplete.run();
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
             

@@ -6,50 +6,43 @@ public class Protoboard{
     private int [][] matrizEnteros;
     private int energiaRoja=0,energiaAzul=0;
     private int filaRoja=0,filaAzul=0;
-   
+    public static int[][] matrizCables;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
-
+        matrizCables = new int[filas][columnas];
         for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 0; //inicializar matriz con 0
+            for (int j = 0; j < columnas; j++) {
+                matrizCables[i][j] = 0;
+                matrizEnteros[i][j] = 0; // inicializar matriz con 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
-
-                //Calcular la posición de la celda
+    
+                // Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
-                
+    
                 if (i > 4) {
-                    y +=  75; // Añadir espacio adicional
+                    y += 75; // Añadir espacio adicional
                 }
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-                
+    
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
-
             }
         }
-
+    
         // Ajustar el tamaño del pane matrizPane
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                double ancho = columnas * (cellAncho + padding1);
-                double alto = filas * (cellAlt + padding2);
-                if (i > 4) {
-                    alto += 75;
-                    matrizPane.setPrefSize(ancho, alto);
-                }
-                else{
-                    matrizPane.setPrefSize(ancho, alto);
-                }
-            }
+        double ancho = columnas * (cellAncho + padding1) - padding1; // Ajustar el ancho total
+        double alto = filas * (cellAlt + padding2) - padding2; // Ajustar el alto total
+        if (filas > 4) {
+            alto += 75;
         }
+        matrizPane.setPrefSize(ancho, alto);
     }
 
     //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
@@ -80,7 +73,7 @@ public class Protoboard{
                 matriz[i][columna].setStyle("-fx-background-color: yellow;");
             }
         }
-        imprimirMatrizEnteros();
+        //imprimirMatrizEnteros();
     }
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
@@ -103,7 +96,7 @@ public class Protoboard{
             }
         }
         
-        imprimirMatrizEnteros();
+        //imprimirMatrizEnteros();
     }
     
     //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
@@ -144,7 +137,7 @@ public class Protoboard{
             }
         }
     
-        imprimirMatrizEnteros();
+        //imprimirMatrizEnteros();
     }
     
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
@@ -244,27 +237,27 @@ public class Protoboard{
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
     
-    public boolean comprobarCuadrado(int fila, int columna, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane,double startX, double startY){
-
-        // Obtener las coordenadas del click
-        for (int i = 0; i < fila; i++) {
-            for (int j = 0; j < columna; j++) {
-            
-                // Obtener las coordenadas del cuadrado
-                double squareX = matriz[i][j].getLayoutX();
-                double squareY = matriz[i][j].getLayoutY();
+    public boolean comprobarCuadrado(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane, double startX, double startY) {
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                // Calcular las coordenadas del cuadrado
+                double squareX = j * (cellAncho + padding1);
+                double squareY = i * (cellAlt + padding2);
                 
+                if (i > 4) {
+                    squareY += 75; // Añadir espacio adicional
+                }
+    
                 double largoX = squareX + cellAncho;
                 double largoY = squareY + cellAlt;
-
-                // Verificar si el click está dentro del cuadrado
-                if (startX >= squareX && startX <= largoX && startY<=largoY && startY>= squareY) {
+    
+                // Verificar si el clic está dentro del cuadrado
+                if (startX >= squareX && startX <= largoX && startY >= squareY && startY <= largoY) {
                     return true;
                 }
             }
         }
         return false;
-        
     }
    
     public void imprimirMatrizEnteros(){
