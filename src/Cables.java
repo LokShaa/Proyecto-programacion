@@ -68,8 +68,6 @@ public class Cables extends Line{
         this.setStartY(yLocalesIniciales);
         this.setEndX(xLocalesFinales);
         this.setEndY(yLocalesFinales);
-        
-        pane.toFront(); //Traer el cable al frente
     }
 
     //metodo para asignar el tipo de cable

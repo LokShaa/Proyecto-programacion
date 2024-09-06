@@ -4,6 +4,9 @@ public class Protoboard{
     //Declara matriz como atributo de la clase
     private Pane[][] matriz;
     private int [][] matrizEnteros;
+    private int energiaRoja=0,energiaAzul=0;
+    private int filaRoja=0,filaAzul=0;
+   
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -82,18 +85,27 @@ public class Protoboard{
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
-            if(energia == 1){
-                matrizEnteros[fila][col] = 1; 
-                matriz[fila][col].setStyle("-fx-background-color: red ;");
+            if(energia == 1 && matrizEnteros[fila][col] != -1){
+                filaRoja = fila;
+                matrizEnteros[filaRoja][col] = 1; 
+                if (Bateria.banderaBateria == true){
+                    matriz[filaRoja][col].setStyle("-fx-background-color: red ;");
+                }
+                energiaRoja = 1;
             }
-            if(energia == -1){
-                matrizEnteros[fila][col] = -1;
-                matriz[fila][col].setStyle("-fx-background-color: blue ;");
+            if(energia == -1 && matrizEnteros[fila][col] != 1 ){
+                filaAzul = fila;
+                matrizEnteros[filaAzul][col] = -1;
+                if(Bateria.banderaBateria == true){
+                    matriz[filaAzul][col].setStyle("-fx-background-color: blue ;");
+                }
+                energiaAzul = -1;
             }
         }
+        
         imprimirMatrizEnteros();
     }
-
+    
     //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
     public void configurarManejadoresDeEventosSupInf(int energia){
         for (int i = 0; i < matriz.length; i++) {
@@ -103,6 +115,36 @@ public class Protoboard{
                 matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizSupInf(fila, columna, energia));
             }
         }
+    }
+
+    public void actualizarEstadoLuz(boolean banderaBateria) {
+        if (banderaBateria) {
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[i].length; j++) {
+                    
+                    if (energiaRoja == 1) {
+                        matriz[filaRoja][j].setStyle("-fx-background-color: red;");
+                        matrizEnteros[filaRoja][j] = 1;
+                    } 
+                    if (energiaAzul == -1) {
+                        matriz[filaAzul][j].setStyle("-fx-background-color: blue;");
+                        matrizEnteros[filaAzul][j] = -1;
+                    } else {
+                        matriz[i][j].setStyle("-fx-background-color: black;");
+                        matrizEnteros[i][j] = 0;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[i].length; j++) {
+                    matrizEnteros[i][j] = 0;
+                    matriz[i][j].setStyle("-fx-background-color: black;");
+                }
+            }
+        }
+    
+        imprimirMatrizEnteros();
     }
     
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
@@ -238,18 +280,6 @@ public class Protoboard{
         System.out.println("------------------------------------------------------");
     }
     
-    public void actualizarMatriz(int valor) {
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                if (matrizEnteros[i][j] == 0) { // Solo actualizar celdas que aún no han sido cambiadas
-                    matrizEnteros[i][j] = valor;
-                    String color = valor == 1 ? "red" : "blue";
-                    matriz[i][j].setStyle("-fx-border-color: black; -fx-background-color: " + color + ";");
-                }
-            }
-        }
-        imprimirMatrizEnteros();
-    }
     public Pane[][] getMatriz() {
         return matriz;
     }

@@ -92,9 +92,11 @@ public class Main extends Application{
     public boolean banderaCableAzulSuperiorBateria = false;
     public boolean banderaCableRojoInferiorBateria = false;
     public boolean banderaCableRojoSuperiorBateria = false;
-
+    private static Main instance;
+    private Protoboard protoboard;
     @FXML
     void initialize(){
+        instance = this;
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
@@ -130,10 +132,16 @@ public class Main extends Application{
         }
     }
 
+    public static void actualizarEstadoLuz() {
+        instance.matrizSuperior.actualizarEstadoLuz(Bateria.banderaBateria);
+        instance.matrizInferior.actualizarEstadoLuz(Bateria.banderaBateria);
+    }
+
     @FXML
     void botonConDesc(ActionEvent event) {
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
+        actualizarEstadoLuz();
     }
 
     @FXML
