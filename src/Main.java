@@ -134,7 +134,41 @@ public class Main extends Application{
             }
         }
     }
+    private void imprimirMatrices() {
+        // Obtener las matrices de los objetos Protoboard
+        int[][] matrizCentral = matrizCentralProtoboard.getMatrizEnteros();
+        int[][] matrizsuperior = matrizSuperior.getMatrizEnteros();
+        int[][] matrizinferior = matrizInferior.getMatrizEnteros();
 
+         // Imprimir matriz superior
+        for (int i = 0; i < matrizsuperior.length; i++) {
+            for (int j = 0; j < matrizsuperior[i].length; j++) {
+                System.out.print(matrizsuperior[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("-----------------------------------------------------------");
+
+        // Imprimir matriz central
+        for (int i = 0; i < matrizCentral.length; i++) {
+            if(i == 5){
+                System.out.println("-----------------------------------------------------------");
+            }
+            for (int j = 0; j < matrizCentral[i].length; j++){
+                System.out.print(matrizCentral[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("-----------------------------------------------------------");
+
+        // Imprimir matriz inferior
+        for (int i = 0; i < matrizinferior.length; i++) {
+            for (int j = 0; j < matrizinferior[i].length; j++) {
+                System.out.print(matrizinferior[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
     public static void actualizarEstadoLuz() {
         instance.matrizSuperior.actualizarEstadoLuz(Bateria.banderaBateria);
         instance.matrizInferior.actualizarEstadoLuz(Bateria.banderaBateria);
@@ -145,6 +179,7 @@ public class Main extends Application{
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
+        imprimirMatrices();
     }
 
     @FXML
@@ -168,43 +203,7 @@ public class Main extends Application{
             });
         });
     }
-    
-    /*private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
-        for (Pane matriz : matrices) {
-            matriz.setOnMouseClicked(mouseClickedEvent -> {
-                // Convertir las coordenadas del clic a coordenadas de la escena
-                double xEscena = mouseClickedEvent.getSceneX();
-                double yEscena = mouseClickedEvent.getSceneY();
-                if (cableActual == null) {
-                    for (Pane matrizActual : matrices) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
-                            cableActual.iniciarDibujoCable(xLocal, yLocal);
-                            break;
-                        }
-                    }
-                } else {
-                    for (Pane matrizActual : matrices) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            if (cableActual.getPane() != matrizActual) {
-                                cableActual.actualizarPane(matrizActual);
-                            }
-                            cableActual.finalizarDibujoCable(xLocal, yLocal);
-                            cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                            onComplete.run();
-                            break;
-                        }
-                    }
-                }
-            });
-        }
-    }*/
 
-    
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
         final int cellAlt = 20; // Altura de la celda
         final int cellAncho = 20; // Ancho de la celda
@@ -220,7 +219,6 @@ public class Main extends Application{
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
                         int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
                         int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
-                        System.out.println("Fila: " + fila + ", Columna: " + columna);
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             fila -= fila/2;
                             if (fila >= 7){
@@ -230,13 +228,11 @@ public class Main extends Application{
                             if (columna > 20 ){
                                 columna += 1;
                             }
-                            System.out.println("Fila: " + fila + ", Columna: " + columna);
                             if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
                                 if (Protoboard.matrizCables[fila][columna] == 1) {
                                     // Si ya hay un cable en esta celda, no permitir iniciar el dibujo
                                     return;
                                 }
-    
                                 cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
@@ -259,7 +255,6 @@ public class Main extends Application{
                             if (columna > 20 ){
                                 columna += 1;
                             }
-                            System.out.println("Fila: " + fila + ", Columna: " + columna);
                             if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
                                 if (Protoboard.matrizCables[fila][columna] == 1) {
                                     return;

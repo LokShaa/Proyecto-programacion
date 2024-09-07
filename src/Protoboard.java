@@ -78,7 +78,7 @@ public class Protoboard{
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
-            if(energia == 1 && matrizEnteros[fila][col] != -1){
+            if(energia == 1){
                 filaRoja = fila;
                 matrizEnteros[filaRoja][col] = 1; 
                 if (Bateria.banderaBateria == true){
@@ -86,7 +86,7 @@ public class Protoboard{
                 }
                 energiaRoja = 1;
             }
-            if(energia == -1 && matrizEnteros[fila][col] != 1 ){
+            if(energia == -1){
                 filaAzul = fila;
                 matrizEnteros[filaAzul][col] = -1;
                 if(Bateria.banderaBateria == true){
@@ -114,17 +114,14 @@ public class Protoboard{
         if (banderaBateria) {
             for (int i = 0; i < matriz.length; i++) {
                 for (int j = 0; j < matriz[i].length; j++) {
-                    
-                    if (energiaRoja == 1) {
+                    if (energiaRoja == 1 && i == filaRoja) {
                         matriz[filaRoja][j].setStyle("-fx-background-color: red;");
                         matrizEnteros[filaRoja][j] = 1;
-                    } 
-                    if (energiaAzul == -1) {
+                    } else if (energiaAzul == -1 && i == filaAzul) {
                         matriz[filaAzul][j].setStyle("-fx-background-color: blue;");
                         matrizEnteros[filaAzul][j] = -1;
-                    } else {
+                    } else if (matrizEnteros[i][j] == 0) {
                         matriz[i][j].setStyle("-fx-background-color: black;");
-                        matrizEnteros[i][j] = 0;
                     }
                 }
             }
@@ -136,7 +133,6 @@ public class Protoboard{
                 }
             }
         }
-    
         //imprimirMatrizEnteros();
     }
     
@@ -275,6 +271,9 @@ public class Protoboard{
     
     public Pane[][] getMatriz() {
         return matriz;
+    }
+    public int[][] getMatrizEnteros() {
+        return matrizEnteros;
     }
     public void desactivarEventosDeDibujo() {
         for (int i = 0; i < matriz.length; i++) {
