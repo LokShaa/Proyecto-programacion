@@ -6,7 +6,7 @@ public class Protoboard{
     private int [][] matrizEnteros;
     private int energiaRoja=0,energiaAzul=0;
     private int filaRoja=0,filaAzul=0;
-    public static int[][] matrizCables;
+    private int[][] matrizCables;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -110,16 +110,18 @@ public class Protoboard{
         for (int col = 0; col < 30; col++) {
             if(energia == 1){
                 filaRoja = fila;
-                matrizEnteros[filaRoja][col] = 1; 
+                
                 if (Bateria.banderaBateria == true){
+                    matrizEnteros[filaRoja][col] = 1; 
                     matriz[filaRoja][col].setStyle("-fx-background-color: red ;");
                 }
                 energiaRoja = 1;
             }
             if(energia == -1){
                 filaAzul = fila;
-                matrizEnteros[filaAzul][col] = -1;
+                
                 if(Bateria.banderaBateria == true){
+                    matrizEnteros[filaAzul][col] = -1;
                     matriz[filaAzul][col].setStyle("-fx-background-color: blue ;");
                 }
                 energiaAzul = -1;
@@ -292,6 +294,12 @@ public class Protoboard{
     }
     public int[][] getMatrizEnteros() {
         return matrizEnteros;
+    }
+    public int[][] getMatrizCables() {
+        return matrizCables;
+    }
+    public void setMatrizCables(int fila ,int columna, int valor){ 
+        this.matrizCables[fila][columna] = valor;
     }
 
     public void desactivarEventosDeDibujo(){

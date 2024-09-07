@@ -1,3 +1,5 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +19,7 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 public class Main extends Application{
     @FXML
@@ -87,7 +90,7 @@ public class Main extends Application{
 
     //Variables que se ocupan para la creacion de los objetos arrastrables
     private Switch switch1 = new Switch();
-    private Led led = new Led();
+    private Led led;
 
     public boolean banderaCableAzulInferiorBateria = false;
     public boolean banderaCableAzulSuperiorBateria = false;
@@ -97,10 +100,14 @@ public class Main extends Application{
     private static Main instance;
     private int valorSeleccionado;
     private boolean valorSeleccionadoFlag = false;
+    private double startX, startY, endX, endY;
+    private boolean firstClick = true;
+    //private int[][] matrizCables;
 
     @FXML
     void initialize() {
         instance = this;
+        //matrizCables = new int[10][30];
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
@@ -116,7 +123,7 @@ public class Main extends Application{
         matricesProto.add(matrizPane21);
 
         // Agregar eventos de clic a las celdas de matrizCentralProtoboard para dibujar cables desde el switch
-        Pane[][] matriz = matrizCentralProtoboard.getMatriz();
+        /*Pane[][] matriz = matrizCentralProtoboard.getMatriz();
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 Pane cell = matriz[i][j];
@@ -133,7 +140,7 @@ public class Main extends Application{
                     }
                 });
             }
-        }
+        }*/
     }
     private void imprimirMatrices() {
         // Obtener las matrices de los objetos Protoboard
@@ -177,7 +184,6 @@ public class Main extends Application{
 
     @FXML
     void botonConDesc(ActionEvent event) {
-
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
@@ -291,8 +297,9 @@ public class Main extends Application{
                             if (columna > 20 ){
                                 columna += 1;
                             }
-                            if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
-                                if (Protoboard.matrizCables[fila][columna] == 1) {
+                            if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
+                            int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
+                                if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
                                     Alert alert = new Alert(AlertType.INFORMATION);
                                     alert.setTitle("Información");
                                     alert.setHeaderText(null);
@@ -302,7 +309,9 @@ public class Main extends Application{
                                 }
                                 cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
-                                Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
+                                if (matrizActual == matrizPane) {
+                                matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                }
                                 break;
                             }
                         }
@@ -322,8 +331,9 @@ public class Main extends Application{
                             if (columna > 20 ){
                                 columna += 1;
                             }
-                            if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
-                                if (Protoboard.matrizCables[fila][columna] == 1) {
+                            if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
+                            int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
+                                if (matrizActual1[fila][columna] == 1) {
                                     Alert alert = new Alert(AlertType.INFORMATION);
                                     alert.setTitle("Información");
                                     alert.setHeaderText(null);
@@ -336,7 +346,9 @@ public class Main extends Application{
                                     cableActual.actualizarPane(matrizActual);
                                 }
                                 cableActual.finalizarDibujoCable(xLocal, yLocal);
-                                Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
+                                if (matrizActual == matrizPane) {
+                                    matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                }
                                 cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                                 onComplete.run();
                                 break;
@@ -404,7 +416,7 @@ public class Main extends Application{
     }
 
     // Método para dibujar un cable desde un círculo de un switch a una celda de la matriz central de la protoboard
-    private void dibujarCableSwitch_Led(Circle circle, Pane cell) {
+    /*private void dibujarCableSwitch_Led(Circle circle, Pane cell) {
         // Verificar si el cable ya fue dibujado desde este círculo
         if (switch1.isCableDibujado(circle)) {
             return;
@@ -437,7 +449,7 @@ public class Main extends Application{
         } else {
             System.out.println("La distancia es mayor a 70 píxeles. No se dibuja el cable.");
         }
-    }
+    }*/
 
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
@@ -447,10 +459,18 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonLed(MouseEvent event){ //Metodo de la imagen del led
-        Led led = new Led();
-        led.brilloLed(imagenLed);
-        led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
+    void botonLed(MouseEvent event) { // Método de la imagen del led
+        imagenLed.setOnMouseEntered(enteredEvent -> { // Brillo para el cable
+            Glow glowRojo = new Glow(1);
+            imagenLed.setEffect(glowRojo);
+        });
+
+        imagenLed.setOnMouseExited(exitEvent -> { // Se quita el brillo del cable
+            imagenLed.setEffect(null);
+        });
+
+        // Configurar el evento de clic en matrizPane
+        matrizPane.setOnMouseClicked(led::handleMouseClick);
     }
 
     @FXML
