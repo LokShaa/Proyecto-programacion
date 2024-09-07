@@ -17,7 +17,7 @@ public class Protoboard{
         for (int i = 0; i < filas; i++){
 
             for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 8; //inicializar matriz con 0
+                matrizEnteros[i][j] = 0; //inicializar matriz con 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -36,9 +36,8 @@ public class Protoboard{
                 matriz[i][j] = cell;
 
             }
-            matrizEnteros[i][0] = 1;
+            
         }
-
         // Ajustar el tamaño del pane matrizPane
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
@@ -67,7 +66,7 @@ public class Protoboard{
         return -1;
     }
 
-    public void manejadorDeClick(Protoboard matrizActual) {
+    /*public void manejadorDeClick(Protoboard matrizActual) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
@@ -94,10 +93,10 @@ public class Protoboard{
                 });
             }
         }
-    }
+    }*/
     
     //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
-    public void manejarClickMatrizCentral(int fila, int columna,int energia){
+   /*  public void manejarClickMatrizCentral(int fila, int columna,int energia){
         if (fila >=0 && fila < 5){
             //Cambiar la columna completa (1-5) a 1 y a amarillo
             for (int i = 0; i < 5; i++) {
@@ -114,7 +113,7 @@ public class Protoboard{
             }
         }
        
-    }
+    }*/
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
