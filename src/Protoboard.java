@@ -5,9 +5,7 @@ public class Protoboard{
     //Declara matriz como atributo de la clase
     private Pane[][] matriz;
     private int [][] matrizEnteros;
-    private Integer valorTemporal = null;
-
-    private Protoboard matrizOrigen = null; // Almacenar la referencia de la matriz origen
+   
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -146,7 +144,7 @@ public class Protoboard{
 
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 1; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
+                matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
