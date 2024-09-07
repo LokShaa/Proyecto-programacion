@@ -83,7 +83,6 @@ public class Main extends Application{
     Protoboard matrizCableSuperiorRojo = new Protoboard();
     Protoboard matrizCableInferiorRojo = new Protoboard();
 
-
     private List<Pane> matricesProto;
 
     //Variables que se ocupan para la creacion de los objetos arrastrables
@@ -94,20 +93,22 @@ public class Main extends Application{
     public boolean banderaCableAzulSuperiorBateria = false;
     public boolean banderaCableRojoInferiorBateria = false;
     public boolean banderaCableRojoSuperiorBateria = false;
+
     private static Main instance;
-    
+    private int valorSeleccionado;
+    private boolean valorSeleccionadoFlag = false;
 
     @FXML
-    void initialize(){
+    void initialize() {
         instance = this;
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
-        matrizCableInferiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableInferiorAzul);
-        matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
-        matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
-        matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
-
+        matrizCableInferiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorAzul);
+        matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
+        matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
+        matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
+    
         matricesProto = new ArrayList<>();
         // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
         matricesProto.add(matrizPane);
@@ -126,7 +127,7 @@ public class Main extends Application{
                         dibujarCableSwitch_Led(selectedCircle, cell);
                         switch1.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
                     }
-                    if(selectedCircle2 != null){
+                    if (selectedCircle2 != null) {
                         dibujarCableSwitch_Led(selectedCircle2, cell);
                         led.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
                     }
@@ -176,12 +177,69 @@ public class Main extends Application{
 
     @FXML
     void botonConDesc(ActionEvent event) {
+
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
         imprimirMatrices();
     }
+    
+    private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                final int fila = i;
+                final int columna = j;
+                Pane cell = (Pane) matrizPane.getChildren().get(i * matriz[i].length + j);
+                cell.setOnMouseClicked(event -> {
+                    valorSeleccionado = matriz[fila][columna];
+                    valorSeleccionadoFlag = true;
+                    System.out.println("Valor seleccionado: " + valorSeleccionado);
+                });
+            }
+        }
+    }
 
+    private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
+        for (int i = 0; i < matrizEnteros.length; i++) {
+            for (int j = 0; j < matrizEnteros[i].length; j++) {
+                final int fila = i;
+                final int columna = j;
+                Pane cell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[i].length + j);
+                cell.setOnMouseClicked(event -> {
+                    if (valorSeleccionadoFlag) {
+                        if (fila >= 0 && fila < 5) {
+                            // Cambiar la columna completa (1-5) a valorSeleccionado y a amarillo
+                            for (int k = 0; k < 5; k++) {
+                                matrizEnteros[k][columna] = valorSeleccionado;
+                                Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
+                                if (valorSeleccionado != 0) {
+                                    targetCell.setStyle("-fx-background-color: yellow;");
+                                }
+                            }
+                        }
+                        if (fila >= 5 && fila <= 10) {
+                            // Cambiar la columna completa (6-10) a valorSeleccionado y a amarillo
+                            for (int k = 5; k < 10; k++) {
+                                matrizEnteros[k][columna] = valorSeleccionado;
+                                Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
+                                if (valorSeleccionado != 0) {
+                                    targetCell.setStyle("-fx-background-color: yellow;");
+                                }
+                            }
+                        }
+                        valorSeleccionadoFlag = false;
+                        System.out.println("Valor actualizado en matriz central: " + valorSeleccionado);
+                    } else {
+                        // Seleccionar el valor de la celda actual para traspasarlo a otra celda
+                        valorSeleccionado = matrizEnteros[fila][columna];
+                        valorSeleccionadoFlag = true;
+                        System.out.println("Valor seleccionado dentro de la matriz central: " + valorSeleccionado);
+                    }
+                });
+            }
+        }
+    }
+  
     @FXML
     void botonCableGris(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableGris.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -195,6 +253,11 @@ public class Main extends Application{
 
         imagenCableGris.setOnMouseClicked(clickedEvent ->{
             colorActual = Color.rgb(128,128,128);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
+            configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
+            configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
+            // Configurar eventos de actualización para la matriz central
+            configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
+
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
@@ -278,6 +341,11 @@ public class Main extends Application{
                                 onComplete.run();
                                 break;
                             }
+                            cableActual.finalizarDibujoCable(xLocal, yLocal);
+                            cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                            onComplete.run();
+                            break;
+
                         }
                     }
                 }
@@ -379,25 +447,26 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonLed(MouseEvent event) { //Metodo de la imagen del led
+    void botonLed(MouseEvent event){ //Metodo de la imagen del led
         Led led = new Led();
         led.brilloLed(imagenLed);
         led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
-    void botonSwitch(MouseEvent event) { // Metodo de la imagen del switch
+    void botonSwitch(MouseEvent event){ // Metodo de la imagen del switch
         Switch switch1 = new Switch();
         switch1.brilloSwitch(imagenSwitch);
         switch1.switchArrastrable(imagenSwitch, paneDibujo);
     }
 
     @FXML
-    void cableAzulInferior(MouseEvent event) { //Metodo para el cable azul inferior
+    void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior
             if (banderaCableAzulInferiorBateria == false){
                 matrizInferior.configurarManejadoresDeEventosSupInf(-1);
                 matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
+
                 colorActual = Color.rgb(2, 113, 245); // Le damos el color del cable
                 configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableInferiorAzul, () -> {
                     // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
@@ -423,7 +492,7 @@ public class Main extends Application{
     }
     
     @FXML
-    void cableAzulSuperior(MouseEvent event) { //Metodo para el cable azul superior
+    void cableAzulSuperior(MouseEvent event){ //Metodo para el cable azul superior
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
             if(banderaCableAzulSuperiorBateria == false){
                 colorActual = Color.rgb(2,113,245);//Le damos el color del cable
@@ -453,7 +522,7 @@ public class Main extends Application{
     }
    
     @FXML
-    void cableRojoInferior(MouseEvent event) { //Metodo para el cable rojo inferior
+    void cableRojoInferior(MouseEvent event){ //Metodo para el cable rojo inferior
         botonCableRojo2.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo inferior
             if (banderaCableRojoInferiorBateria == false){
                 colorActual = Color.rgb(236,63,39);//Le damos el color del cable
@@ -483,7 +552,7 @@ public class Main extends Application{
     }
    
     @FXML
-    void cableRojoSuperior(MouseEvent event) { //Metodo para el cable rojo superior
+    void cableRojoSuperior(MouseEvent event){ //Metodo para el cable rojo superior
         botonCableRojo1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable rojo superior
             if (banderaCableRojoSuperiorBateria == false){
                 colorActual = Color.rgb(236,63,39);//Le damos el color del cable
