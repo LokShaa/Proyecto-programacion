@@ -24,13 +24,13 @@ public class Protoboard{
                 // Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);
-    
+
                 if (i > 4) {
                     y += 75; // Añadir espacio adicional
                 }
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-    
+
                 matrizPane.getChildren().add(cell);
                 matriz[i][j] = cell;
             }
@@ -45,19 +45,49 @@ public class Protoboard{
         matrizPane.setPrefSize(ancho, alto);
     }
 
-    //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
-    public void configurarManejadoresDeEventos(int valor){
+    /*public int obtenerValorMatrizEnteros(MouseEvent event) {
+        Pane celdaClickeada = (Pane) event.getSource();
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                if (matriz[i][j] == celdaClickeada) {
+                    return matrizEnteros[i][j];
+                }
+            }
+        }
+        return -1;
+    }*/
+
+    /*public void manejadorDeClick(Protoboard matrizActual) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
                 final int columna = j;
-                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna, valor));
+                matriz[i][j].setOnMouseClicked(event -> {
+                    if (valorTemporal == null) {
+                        // Primer clic: almacenar el valor y la referencia de la matriz origen
+                        valorTemporal = obtenerValorMatrizEnteros(event);
+                        matrizOrigen = matrizActual; // Guardamos la referencia de la matriz donde ocurrió el primer clic
+                        System.out.println("Valor temporal almacenado: " + valorTemporal + " desde la matriz origen.");
+                    } else {
+                        // Segundo clic: aplicar el valor en la celda de la matriz actual
+                        if (matrizOrigen != null) {
+                            manejarClickMatrizCentral(fila, columna, valorTemporal);
+                            matriz[fila][columna].setStyle("-fx-background-color: yellow;");
+                            System.out.println("Valor aplicado en [" + fila + "][" + columna + "] desde la matriz origen.");
+                            
+                            // Resetear el valor temporal y la matriz origen
+                            valorTemporal = null;
+                            matrizOrigen = null;
+                            
+                        }
+                    }
+                });
             }
         }
-    }
-
+    }*/
+    
     //METODO QUE SE USA SOLO PARA LA MATRIZ CENTRAL
-    public void manejarClickMatrizCentral(int fila, int columna,int energia){
+   /*  public void manejarClickMatrizCentral(int fila, int columna,int energia){
         if (fila >=0 && fila < 5){
             //Cambiar la columna completa (1-5) a 1 y a amarillo
             for (int i = 0; i < 5; i++) {
@@ -74,7 +104,7 @@ public class Protoboard{
             }
         }
         //imprimirMatrizEnteros();
-    }
+    }*/
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
@@ -95,8 +125,6 @@ public class Protoboard{
                 energiaAzul = -1;
             }
         }
-        
-        //imprimirMatrizEnteros();
     }
     
     //Método para configurar los eventos del click en la matriz central para no llamarlo de el metodo de inicializarMatrizCentral
@@ -155,7 +183,6 @@ public class Protoboard{
                 matrizPane.getChildren().add(cell);
                 cell.setLayoutX(x);
                 cell.setLayoutY(y);
-
                 
                 /*final int fila = i; // Necesario para usar dentro del lambda
                 cell.setOnMouseClicked(event -> {
@@ -171,7 +198,6 @@ public class Protoboard{
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
 
-   
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
@@ -189,14 +215,6 @@ public class Protoboard{
                     matrizPane.getChildren().add(cell);
                     cell.setLayoutX(x);
                     cell.setLayoutY(y);
-
-                    /*final int fila = i; // Necesario para usar dentro del lambda
-                    cell.setOnMouseClicked(event -> {
-                        // Cambiar el color de toda la columna
-                        for (int col = 0; col < columnas; col++) {
-                            matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
-                        }
-                    });*/
                 }
             }
         // Ajustar el tamaño del pane matrizPane
@@ -275,7 +293,8 @@ public class Protoboard{
     public int[][] getMatrizEnteros() {
         return matrizEnteros;
     }
-    public void desactivarEventosDeDibujo() {
+
+    public void desactivarEventosDeDibujo(){
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 matriz[i][j].setOnMouseClicked(null);
