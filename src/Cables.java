@@ -51,24 +51,31 @@ public class Cables extends Line{
     
         // Remover el cable del pane actual
         this.pane.getChildren().remove(this);
-
+    
         // Actualizar el pane
         this.pane = nuevoPane;
-
+    
         // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
-
+    
         // Convertir las coordenadas globales a las coordenadas locales del nuevo pane
-        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();//SceneToLocal convierte las coordenadas globales a las locales!!
+        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();
         double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
         double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
         double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
-
+    
         // Actualizar las coordenadas del cable
         this.setStartX(xLocalesIniciales);
         this.setStartY(yLocalesIniciales);
         this.setEndX(xLocalesFinales);
         this.setEndY(yLocalesFinales);
+    
+        // Volver a asignar el EventHandler de clic derecho para eliminar el cable
+        this.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
+            }
+        });
     }
 
     //metodo para asignar el tipo de cable

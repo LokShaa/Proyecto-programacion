@@ -6,13 +6,16 @@ public class Protoboard{
     private Pane[][] matriz;
     private int [][] matrizEnteros;
     private Integer valorTemporal = null;
+
+    private Protoboard matrizOrigen = null; // Almacenar la referencia de la matriz origen
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
 
-        for (int i = 0; i < filas; i++) {
+        for (int i = 0; i < filas; i++){
+
             for (int j = 0; j < columnas; j++){
                 matrizEnteros[i][j] = 8; //inicializar matriz con 0
                 Pane cell = new Pane();
@@ -33,6 +36,7 @@ public class Protoboard{
                 matriz[i][j] = cell;
 
             }
+            matrizEnteros[i][0] = 1;
         }
 
         // Ajustar el tamaño del pane matrizPane
@@ -63,25 +67,29 @@ public class Protoboard{
         return -1;
     }
 
-    public void manejadorDeClick() {
+    public void manejadorDeClick(Protoboard matrizActual) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
                 final int columna = j;
                 matriz[i][j].setOnMouseClicked(event -> {
                     if (valorTemporal == null) {
-                        // Primer clic: almacenar el valor de la celda clickeada
+                        // Primer clic: almacenar el valor y la referencia de la matriz origen
                         valorTemporal = obtenerValorMatrizEnteros(event);
-                        System.out.println("Valor temporal almacenado: " + valorTemporal);
+                        matrizOrigen = matrizActual; // Guardamos la referencia de la matriz donde ocurrió el primer clic
+                        System.out.println("Valor temporal almacenado: " + valorTemporal + " desde la matriz origen.");
                     } else {
-                        // Segundo clic: aplicar el valor almacenado en la nueva celda
-                        manejarClickMatrizCentral(fila, columna, valorTemporal);
-                        matriz[fila][columna].setStyle("-fx-background-color: yellow;");
-                        System.out.println("Valor aplicado en [" + fila + "][" + columna + "]: " + valorTemporal);
-    
-                        // Resetear el valor temporal
-                        valorTemporal = null;
-                        imprimirMatrizEnteros();
+                        // Segundo clic: aplicar el valor en la celda de la matriz actual
+                        if (matrizOrigen != null) {
+                            manejarClickMatrizCentral(fila, columna, valorTemporal);
+                            matriz[fila][columna].setStyle("-fx-background-color: yellow;");
+                            System.out.println("Valor aplicado en [" + fila + "][" + columna + "] desde la matriz origen.");
+                            
+                            // Resetear el valor temporal y la matriz origen
+                            valorTemporal = null;
+                            matrizOrigen = null;
+                            
+                        }
                     }
                 });
             }
@@ -105,7 +113,7 @@ public class Protoboard{
                 matriz[i][columna].setStyle("-fx-background-color: yellow;");
             }
         }
-        imprimirMatrizEnteros();
+       
     }
 
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
@@ -139,7 +147,7 @@ public class Protoboard{
 
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
-                matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
+                matrizEnteros[i][j] = 1; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -177,14 +185,6 @@ public class Protoboard{
                     matrizPane.getChildren().add(cell);
                     cell.setLayoutX(x);
                     cell.setLayoutY(y);
-
-                    /*final int fila = i; // Necesario para usar dentro del lambda
-                    cell.setOnMouseClicked(event -> {
-                        // Cambiar el color de toda la columna
-                        for (int col = 0; col < columnas; col++) {
-                            matriz[fila][col].setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: yellow;"); // Cambiar color a azul
-                        }
-                    });*/
                 }
             }
         // Ajustar el tamaño del pane matrizPane
@@ -257,21 +257,15 @@ public class Protoboard{
         System.out.println("------------------------------------------------------");
     }
     
-    public void actualizarMatriz(int valor) {
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                if (matrizEnteros[i][j] == 0) { // Solo actualizar celdas que aún no han sido cambiadas
-                    matrizEnteros[i][j] = valor;
-                    String color = valor == 1 ? "red" : "blue";
-                    matriz[i][j].setStyle("-fx-border-color: black; -fx-background-color: " + color + ";");
-                }
-            }
-        }
-        imprimirMatrizEnteros();
-    }
-    public Pane[][] getMatriz() {
+    public Pane[][] getMatriz(){
         return matriz;
     }
+   
+    //Método para obtener la matriz de enteros
+    public int[][] getMatrizEnteros() {
+        return matrizEnteros;
+    }
+
     public void desactivarEventosDeDibujo(){
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {

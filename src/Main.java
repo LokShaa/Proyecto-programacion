@@ -80,6 +80,7 @@ public class Main extends Application{
     Protoboard matrizCableInferiorAzul = new Protoboard();
     Protoboard matrizCableSuperiorRojo = new Protoboard();
     Protoboard matrizCableInferiorRojo = new Protoboard();
+    
 
 
     private List<Pane> matricesProto;
@@ -99,6 +100,8 @@ public class Main extends Application{
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
+        
+        
         matrizCableInferiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableInferiorAzul);
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1,1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1,1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
@@ -135,8 +138,9 @@ public class Main extends Application{
     void botonConDesc(ActionEvent event) {
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
+        imprimirMatrices();
     }
-
+    
     @FXML
     void botonCableGris(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableGris.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -150,7 +154,10 @@ public class Main extends Application{
 
         imagenCableGris.setOnMouseClicked(clickedEvent ->{
             colorActual = Color.rgb(128,128,128);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
-            matrizCentralProtoboard.manejadorDeClick();
+            matrizCentralProtoboard.manejadorDeClick(matrizCentralProtoboard);
+            matrizSuperior.manejadorDeClick(matrizSuperior);
+            matrizInferior.manejadorDeClick(matrizInferior);
+            
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matricesProto) {
@@ -159,6 +166,43 @@ public class Main extends Application{
             });
             
         });
+       
+    }
+    
+    private void imprimirMatrices() {
+        // Obtener las matrices de los objetos Protoboard
+        int[][] matrizCentral = matrizCentralProtoboard.getMatrizEnteros();
+        int[][] matrizsuperior = matrizSuperior.getMatrizEnteros();
+        int[][] matrizinferior = matrizInferior.getMatrizEnteros();
+
+         // Imprimir matriz superior
+        for (int i = 0; i < matrizsuperior.length; i++) {
+            for (int j = 0; j < matrizsuperior[i].length; j++) {
+                System.out.print(matrizsuperior[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("-----------------------------------------------------------");
+
+        // Imprimir matriz central
+        for (int i = 0; i < matrizCentral.length; i++) {
+            if(i == 5){
+                System.out.println("-----------------------------------------------------------");
+            }
+            for (int j = 0; j < matrizCentral[i].length; j++){
+                System.out.print(matrizCentral[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println("-----------------------------------------------------------");
+
+        // Imprimir matriz inferior
+        for (int i = 0; i < matrizinferior.length; i++) {
+            for (int j = 0; j < matrizinferior[i].length; j++) {
+                System.out.print(matrizinferior[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
     
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
