@@ -3,6 +3,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -93,8 +95,6 @@ public class Main extends Application{
     public boolean banderaCableRojoInferiorBateria = false;
     public boolean banderaCableRojoSuperiorBateria = false;
     private static Main instance;
-
-   
     
 
     @FXML
@@ -205,8 +205,8 @@ public class Main extends Application{
     }
 
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
-        final int cellAlt = 20; // Altura de la celda
-        final int cellAncho = 20; // Ancho de la celda
+        final int cellAlt = 20;
+        final int cellAncho = 20; 
     
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
@@ -230,7 +230,11 @@ public class Main extends Application{
                             }
                             if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
                                 if (Protoboard.matrizCables[fila][columna] == 1) {
-                                    // Si ya hay un cable en esta celda, no permitir iniciar el dibujo
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Información");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("El cuadrado ya está ocupado.");
+                                    alert.showAndWait();
                                     return;
                                 }
                                 cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
@@ -257,6 +261,11 @@ public class Main extends Application{
                             }
                             if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
                                 if (Protoboard.matrizCables[fila][columna] == 1) {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Información");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("El cuadrado ya está ocupado.");
+                                    alert.showAndWait();
                                     return;
                                 }
     
