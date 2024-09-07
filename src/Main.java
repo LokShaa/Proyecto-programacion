@@ -81,14 +81,11 @@ public class Main extends Application{
     Protoboard matrizCableSuperiorRojo = new Protoboard();
     Protoboard matrizCableInferiorRojo = new Protoboard();
     
-
-
     private List<Pane> matricesProto;
 
     //Variables que se ocupan para la creacion de los objetos arrastrables
     private Switch switch1 = new Switch();
     private Led led = new Led();
-    private boolean celdasClickeables = true;
 
     public boolean banderaCableAzulInferiorBateria = false;
     public boolean banderaCableAzulSuperiorBateria = false;
@@ -174,25 +171,34 @@ public class Main extends Application{
                             for (int k = 0; k < 5; k++) {
                                 matrizEnteros[k][columna] = valorSeleccionado;
                                 Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                targetCell.setStyle("-fx-background-color: yellow;");
+                                if (valorSeleccionado != 0) {
+                                    targetCell.setStyle("-fx-background-color: yellow;");
+                                }
                             }
-                        } 
+                        }
                         if (fila >= 5 && fila <= 10) {
                             // Cambiar la columna completa (6-10) a valorSeleccionado y a amarillo
                             for (int k = 5; k < 10; k++) {
                                 matrizEnteros[k][columna] = valorSeleccionado;
                                 Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                targetCell.setStyle("-fx-background-color: yellow;");
+                                if (valorSeleccionado != 0) {
+                                    targetCell.setStyle("-fx-background-color: yellow;");
+                                }
                             }
                         }
                         valorSeleccionadoFlag = false;
                         System.out.println("Valor actualizado en matriz central: " + valorSeleccionado);
+                    } else {
+                        // Seleccionar el valor de la celda actual para traspasarlo a otra celda
+                        valorSeleccionado = matrizEnteros[fila][columna];
+                        valorSeleccionadoFlag = true;
+                        System.out.println("Valor seleccionado dentro de la matriz central: " + valorSeleccionado);
                     }
                 });
             }
         }
     }
-
+  
     @FXML
     void botonCableGris(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableGris.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
