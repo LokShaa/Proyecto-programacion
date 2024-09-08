@@ -1,6 +1,9 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
@@ -78,7 +82,7 @@ public class Main extends Application{
     private Cables cableActual;
     private Color colorActual;
 
-    Protoboard matrizCentralProtoboard = new Protoboard();
+    static final Protoboard matrizCentralProtoboard = new Protoboard();
     Protoboard matrizSuperior = new Protoboard();
     Protoboard matrizInferior = new Protoboard();
     Protoboard matrizCableSuperiorAzul = new Protoboard();
@@ -102,12 +106,10 @@ public class Main extends Application{
     private boolean valorSeleccionadoFlag = false;
     private double startX, startY, endX, endY;
     private boolean firstClick = true;
-    //private int[][] matrizCables;
 
     @FXML
     void initialize() {
         instance = this;
-        //matrizCables = new int[10][30];
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
@@ -298,7 +300,7 @@ public class Main extends Application{
                                 columna += 1;
                             }
                             if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
-                            int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
+                                int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
                                 if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
                                     Alert alert = new Alert(AlertType.INFORMATION);
                                     alert.setTitle("Información");
@@ -310,7 +312,7 @@ public class Main extends Application{
                                 cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 if (matrizActual == matrizPane) {
-                                matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                    matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
                                 }
                                 break;
                             }
@@ -351,20 +353,17 @@ public class Main extends Application{
                                 }
                                 cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                                 onComplete.run();
+                               
                                 break;
+                                
                             }
-                            cableActual.finalizarDibujoCable(xLocal, yLocal);
-                            cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                            onComplete.run();
-                            break;
-
                         }
                     }
                 }
             });
         }
     }
-
+    
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
             
@@ -470,7 +469,7 @@ public class Main extends Application{
         });
 
         // Configurar el evento de clic en matrizPane
-        matrizPane.setOnMouseClicked(led::handleMouseClick);
+        //matrizPane.setOnMouseClicked(led::handleMouseClick);
     }
 
     @FXML
@@ -600,11 +599,12 @@ public class Main extends Application{
             botonCableRojo1.setEffect(null);
         });
     }
-    
+
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
+
         primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(root,1920,1000));
         primaryStage.show();
