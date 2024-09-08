@@ -1,8 +1,12 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -15,6 +19,7 @@ import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 public class Main extends Application{
     @FXML
@@ -80,44 +85,53 @@ public class Main extends Application{
     Protoboard matrizCableInferiorAzul = new Protoboard();
     Protoboard matrizCableSuperiorRojo = new Protoboard();
     Protoboard matrizCableInferiorRojo = new Protoboard();
-    
+
     private List<Pane> matricesProto;
 
     //Variables que se ocupan para la creacion de los objetos arrastrables
     private Switch switch1 = new Switch();
-    private Led led = new Led();
+    private Led led;
 
     public boolean banderaCableAzulInferiorBateria = false;
     public boolean banderaCableAzulSuperiorBateria = false;
     public boolean banderaCableRojoInferiorBateria = false;
     public boolean banderaCableRojoSuperiorBateria = false;
 
-   
+    private static Main instance;
+    
     private int valorSeleccionado = 0;
     private boolean valorSeleccionadoFlag = false;
     private int filaSeleccionada = -1;
     private int columnaSeleccionada = -1;
 
+    private boolean obtenerValorActivo = false; // Bandera para controlar la obtención de valores
+    private boolean eventosActivos = false;
+
     @FXML
     void initialize() {
+        instance = this;
+        
         matrizCentralProtoboard.inicializarMatrizCentral(10, 30, 20, 20, 18.6, 20, matrizPane);
         matrizSuperior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane2);
         matrizInferior.inicializarMatrizSupInf(2, 30, 20, 20, 18.6, 20, matrizPane21);
-    
-
         matrizCableInferiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorAzul);
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
-    
+         // Obtener las matrices de Pane y enteros
+         Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+         int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+ 
+         // Crear una instancia de la clase Led y pasarle las matrices
+         led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
         matricesProto = new ArrayList<>();
         // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
         matricesProto.add(matrizPane);
         matricesProto.add(matrizPane2);
         matricesProto.add(matrizPane21);
-    
+
         // Agregar eventos de clic a las celdas de matrizCentralProtoboard para dibujar cables desde el switch
-        Pane[][] matriz = matrizCentralProtoboard.getMatriz();
+        /*Pane[][] matriz = matrizCentralProtoboard.getMatriz();
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 Pane cell = matriz[i][j];
@@ -134,124 +148,7 @@ public class Main extends Application{
                     }
                 });
             }
-        }
-    }
-
-    @FXML
-    void botonConDesc(ActionEvent event) {
-
-        Bateria bateria = new Bateria();
-        bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
-        imprimirMatrices();
-    }
-    
-    private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                final int fila = i;
-                final int columna = j;
-                Pane cell = (Pane) matrizPane.getChildren().get(i * matriz[i].length + j);
-                cell.setOnMouseClicked(event -> {
-                    valorSeleccionado = matriz[fila][columna];
-                    valorSeleccionadoFlag = true;
-                    filaSeleccionada = fila;
-                    columnaSeleccionada = columna;
-                    System.out.println("Valor seleccionado: " + valorSeleccionado);
-                });
-            }
-        }
-    }
-
-    private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                final int fila = i;
-                final int columna = j;
-                Pane cell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[i].length + j);
-                cell.setOnMouseClicked(event -> {
-                    if (valorSeleccionadoFlag) {
-                        if (matrizEnteros[filaSeleccionada][columnaSeleccionada] == 0 && (matrizEnteros[fila][columna] == 1 || matrizEnteros[fila][columna] == -1)) {
-                            // Cambiar la columna completa donde fue el primer clic
-                            if (filaSeleccionada >= 0 && filaSeleccionada < 5) {
-                                for (int k = 0; k < 5; k++) {
-                                    matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
-                                    Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
-                                    if (matrizEnteros[fila][columna] != 0) {
-                                        targetCell.setStyle("-fx-background-color: yellow;");
-                                    }
-                                }
-                            } else if (filaSeleccionada >= 5 && filaSeleccionada < 10) {
-                                for (int k = 5; k < 10; k++) {
-                                    matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
-                                    Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
-                                    if (matrizEnteros[fila][columna] != 0) {
-                                        targetCell.setStyle("-fx-background-color: yellow;");
-                                    }
-                                }
-                            }
-                            //System.out.println("Columna actualizada debido a la condición especial.");
-                        } else {
-                            // Lógica existente para actualizar la columna
-                            if (fila >= 0 && fila < 5) {
-                                for (int k = 0; k < 5; k++) {
-                                    matrizEnteros[k][columna] = valorSeleccionado;
-                                    Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                    if (valorSeleccionado != 0) {
-                                        targetCell.setStyle("-fx-background-color: yellow;");
-                                    }
-                                }
-                            } else if (fila >= 5 && fila < 10) {
-                                for (int k = 5; k < 10; k++) {
-                                    matrizEnteros[k][columna] = valorSeleccionado;
-                                    Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                    if (valorSeleccionado != 0) {
-                                        targetCell.setStyle("-fx-background-color: yellow;");
-                                    }
-                                }
-                            }
-                            //System.out.println("Valor actualizado en matriz central: " + valorSeleccionado);
-                        }
-                        valorSeleccionadoFlag = false;
-                    } else {
-                        valorSeleccionado = matrizEnteros[fila][columna];
-                        valorSeleccionadoFlag = true;
-                        filaSeleccionada = fila;
-                        columnaSeleccionada = columna;
-                        //System.out.println("Valor seleccionado dentro de la matriz central: " + valorSeleccionado);
-                    }
-                });
-            }
-        }
-    }
-  
-    @FXML
-    void botonCableGris(MouseEvent event) { //Metodo de la imagen del cable rojo
-        imagenCableGris.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
-            Glow glowRojo = new Glow(1);
-            imagenCableGris.setEffect(glowRojo);
-        });
-
-        imagenCableGris.setOnMouseExited(exitEvent -> { //Se quita el brillo del cable
-            imagenCableGris.setEffect(null);
-        });
-
-        imagenCableGris.setOnMouseClicked(clickedEvent ->{
-            colorActual = Color.rgb(128,128,128);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
-            configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
-            configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
-    
-            // Configurar eventos de actualización para la matriz central
-            configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
-            
-            configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
-                // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
-                for (Pane matriz : matricesProto) {
-                    desactivarEventosDeDibujo(matriz);
-                }
-            });
-            
-        });
-       
+        }*/
     }
     
     private void imprimirMatrices() {
@@ -290,7 +187,138 @@ public class Main extends Application{
         }
     }
     
+    public static void actualizarEstadoLuz() {
+        instance.matrizSuperior.actualizarEstadoLuz(Bateria.banderaBateria);
+        instance.matrizInferior.actualizarEstadoLuz(Bateria.banderaBateria);
+    }
+
+    @FXML
+    void botonConDesc(ActionEvent event) {
+        Bateria bateria = new Bateria();
+        bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
+        actualizarEstadoLuz();
+        imprimirMatrices();
+    }
+    
+    private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                final int fila = i;
+                final int columna = j;
+                Pane cell = (Pane) matrizPane.getChildren().get(i * matriz[i].length + j);
+                cell.setOnMouseClicked(event -> {
+                    if (eventosActivos){ 
+                        valorSeleccionado = matriz[fila][columna];
+                        valorSeleccionadoFlag = true;
+                        filaSeleccionada = fila;
+                        columnaSeleccionada = columna;
+                        System.out.println("Valor seleccionado: " + valorSeleccionado);
+                    }
+                });
+            }
+        }
+    }
+
+    private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
+        for (int i = 0; i < matrizEnteros.length; i++) {
+            for (int j = 0; j < matrizEnteros[i].length; j++) {
+                final int fila = i;
+                final int columna = j;
+                Pane cell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[i].length + j);
+                cell.setOnMouseClicked(event -> {
+                    // Verificamos si los eventos están activos antes de proceder
+                    if (eventosActivos) {
+                        if (valorSeleccionadoFlag) {
+                            if (matrizEnteros[filaSeleccionada][columnaSeleccionada] == 0 && (matrizEnteros[fila][columna] == 1 || matrizEnteros[fila][columna] == -1)) {
+                                // Cambiar la columna completa donde fue el primer clic
+                                if (filaSeleccionada >= 0 && filaSeleccionada < 5) {
+                                    for (int k = 0; k < 5; k++) {
+                                        matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
+                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
+                                        if (matrizEnteros[fila][columna] != 0) {
+                                            targetCell.setStyle("-fx-background-color: yellow;");
+                                        }
+                                    }
+                                } else if (filaSeleccionada >= 5 && filaSeleccionada < 10) {
+                                    for (int k = 5; k < 10; k++) {
+                                        matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
+                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
+                                        if (matrizEnteros[fila][columna] != 0) {
+                                            targetCell.setStyle("-fx-background-color: yellow;");
+                                        }
+                                    }
+                                }
+                                System.out.println("Columna actualizada debido a la condición especial.");
+                            } else {
+                                //Lógica existente para actualizar la columna
+                                if (fila >= 0 && fila < 5) {
+                                    for (int k = 0; k < 5; k++) {
+                                        matrizEnteros[k][columna] = valorSeleccionado;
+                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
+                                        if (valorSeleccionado != 0) {
+                                            targetCell.setStyle("-fx-background-color: yellow;");
+                                        }
+                                    }
+                                } else if (fila >= 5 && fila < 10) {
+                                    for (int k = 5; k < 10; k++) {
+                                        matrizEnteros[k][columna] = valorSeleccionado;
+                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
+                                        if (valorSeleccionado != 0) {
+                                            targetCell.setStyle("-fx-background-color: yellow;");
+                                        }
+                                    }
+                                }
+                                System.out.println("Columna actualizada con el valor: " + valorSeleccionado);
+                            }
+                            valorSeleccionadoFlag = false;
+                            eventosActivos = false; //Desactivar eventos después de usar
+                        } else {
+                            valorSeleccionado = matrizEnteros[fila][columna];
+                            valorSeleccionadoFlag = true;
+                            filaSeleccionada = fila;
+                            columnaSeleccionada = columna;
+                            //Mensaje en la terminal mostrando el valor seleccionado
+                            System.out.println("Valor seleccionado: " + valorSeleccionado + " en la fila " + filaSeleccionada + ", columna " + columnaSeleccionada);
+                        }
+                    }
+                });
+            }
+        }
+    }
+    
+    @FXML
+    void botonCableGris(MouseEvent event) { 
+        imagenCableGris.setOnMouseEntered(enteredEvent -> { 
+            Glow glowRojo = new Glow(1);
+            imagenCableGris.setEffect(glowRojo);
+        });
+
+        imagenCableGris.setOnMouseExited(exitEvent -> { 
+            imagenCableGris.setEffect(null);
+        });
+
+        imagenCableGris.setOnMouseClicked(clickedEvent -> {
+            colorActual = Color.rgb(128, 128, 128); 
+            obtenerValorActivo = true; 
+            eventosActivos = true; // Activamos los eventos de selección/actualización
+            configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
+            configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
+            configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
+
+            configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
+                for (Pane matriz : matricesProto) {
+                    desactivarEventosDeDibujo(matriz);
+                }
+                obtenerValorActivo = false; 
+                eventosActivos = false; // Desactivar los eventos después de usarlos
+            });
+        });
+}
+    
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
+        final int cellAlt = 20;
+        final int cellAncho = 20; 
+    
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
                 // Convertir las coordenadas del clic a coordenadas de la escena
@@ -300,31 +328,79 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
+                        int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
-                            cableActual.iniciarDibujoCable(xLocal, yLocal);
-                            break;
+                            fila -= fila/2;
+                            if (fila >= 7){
+                                fila -=2;
+                            }
+                            columna -= columna/2;
+                            if (columna > 20 ){
+                                columna += 1;
+                            }
+                            if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
+                                if (Protoboard.matrizCables[fila][columna] == 1) {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Información");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("El cuadrado ya está ocupado.");
+                                    alert.showAndWait();
+                                    return;
+                                }
+                                cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
+                                cableActual.iniciarDibujoCable(xLocal, yLocal);
+                                Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
+                                break;
+                            }
                         }
                     }
                 } else {
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
+                        int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            if (cableActual.getPane() != matrizActual) {
-                                cableActual.actualizarPane(matrizActual);
+                            fila -= fila/2;
+                            if (fila >= 7){
+                                fila -=2;
+                            }
+                            columna -=columna/2;
+                            if (columna > 20 ){
+                                columna += 1;
+                            }
+                            if (fila >= 0 && fila < Protoboard.matrizCables.length && columna >= 0 && columna < Protoboard.matrizCables[0].length) {
+                                if (Protoboard.matrizCables[fila][columna] == 1) {
+                                    Alert alert = new Alert(AlertType.INFORMATION);
+                                    alert.setTitle("Información");
+                                    alert.setHeaderText(null);
+                                    alert.setContentText("El cuadrado ya está ocupado.");
+                                    alert.showAndWait();
+                                    return;
+                                }
+    
+                                if (cableActual.getPane() != matrizActual) {
+                                    cableActual.actualizarPane(matrizActual);
+                                }
+                                cableActual.finalizarDibujoCable(xLocal, yLocal);
+                                Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
+                                cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                                onComplete.run();
+                                break;
                             }
                             cableActual.finalizarDibujoCable(xLocal, yLocal);
                             cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                             onComplete.run();
                             break;
+
                         }
                     }
                 }
             });
         }
     }
-    
+
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
             
@@ -374,43 +450,7 @@ public class Main extends Application{
         return matrizCableInferiorAzul.comprobarCuadrado(1, 1, 10, 10, 0, 0, m, x, y) ;
 
     }
-
-    // Método para dibujar un cable desde un círculo de un switch a una celda de la matriz central de la protoboard
-    private void dibujarCableSwitch_Led(Circle circle, Pane cell) {
-        // Verificar si el cable ya fue dibujado desde este círculo
-        if (switch1.isCableDibujado(circle)) {
-            return;
-        }
-        if (led.isCableDibujado(circle)) {
-            return;
-        }
-
-        // Calcular las coordenadas de inicio y fin del cable
-        double startX = circle.getParent().getLayoutX() + circle.getCenterX();
-        double startY = circle.getParent().getLayoutY() + circle.getCenterY();
-        double endX = cell.getParent().getLayoutX() + cell.getLayoutX() + cell.getWidth() / 2;
-        double endY = cell.getParent().getLayoutY() + cell.getLayoutY() + cell.getHeight() / 2;
-
-        // Calcular la distancia entre los puntos de inicio y fin
-        double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-
-        // Dibujar el cable si la distancia es menor o igual a 60 píxeles
-        if (distance <= 70) {
-            Line cable = new Line();
-            cable.setStartX(startX);
-            cable.setStartY(startY);
-            cable.setEndX(endX);
-            cable.setEndY(endY);
-            cable.setStroke(Color.rgb(178, 180, 181));
-            cable.setStrokeWidth(5);
-            paneDibujo.getChildren().add(cable);
-            switch1.setCableDibujado(circle, true); // Marcar que el cable ha sido dibujado desde este círculo
-            led.setCableDibujado(circle, true); // Marcar que el cable ha sido dibujado desde este círculo|
-        } else {
-            System.out.println("La distancia es mayor a 70 píxeles. No se dibuja el cable.");
-        }
-    }
-
+  
     // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
         matriz.setOnMouseClicked(null);
@@ -419,10 +459,18 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonLed(MouseEvent event){ //Metodo de la imagen del led
-        Led led = new Led();
-        led.brilloLed(imagenLed);
-        led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
+    void botonLed(MouseEvent event) { // Método de la imagen del led
+        imagenLed.setOnMouseEntered(enteredEvent -> { // Brillo para el cable
+            Glow glowRojo = new Glow(1);
+            imagenLed.setEffect(glowRojo);
+        });
+
+        imagenLed.setOnMouseExited(exitEvent -> { // Se quita el brillo del cable
+            imagenLed.setEffect(null);
+        });
+
+        // Configurar el evento de clic en matrizPane
+        matrizPane.setOnMouseClicked(led::handleMouseClick);
     }
 
     @FXML
@@ -437,7 +485,8 @@ public class Main extends Application{
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior
             if (banderaCableAzulInferiorBateria == false){
                 matrizInferior.configurarManejadoresDeEventosSupInf(-1);
-                
+                matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
+
                 colorActual = Color.rgb(2, 113, 245); // Le damos el color del cable
                 configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableInferiorAzul, () -> {
                     // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
@@ -467,7 +516,7 @@ public class Main extends Application{
         botonCableAzul1.setOnMouseClicked(clickedEvent -> { //Boton clickeable para el cable azul superior
             if(banderaCableAzulSuperiorBateria == false){
                 colorActual = Color.rgb(2,113,245);//Le damos el color del cable
-                
+                matrizInferior.configurarManejadoresDeEventosSupInf(-1);
                 matrizSuperior.configurarManejadoresDeEventosSupInf(-1);
                 configurarEventosDeDibujoCablesProtoboardBateria(matricesProto, matrizPaneCableSuperiorAzul,() -> {
                     // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando

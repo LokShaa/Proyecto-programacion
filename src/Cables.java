@@ -6,14 +6,16 @@ import javafx.scene.shape.Line;
 public class Cables extends Line{
     private String tipo;//Atributo para saber si es cable positivo o negativo
     private Pane pane; //Atributo para saber en que pane se dibujara el cable
-
+   
     public Cables(){//Constructor de la clase
     }
 
     public Cables(Pane pane, Color color, double startX, double startY) { // Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
+        
         this.pane = pane;
         this.setStroke(color);
         this.setStrokeWidth(10);
+        
 
         // Inicializamos las coordenadas del cable
         this.setStartX(startX);
@@ -89,5 +91,13 @@ public class Cables extends Line{
 
     public Pane getPane(){
         return pane;
+    }
+
+    public double getXInicial(){
+        return this.getStartX();
+    }
+
+    public double getYInicial(){
+        return this.getStartY();
     }
 }
