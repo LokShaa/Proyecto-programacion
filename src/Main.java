@@ -89,7 +89,7 @@ public class Main extends Application{
     private List<Pane> matricesProto;
 
     //Variables que se ocupan para la creacion de los objetos arrastrables
-    private Switch switch1 = new Switch();
+    
     private Led led;
 
     public boolean banderaCableAzulInferiorBateria = false;
@@ -123,7 +123,7 @@ public class Main extends Application{
          int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
  
          // Crear una instancia de la clase Led y pasarle las matrices
-         led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+        led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
         matricesProto = new ArrayList<>();
         // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
         matricesProto.add(matrizPane);
