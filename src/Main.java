@@ -130,25 +130,6 @@ public class Main extends Application{
         matricesProto.add(matrizPane2);
         matricesProto.add(matrizPane21);
 
-        // Agregar eventos de clic a las celdas de matrizCentralProtoboard para dibujar cables desde el switch
-        /*Pane[][] matriz = matrizCentralProtoboard.getMatriz();
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                Pane cell = matriz[i][j];
-                cell.setOnMouseClicked(event -> {
-                    Circle selectedCircle = switch1.getSelectedCircle();
-                    Circle selectedCircle2 = led.getSelectedCircle();
-                    if (selectedCircle != null) {
-                        dibujarCableSwitch_Led(selectedCircle, cell);
-                        switch1.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
-                    }
-                    if (selectedCircle2 != null) {
-                        dibujarCableSwitch_Led(selectedCircle2, cell);
-                        led.setSelectedCircle(null); // Deseleccionar el círculo después de dibujar el cable
-                    }
-                });
-            }
-        }*/
     }
     
     private void imprimirMatrices() {
