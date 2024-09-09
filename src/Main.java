@@ -511,7 +511,7 @@ public class Main extends Application{
                                     return;
                                 }
 
-                                switch1 = new Switch(matrizActual, colorActual, xLocal, yLocal, imagenSwitch);
+                                switch1 = new Switch(matrizActual, colorActual, xLocal, yLocal, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane);
                                 switch1.iniciarDibujoCable(xLocal, yLocal);
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
