@@ -1,263 +1,153 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.input.MouseButton;
-import javafx.scene.shape.Line;
-import javafx.util.Duration;
-import javafx.scene.input.MouseEvent;
 
-public class Switch extends Line {
-    private List<Line> cables = new ArrayList<>();
-    private List<ImageView> imagenesSwitch = new ArrayList<>();
-    private List<Circle> circulos = new ArrayList<>();
-    private String tipo; // Atributo para saber si es cable positivo o negativo
-    private Pane pane; // Atributo para saber en que pane se dibujara el cable
 
-    private ImageView imagenSwitch;
-    private Circle circle;
-    private Integer valorEnteroSeleccionado = null; // Variable para almacenar el valor del entero seleccionado
-    private int[][] matrizEnteros; // Matriz de enteros
-    private Pane matrizPane; // Pane que contiene la matriz
-    private Timeline timeline; // Timeline para el monitoreo
-    private Integer valorActual = null; // Variable para almacenar el valor actual de la celda
-    private int filaSwitch; // Fila del switch
-    private int columnaSwitch; // Columna del switch
-    private boolean estadoSwitch = false; // Estado del switch (false = rojo, true = verde)
-    private int[] estadoColumna; // Estado anterior de la columna
+public class Switch{
+    private Circle selectedCircle = null;
+    private boolean cableDibujadoIzq1 = false; // bandera para saber si el cable izquierdo 1 ya fue dibujado
+    private boolean cableDibujadoDer1 = false; // bandera para saber si el cable derecho 1 ya fue dibujado
+    private boolean cableDibujadoIzq2 = false; // bandera para saber si el cable izquierdo 2 ya fue dibujado
+    private boolean cableDibujadoDer2 = false; // bandera para saber si el cable derecho 2 ya fue dibujado
 
-    public void brilloSwitch(ImageView imagenSwitch) {
+    public Circle circulosSwitch(double x, double y, double radius) {
+        Circle circle = new Circle(x, y, radius);
+        circle.setFill(Color.TRANSPARENT);
+        circle.setStroke(Color.BLACK);
+        circle.setOnMouseClicked(event -> {
+            selectedCircle = circle;
+            Glow glow = new Glow(1);
+            circle.setEffect(glow);
+        });
+        return circle;
+    }
+
+
+    public void brilloSwitch(ImageView imagenSwitch){
+
         imagenSwitch.setOnMouseEntered(enteredEvent -> { // Brillo para el switch
             Glow glowSwitch = new Glow(1);
             imagenSwitch.setEffect(glowSwitch);
         });
-
+    
         imagenSwitch.setOnMouseExited(exitEvent -> { // Se quita el brillo del switch
             imagenSwitch.setEffect(null);
         });
+
     }
 
-    public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane) {
-        this.pane = pane;
-        this.setStroke(color);
-        this.setStrokeWidth(10);
-        this.matrizEnteros = matrizEnteros;
-        this.matrizPane = matrizPane;
+    private boolean movido = false; // bandera para que el pane del switch no se vuelva a mover despues de soltar el mouse
 
-        // Inicializamos las coordenadas del cable
-        this.setStartX(startX);
-        this.setStartY(startY);
-        this.setEndX(startX); // Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea
-        this.setEndY(startY);
 
-        this.setMouseTransparent(false);
-        pane.getChildren().add(this); // Añadimos el cable al pane
 
-        // Agregar EventHandler para detectar clic derecho
-        this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) { // Verificar si es clic derecho
-                pane.getChildren().remove(this); // Eliminar el cable del pane
-                pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
-                pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
-            }
-        });
-    }
+    public void switchArrastrable(ImageView imagenSwitch, Pane paneDibujo){
 
-    private void crearImagenSwitch(ImageView imagenSwitch) {
-        // Calcular el punto medio del cable
-        double midX = (this.getStartX() + this.getEndX()) / 2;
-        double midY = (this.getStartY() + this.getEndY()) / 2;
+        imagenSwitch.setOnMouseClicked(clickedEvent -> { // Crear pane/imagen arrastrable
+            movido = false; // Reiniciar la bandera para que el pane del switch se pueda mover nuevamente
+            cableDibujadoDer1 = false; // Reiniciar la bandera para que el cable derecho 1 se pueda dibujar nuevamente
+            cableDibujadoDer2 = false; // Reiniciar la bandera para que el cable derecho 2 se pueda dibujar nuevamente
+            cableDibujadoIzq1 = false; // Reiniciar la bandera para que el cable izquierdo 1 se pueda dibujar nuevamente
+            cableDibujadoIzq2 = false; // Reiniciar la bandera para que el cable izquierdo 2 se pueda dibujar nuevamente
+            
+            Pane nuevoPaneSwitch = new Pane();
+            nuevoPaneSwitch.setPrefSize(75, 95); // Tamaño del pane switch
+            nuevoPaneSwitch.setStyle("-fx-background-color: transparent;"); // Color transparente del pane
+            nuevoPaneSwitch.setLayoutX(200); // Posición inicial X del nuevo Pane
+            nuevoPaneSwitch.setLayoutY(200); // Posición inicial Y del nuevo Pane
+            
+            paneDibujo.getChildren().add(nuevoPaneSwitch);// Agregar el pane del switch al Pane principal
 
-        // Crear la imagen
-        this.imagenSwitch = new ImageView(imagenSwitch.getImage());
-        this.imagenSwitch.setFitWidth(50); // Ancho
-        this.imagenSwitch.setFitHeight(57); // Alto
-        this.imagenSwitch.setX(midX - 25);
-        this.imagenSwitch.setY(midY - 28);
+            ImageView nuevoSwitch = new ImageView(imagenSwitch.getImage());
+            nuevoSwitch.setX(0); // Posición inicial X
+            nuevoSwitch.setY(0); // Posición inicial Y
 
-        // Crear el círculo clickeable
-        circle = new Circle(midX, midY, 14, Color.RED);
-        circle.setOnMouseClicked(this::manejarClickCirculo);
+            // Establecer el tamaño del switch
+            nuevoSwitch.setFitWidth(75); // Ancho
+            nuevoSwitch.setFitHeight(94); // Alto
 
-        // Añadir la imagen y el círculo al pane
-        pane.getChildren().addAll(this.imagenSwitch, circle);
-    }
+            nuevoPaneSwitch.getChildren().add(nuevoSwitch); //Agregar la imagen del Switch a nuevoPaneSwitch
+            Circle circuloSwitchIzq1 = circulosSwitch(8, 5, 5);// Crea el círculo izquierdo superior del switch
+            Circle circuloSwitchDer1 = circulosSwitch(67, 5, 5);// Crea el círculo derecho superior del switch
+            Circle circuloSwitchIzq2 = circulosSwitch(8, 90, 5);// Crea el círculo izquierdo inferior del switch
+            Circle circuloSwitchDer2 = circulosSwitch(67, 90, 5);// Crea el círculo derecho inferior del switch
+            nuevoPaneSwitch.getChildren().addAll(circuloSwitchIzq1, circuloSwitchDer1, circuloSwitchIzq2, circuloSwitchDer2); // Agrega los panes de los circulos del switch al Pane principal
 
-    private void manejarClickCirculo(MouseEvent event) {
-        int nuevaColumnaSwitch = (int) (event.getX() / (matrizPane.getWidth() / matrizEnteros[0].length));
-        int nuevaFilaSwitch = (int) (event.getY() / (matrizPane.getHeight() / matrizEnteros.length));
-    
-        if (!estadoSwitch || nuevaColumnaSwitch != columnaSwitch) {
-            // Cambiar a verde y empezar a pasar energía
-            valorActual = obtenerValorEnteroDePosicion(event);
-            filaSwitch = nuevaFilaSwitch;
-            columnaSwitch = nuevaColumnaSwitch;
-            estadoColumna = new int[matrizEnteros.length];
-    
-            for (int i = 0; i < matrizEnteros.length; i++) {
-                estadoColumna[i] = matrizEnteros[i][columnaSwitch];
-            }
-    
-            // Si el switch estaba activo en otra columna, detener el monitoreo de la columna anterior
-            if (estadoSwitch && nuevaColumnaSwitch != columnaSwitch) {
-                stopMonitoring();
-                for (int i = 0; i < matrizEnteros.length; i++) {
-                    if (estadoColumna[i] == 0) {
-                        asignarValorEnteroAPosicion(i, columnaSwitch, 0);
-                    }
-                }
-            }
-    
-            // Determinar la nueva columna de destino
-            int columnaDestino = (columnaSwitch <= 4) ? 5 : 0;
-    
-            // Pasar energía a la nueva columna de destino
-            for (int i = 0; i < matrizEnteros.length; i++) {
-                if (columnaDestino <= 4) {
-                    for (int j = 0; j < 5; j++) {
-                        matrizEnteros[i][j] = valorActual;
-                        matrizPane[i][j].setStyle("-fx-background-color: yellow;");
-                    }
+            //Circulo grande central para que al hacer click en el cambie el color inficando que esta activo o inactivo
+            Circle circuloSwitchCentral = new Circle(38, 47, 20);
+            circuloSwitchCentral.setFill(Color.RED);
+            circuloSwitchCentral.setStroke(Color.BLACK);
+            
+            circuloSwitchCentral.setOnMouseClicked(event -> {
+                if (circuloSwitchCentral.getFill() == Color.RED) {
+                    circuloSwitchCentral.setFill(Color.GREEN);
                 } else {
-                    for (int j = 5; j < 10; j++) {
-                        matrizEnteros[i][j] = valorActual;
-                        matrizPane[i][j].setStyle("-fx-background-color: yellow;");
-                    }
+                    circuloSwitchCentral.setFill(Color.RED);
                 }
-            }
-    
-            startMonitoring();
-            circle.setFill(Color.GREEN);
-            estadoSwitch = true;
-            asignarValorEnteroAPosicion(filaSwitch, columnaSwitch, valorActual);
-        } else {
-            // Cambiar a rojo y detener el paso de energía
-            stopMonitoring();
-            for (int i = 0; i < matrizEnteros.length; i++) {
-                if (estadoColumna[i] == 0) {
-                    asignarValorEnteroAPosicion(i, columnaSwitch, 0);
+            });
+            nuevoPaneSwitch.getChildren().add(circuloSwitchCentral);
+
+
+
+            // Hace el pane del switch arrastrable
+            nuevoPaneSwitch.setOnMousePressed(pressEvent -> {
+                nuevoPaneSwitch.setUserData(new double[]{pressEvent.getSceneX(), pressEvent.getSceneY(), nuevoPaneSwitch.getLayoutX(), nuevoPaneSwitch.getLayoutY()});
+            });
+
+            nuevoSwitch.setOnMouseDragged(dragEvent -> {
+                if(!movido){
+                    double[] data = (double[]) nuevoPaneSwitch.getUserData();
+                    double deltaX = dragEvent.getSceneX() - data[0];
+                    double deltaY = dragEvent.getSceneY() - data[1];
+                    nuevoPaneSwitch.setLayoutX(data[2] + deltaX);
+                    nuevoPaneSwitch.setLayoutY(data[3] + deltaY);
                 }
-            }
-            circle.setFill(Color.RED);
-            estadoSwitch = false;
-        }
-    }
+            });
 
-    private void startMonitoring() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> actualizar()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-    }
-
-    private void stopMonitoring() {
-        if (timeline != null) {
-            timeline.stop();
-        }
-    }
-
-    private void actualizar() {
-        // Asignar el valor actual a la columna
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            asignarValorEnteroAPosicion(i, columnaSwitch, valorActual);
-        }
-    }
-
-    private Integer obtenerValorEnteroDePosicion(MouseEvent event) {
-        // Implementar lógica para obtener el valor entero de la posición clickeada
-        int fila = (int) (event.getY() / (matrizPane.getHeight() / matrizEnteros.length));
-        int columna = (int) (event.getX() / (matrizPane.getWidth() / matrizEnteros[0].length));
-        return matrizEnteros[fila][columna];
-    }
-
-    private void asignarValorEnteroAPosicion(int fila, int columna, Integer valor) {
-        // Asignar el valor entero a la posición especificada
-        matrizEnteros[fila][columna] = valor;
-        actualizarEstiloCelda(fila, columna, valor);
-    }
-
-    private void actualizarEstiloCelda(int fila, int columna, Integer valor) {
-        // Actualizar el estilo del Pane correspondiente
-        Pane targetCell = (Pane) matrizPane.getChildren().get(fila * matrizEnteros[fila].length + columna);
-        if (valor != 0) {
-            targetCell.setStyle("-fx-background-color: yellow;");
-        } else {
-            targetCell.setStyle("-fx-background-color: black;");
-        }
-    }
-
-    public void iniciarDibujoCable(double startX, double startY) {
-        this.setStartX(startX);
-        this.setStartY(startY);
-    }
-
-    public void finalizarDibujoCable(double endX, double endY, ImageView imagenSwitch) {
-        this.setEndX(endX);
-        this.setEndY(endY);
-        crearImagenSwitch(imagenSwitch); // Actualizar la imagen y el círculo cuando se finaliza el dibujo del cable
-    }
-
-    public void actualizarPane(Pane nuevoPane, ImageView imagenSwitch) {
-        // Guardar las coordenadas globales del cable
-        double xGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getX();
-        double yGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getY();
-        double xGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getX();
-        double yGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getY();
-
-        // Remover el cable del pane actual
-        this.pane.getChildren().remove(this);
-
-        // Actualizar el pane
-        this.pane = nuevoPane;
-
-        // Añadir el cable al nuevo pane
-        nuevoPane.getChildren().add(this);
-
-        // Convertir las coordenadas globales a las coordenadas locales del nuevo pane
-        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();
-        double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
-        double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
-        double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
-
-        // Actualizar las coordenadas del cable
-        this.setStartX(xLocalesIniciales);
-        this.setStartY(yLocalesIniciales);
-        this.setEndX(xLocalesFinales);
-        this.setEndY(yLocalesFinales);
-
-        // Volver a asignar el EventHandler de clic derecho para eliminar el cable
-        this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
-            }
+            nuevoPaneSwitch.setOnMouseReleased(releaseEvent -> {
+                if (!movido) {
+                    movido = true; // Marcar que el pane ha sido movido después de soltar el mouse
+                }
+            });
+        
         });
 
-        crearImagenSwitch(imagenSwitch); // Actualizar la imagen y el círculo cuando se actualiza el pane
+
+    };
+
+    // Getters y Setters para los circulos generados
+    public Circle getSelectedCircle() {
+        return selectedCircle;
     }
 
-    // Método para asignar el tipo de cable
-    public void setTipo(Color color) {
-        if (color.equals(Color.RED)) {
-            this.tipo = "Positivo";
-        } else if (color.equals(Color.BLUE)) {
-            this.tipo = "Negativo";
+    public void setSelectedCircle(Circle selectedCircle) {
+        this.selectedCircle = selectedCircle;
+    }
+
+    public boolean isCableDibujado(Circle circle) {
+        if (circle.getCenterX() == 8 && circle.getCenterY() == 5) {
+            return cableDibujadoIzq1;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 5) {
+            return cableDibujadoDer1;
+        } else if (circle.getCenterX() == 8 && circle.getCenterY() == 90) {
+            return cableDibujadoIzq2;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 90) {
+            return cableDibujadoDer2;
+        }
+        return false;
+    }
+
+    public void setCableDibujado(Circle circle, boolean dibujado) {
+        if (circle.getCenterX() == 8 && circle.getCenterY() == 5) {
+            cableDibujadoIzq1 = dibujado;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 5) {
+            cableDibujadoDer1 = dibujado;
+        } else if (circle.getCenterX() == 8 && circle.getCenterY() == 90) {
+            cableDibujadoIzq2 = dibujado;
+        } else if (circle.getCenterX() == 67 && circle.getCenterY() == 90) {
+            cableDibujadoDer2 = dibujado;
         }
     }
 
-    public Pane getPane() {
-        return pane;
-    }
-
-    public double getXInicial() {
-        return this.getStartX();
-    }
-
-    public double getYInicial() {
-        return this.getStartY();
-    }
 }

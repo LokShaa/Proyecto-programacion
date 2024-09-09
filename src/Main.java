@@ -444,7 +444,6 @@ public class Main extends Application{
 
     }
   
-    // Método para desactivar los eventos de dibujo
     private void desactivarEventosDeDibujo(Pane matriz) {
         matriz.setOnMouseClicked(null);
         matriz.setOnMouseEntered(null);
@@ -573,21 +572,25 @@ public class Main extends Application{
             });
         }
     }
-
     @FXML
-    void botonLed(MouseEvent event) { // Método de la imagen del led
-        imagenLed.setOnMouseEntered(enteredEvent -> { // Brillo para el cable
+    void botonLed(MouseEvent event) { 
+        imagenLed.setOnMouseEntered(enteredEvent -> { 
             Glow glowRojo = new Glow(1);
             imagenLed.setEffect(glowRojo);
         });
-
-        imagenLed.setOnMouseExited(exitEvent -> { // Se quita el brillo del cable
+    
+        imagenLed.setOnMouseExited(exitEvent -> { 
             imagenLed.setEffect(null);
         });
-
-        matrizPane.setOnMouseClicked(led::handleMouseClick);
+    
+        imagenLed.setOnMouseClicked(clickedEvent -> {
+            // Desactivar eventos de dibujo de LED en todas las matrices
+            desactivarEventosDeDibujo(matrizPane);
+    
+            // Reactivar el evento de dibujo de LED en la matriz principal
+            matrizPane.setOnMouseClicked(led::handleMouseClick);
+        });
     }
-
     @FXML
     void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior

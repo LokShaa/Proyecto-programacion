@@ -89,46 +89,126 @@ public class Cables extends Line {
         // Verificar que los índices estén dentro de los límites de la matriz
         if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
             filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
-    
+
             // Monitorear y actualizar valores de las celdas
             int valorInicial = matrizEnteros[filaInicial][columnaInicial];
             int valorFinal = matrizEnteros[filaFinal][columnaFinal];
-    
-            if (valorInicial != 0) {
-                if (columnaFinal >= 0 && columnaFinal <= 4) {
-                    for (int i = 0; i < 5; i++) {
-                        matrizEnteros[i][columnaFinal] = valorInicial;
-                        matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+
+            if (!(valorInicial != 0 && valorFinal != 0)) {
+                if (valorInicial == 1 || valorInicial == -1) {
+                    if (columnaFinal == 0) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 1) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 2) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 3) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 4) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 5) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 6) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 7) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 8) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 9) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else {
+                        matrizPane[filaFinal][columnaFinal].setStyle("-fx-background-color: black;");
                     }
-                } else if (columnaFinal >= 5 && columnaFinal <= 9) {
-                    for (int i = 5; i < 10; i++) {
-                        matrizEnteros[i + 5][columnaFinal] = valorInicial;
-                        matrizPane[i + 5][columnaFinal].setStyle("-fx-background-color: yellow;");
-                    }
-                } else {
-                    matrizEnteros[filaFinal][columnaFinal] = valorInicial;
-                    matrizPane[filaFinal][columnaFinal].setStyle("-fx-background-color: yellow;");
                 }
-            }
-    
-            if (valorFinal != 0) {
-                if (columnaInicial >= 0 && columnaInicial <= 4) {
-                    for (int i = 0; i < 5; i++) {
-                        matrizEnteros[i][columnaInicial] = valorFinal;
-                        matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+            
+                if (valorFinal == 1 || valorFinal == -1) {
+                    if (filaInicial == 0) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 1) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 2) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 3) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 4) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 5) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 6) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 7) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 8) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 9) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else {
+                        matrizPane[filaFinal][columnaFinal].setStyle("-fx-background-color: black;");
                     }
-                } else if (columnaInicial >= 5 && columnaInicial <= 9) {
-                    for (int i = 5; i < 10; i++) {
-                        matrizEnteros[i + 5][columnaInicial] = valorFinal;
-                        matrizPane[i + 5][columnaInicial].setStyle("-fx-background-color: yellow;");
-                    }
-                } else {
-                    matrizEnteros[filaInicial][columnaInicial] = valorFinal;
-                    matrizPane[filaInicial][columnaInicial].setStyle("-fx-background-color: yellow;");
                 }
+            
+                Main.actualizarMatriz();
             }
-    
-            Main.actualizarMatriz();
         }
     }
 
@@ -211,7 +291,6 @@ public class Cables extends Line {
         });
     }
 
-    
     public void setTipo(Color color) {
         if (color.equals(Color.RED)) {
             this.tipo = "Positivo";
