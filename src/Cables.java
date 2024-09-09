@@ -11,25 +11,27 @@ public class Cables extends Line{
     int columnaInicial;
     int filaFinal;
     int columnaFinal;
-    public Cables(){//Constructor de la clase
-    }
 
-    public Cables(Pane pane, Color color, double startX, double startY) { // Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
-        
+    private int[][] matrizEnteros;
+    private Pane[][] matrizPane;
+    private int segundaCeldaX;
+    private int segundaCeldaY;
+
+    public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros) {
         this.pane = pane;
+        this.matrizPane = matrizPane;
+        this.matrizEnteros = matrizEnteros;
         this.setStroke(color);
         this.setStrokeWidth(10);
 
-        // Inicializamos las coordenadas del cable
         this.setStartX(startX);
         this.setStartY(startY);
-        this.setEndX(startX); //Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea
+        this.setEndX(startX);
         this.setEndY(startY);
 
         this.setMouseTransparent(false);
-        pane.getChildren().add(this); // Añadimos el cable al pane
+        pane.getChildren().add(this);
 
-        // Agregar EventHandler para detectar clic derecho
         this.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {//Verificar si es clic derecho
                 double xLocalInicial = this.getStartX();
@@ -50,6 +52,11 @@ public class Cables extends Line{
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 
                 pane.getChildren().remove(this); //Eliminar el cable del pane
+
+                if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
+                    matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
+                }
+                Main.actualizarMatriz();
             }
         });
     }
@@ -92,45 +99,55 @@ public class Cables extends Line{
     public void finalizarDibujoCable(double endX, double endY) {
         this.setEndX(endX);
         this.setEndY(endY);
+
+        // Guardar las coordenadas de la segunda celda
+        segundaCeldaX = obtenerIndiceMatrizX(endX);
+        segundaCeldaY = obtenerIndiceMatrizY(endY);
     }
-    
+
     public void actualizarPane(Pane nuevoPane) {
-        // Guardar las coordenadas globales del cable
         double xGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getX();
         double yGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getY();
         double xGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getX();
         double yGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getY();
-    
-        // Remover el cable del pane actual
+
         this.pane.getChildren().remove(this);
-    
-        // Actualizar el pane
         this.pane = nuevoPane;
-    
-        // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
-    
-        // Convertir las coordenadas globales a las coordenadas locales del nuevo pane
+
         double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();
         double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
         double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
         double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
-    
-        // Actualizar las coordenadas del cable
+
         this.setStartX(xLocalesIniciales);
         this.setStartY(yLocalesIniciales);
         this.setEndX(xLocalesFinales);
         this.setEndY(yLocalesFinales);
-    
-        // Volver a asignar el EventHandler de clic derecho para eliminar el cable
+
         this.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
+                pane.getChildren().remove(this);
+                if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
+                    matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
+                }
+                Main.actualizarMatriz();
             }
         });
     }
 
-    //metodo para asignar el tipo de cable
+    private void imprimirMatriz() {
+        for (int i = 0; i < matrizEnteros.length; i++) {
+            if (i == 5) {
+                System.out.println("-----------------------------------------------------------");
+            }
+            for (int j = 0; j < matrizEnteros[i].length; j++) {
+                System.out.print(matrizEnteros[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
     public void setTipo(Color color) {
         if (color.equals(Color.RED)) {
             this.tipo = "Positivo";
@@ -139,7 +156,7 @@ public class Cables extends Line{
         }
     }
 
-    public Pane getPane(){
+    public Pane getPane() {
         return pane;
     }
 
@@ -149,5 +166,29 @@ public class Cables extends Line{
 
     public double getYInicial(){
         return this.getStartY();
+    }
+
+    private int obtenerIndiceMatrizX(double x) {
+        for (int i = 0; i < matrizPane.length; i++) {
+            for (int j = 0; j < matrizPane[i].length; j++) {
+                Pane celda = matrizPane[i][j];
+                if (celda.getBoundsInParent().contains(x, this.getEndY())) {
+                    return j;
+                }
+            }
+        }
+        return -1;
+    }
+
+    private int obtenerIndiceMatrizY(double y) {
+        for (int i = 0; i < matrizPane.length; i++) {
+            for (int j = 0; j < matrizPane[i].length; j++) {
+                Pane celda = matrizPane[i][j];
+                if (celda.getBoundsInParent().contains(this.getEndX(), y)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
     }
 }

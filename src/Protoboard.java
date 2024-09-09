@@ -45,6 +45,7 @@ public class Protoboard{
         matrizPane.setPrefSize(ancho, alto);
     }
 
+    //Método para manejar el click en la matriz central
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
             if(energia == 1){
@@ -105,6 +106,7 @@ public class Protoboard{
         //imprimirMatrizEnteros();
     }
     
+    //Método para inicializar la matriz de la parte superior e inferior
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
@@ -138,7 +140,7 @@ public class Protoboard{
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
-
+    
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
@@ -161,6 +163,7 @@ public class Protoboard{
         // Ajustar el tamaño del pane matrizPane
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
+    
     
     public void inicializarMatrizCablesBateriaAzul(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
@@ -231,6 +234,7 @@ public class Protoboard{
     public Pane[][] getMatriz() {
         return matriz;
     }
+
     public int[][] getMatrizEnteros() {
         return matrizEnteros;
     }
