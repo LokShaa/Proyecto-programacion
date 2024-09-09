@@ -114,7 +114,13 @@ public class Main extends Application{
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
-    
+        
+        Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+        int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+ 
+         // Crear una instancia de la clase Led y pasarle las matrices
+        led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
         matrices1.add(matrizPane);
