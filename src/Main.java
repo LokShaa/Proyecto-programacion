@@ -132,6 +132,13 @@ public class Main extends Application{
 
     }
     
+    public static void actualizarMatriz() {
+        if (instance != null) {
+            instance.imprimirMatrices();
+            System.out.println("..............................................................");
+        }
+    }
+
     private void imprimirMatrices() {
         // Obtener las matrices de los objetos Protoboard
         int[][] matrizCentral = matrizCentralProtoboard.getMatrizEnteros();
@@ -178,7 +185,6 @@ public class Main extends Application{
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
-        imprimirMatrices();
     }
     
     private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
@@ -266,7 +272,7 @@ public class Main extends Application{
             }
         }
     }
-    
+      
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -299,7 +305,7 @@ public class Main extends Application{
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
         final int cellAlt = 20;
         final int cellAncho = 20; 
-    
+
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
                 // Convertir las coordenadas del clic a coordenadas de la escena
@@ -329,7 +335,7 @@ public class Main extends Application{
                                     alert.showAndWait();
                                     return;
                                 }
-                                cableActual = new Cables(matrizActual, colorActual, xLocal, yLocal);
+                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros()); // Pasar la matriz del Main
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 Protoboard.matrizCables[fila][columna] = 1; // Marcar la celda como ocupada
                                 break;
@@ -360,7 +366,7 @@ public class Main extends Application{
                                     alert.showAndWait();
                                     return;
                                 }
-    
+
                                 if (cableActual.getPane() != matrizActual) {
                                     cableActual.actualizarPane(matrizActual);
                                 }
@@ -393,7 +399,7 @@ public class Main extends Application{
 
             if (cableActual == null) {
                 if (comprobarCuadradoEnMatricesBateria(matrizInicial, xLocal, yLocal)) {
-                    cableActual = new Cables(matrizInicial, colorActual, xLocal, yLocal);
+                    cableActual = new Cables(matrizInicial,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal,matrizCentralProtoboard.getMatrizEnteros()); 
                     cableActual.iniciarDibujoCable(xLocal, yLocal);
                 }
             }

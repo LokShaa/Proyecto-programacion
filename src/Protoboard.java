@@ -142,7 +142,6 @@ public class Protoboard{
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
     
-   
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
