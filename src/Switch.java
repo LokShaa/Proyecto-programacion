@@ -1,9 +1,5 @@
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -14,9 +10,7 @@ import javafx.util.Duration;
 import javafx.scene.input.MouseEvent;
 
 public class Switch extends Line {
-    private List<Line> cables = new ArrayList<>();
-    private List<ImageView> imagenesSwitch = new ArrayList<>();
-    private List<Circle> circulos = new ArrayList<>();
+
     private String tipo; // Atributo para saber si es cable positivo o negativo
     private Pane pane; // Atributo para saber en que pane se dibujara el cable
 
@@ -31,17 +25,6 @@ public class Switch extends Line {
     private int columnaSwitch; // Columna del switch
     private boolean estadoSwitch = false; // Estado del switch (false = rojo, true = verde)
     private int[] estadoColumna; // Estado anterior de la columna
-
-    public void brilloSwitch(ImageView imagenSwitch) {
-        imagenSwitch.setOnMouseEntered(enteredEvent -> { // Brillo para el switch
-            Glow glowSwitch = new Glow(1);
-            imagenSwitch.setEffect(glowSwitch);
-        });
-
-        imagenSwitch.setOnMouseExited(exitEvent -> { // Se quita el brillo del switch
-            imagenSwitch.setEffect(null);
-        });
-    }
 
     public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane) {
         this.pane = pane;

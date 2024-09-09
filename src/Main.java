@@ -463,10 +463,6 @@ public class Main extends Application{
 
         imagenSwitch.setOnMouseClicked(clickedEvent ->{
             colorActual = Color.rgb(128,128,128);//ESTABLECEMOS EL COLOR DEL CABLE QUE SE USARA
-            //configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
-            //configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
-            // Configurar eventos de actualización para la matriz central
-            //configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
             configurarEventosDeDibujoSwitch(matrices1, () -> {
                 // Después de dibujar el cable, desactiva la posibilidad de seguir dibujando
                 for (Pane matriz : matrices1) {
