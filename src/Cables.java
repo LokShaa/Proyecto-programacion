@@ -6,11 +6,11 @@ import javafx.scene.shape.Line;
 public class Cables extends Line{
     private String tipo;//Atributo para saber si es cable positivo o negativo
     private Pane pane; //Atributo para saber en que pane se dibujara el cable
-
     public Cables(){//Constructor de la clase
     }
 
     public Cables(Pane pane, Color color, double startX, double startY) { // Constructor de la clase con un pane que ira sobre la imagen del protoboard para dibujar los cables sobre esta
+        
         this.pane = pane;
         this.setStroke(color);
         this.setStrokeWidth(10);
@@ -41,6 +41,7 @@ public class Cables extends Line{
         this.setEndX(endX);
         this.setEndY(endY);
     }
+    
     public void actualizarPane(Pane nuevoPane) {
         // Guardar las coordenadas globales del cable
         double xGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getX();
@@ -50,25 +51,31 @@ public class Cables extends Line{
     
         // Remover el cable del pane actual
         this.pane.getChildren().remove(this);
-
+    
         // Actualizar el pane
         this.pane = nuevoPane;
-
+    
         // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
-
+    
         // Convertir las coordenadas globales a las coordenadas locales del nuevo pane
-        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();//SceneToLocal convierte las coordenadas globales a las locales!!
+        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();
         double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
         double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
         double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
-
+    
         // Actualizar las coordenadas del cable
         this.setStartX(xLocalesIniciales);
         this.setStartY(yLocalesIniciales);
         this.setEndX(xLocalesFinales);
         this.setEndY(yLocalesFinales);
-        
+    
+        // Volver a asignar el EventHandler de clic derecho para eliminar el cable
+        this.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
+            }
+        });
     }
 
     //metodo para asignar el tipo de cable
@@ -82,5 +89,13 @@ public class Cables extends Line{
 
     public Pane getPane(){
         return pane;
+    }
+
+    public double getXInicial(){
+        return this.getStartX();
+    }
+
+    public double getYInicial(){
+        return this.getStartY();
     }
 }
