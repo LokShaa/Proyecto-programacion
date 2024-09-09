@@ -2,26 +2,20 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.shape.Line;
-import javax.swing.JOptionPane;
+
 
 
 public class Main extends Application{
@@ -81,7 +75,7 @@ public class Main extends Application{
     private Cables cableActual;
     private Color colorActual;
 
-    Protoboard matrizCentralProtoboard = new Protoboard();
+    static final Protoboard matrizCentralProtoboard = new Protoboard();
     Protoboard matrizSuperior = new Protoboard();
     Protoboard matrizInferior = new Protoboard();
     Protoboard matrizCableSuperiorAzul = new Protoboard();
@@ -92,8 +86,8 @@ public class Main extends Application{
     private List<Pane> matricesProto;
     private List<Pane> matrices1;
     //Variables que se ocupan para la creacion de los objetos arrastrables
-
     private Switch switch1;
+    private Led led;
 
     public boolean banderaCableAzulInferiorBateria = false;
     public boolean banderaCableAzulSuperiorBateria = false;
@@ -263,6 +257,8 @@ public class Main extends Application{
             }
         }
     }
+
+  
     @FXML
     void botonCableGris(MouseEvent event) { //Metodo de la imagen del cable rojo
         imagenCableGris.setOnMouseEntered(enteredEvent -> { //Brillo para el cable
@@ -379,8 +375,6 @@ public class Main extends Application{
         }
     }
 
-
-
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
             
@@ -436,13 +430,6 @@ public class Main extends Application{
         matriz.setOnMouseClicked(null);
         matriz.setOnMouseEntered(null);
         matriz.setOnMouseExited(null);
-    }
-
-    @FXML
-    void botonLed(MouseEvent event){ //Metodo de la imagen del led
-        Led led = new Led();
-        led.brilloLed(imagenLed);
-        led.ledArrastrable(imagenLed, imagenLed2, paneDibujo);
     }
 
     @FXML
@@ -569,6 +556,20 @@ public class Main extends Application{
     }
 
     @FXML
+    void botonLed(MouseEvent event) { // Método de la imagen del led
+        imagenLed.setOnMouseEntered(enteredEvent -> { // Brillo para el cable
+            Glow glowRojo = new Glow(1);
+            imagenLed.setEffect(glowRojo);
+        });
+
+        imagenLed.setOnMouseExited(exitEvent -> { // Se quita el brillo del cable
+            imagenLed.setEffect(null);
+        });
+
+        matrizPane.setOnMouseClicked(led::handleMouseClick);
+    }
+
+    @FXML
     void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior
             if (banderaCableAzulInferiorBateria == false){
@@ -688,11 +689,12 @@ public class Main extends Application{
             botonCableRojo1.setEffect(null);
         });
     }
-    
+
     @Override
     public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
+
         primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(root,1920,1000));
         primaryStage.show();

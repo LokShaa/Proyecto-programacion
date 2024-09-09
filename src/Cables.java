@@ -6,6 +6,11 @@ import javafx.scene.shape.Line;
 public class Cables extends Line{
     private String tipo;//Atributo para saber si es cable positivo o negativo
     private Pane pane; //Atributo para saber en que pane se dibujara el cable
+    private static final int CELL_SIZE = 20;
+    int filaInicial;
+    int columnaInicial;
+    int filaFinal;
+    int columnaFinal;
     public Cables(){//Constructor de la clase
     }
 
@@ -26,10 +31,57 @@ public class Cables extends Line{
 
         // Agregar EventHandler para detectar clic derecho
         this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {//Veriicar si es clic derecho
+            if (event.getButton() == MouseButton.SECONDARY) {//Verificar si es clic derecho
+                double xLocalInicial = this.getStartX();
+                double yLocalInicial = this.getStartY();
+                double xLocalFinal = this.getEndX();
+                double yLocalFinal = this.getEndY();
+                filaInicial = (int) (yLocalInicial / CELL_SIZE);
+                columnaInicial = (int) (xLocalInicial / CELL_SIZE);
+                filaFinal = (int) (yLocalFinal / CELL_SIZE);
+                columnaFinal = (int) (xLocalFinal / CELL_SIZE);
+                
+                filaInicial = ajustarFila(filaInicial);
+                columnaInicial = ajustarColumna(columnaInicial);
+                filaFinal = ajustarFila(filaFinal);
+                columnaFinal = ajustarColumna(columnaFinal);
+
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+                
                 pane.getChildren().remove(this); //Eliminar el cable del pane
             }
         });
+    }
+    public int getFilaInicial(){
+        return filaInicial;
+    }
+    public int getColumnaInicial(){
+        return columnaInicial;
+    }
+    public int getFilaFinal(){
+        return filaFinal;
+    }
+    public int getColumnaFinal(){
+        return columnaFinal;
+    }
+    // Método para ajustar la fila según las reglas específicas
+    private int ajustarFila(int fila) {
+        fila -= (fila / 2);
+        if (fila >= 7){
+            fila -=2;
+        }
+        
+        return fila;
+    }
+
+    // Método para ajustar la columna según las reglas específicas
+    private int ajustarColumna(int columna) {
+        columna -= (columna / 2);
+        if (columna > 20 ){
+            columna += 1;
+        }
+        return columna;
     }
 
     public void iniciarDibujoCable(double startX, double startY) {
