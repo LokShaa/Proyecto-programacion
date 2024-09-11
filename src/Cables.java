@@ -1,11 +1,20 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.util.Duration;
 
 public class Cables extends Line {
-    private String tipo;
-    private Pane pane;
+    private String tipo; // Atributo para saber si es cable positivo o negativo
+    private Pane pane; // Atributo para saber en qué pane se dibujará el cable
+    private static final int CELL_SIZE = 20;
+    int filaInicial;
+    int columnaInicial;
+    int filaFinal;
+    int columnaFinal;
+
     private int[][] matrizEnteros;
     private Pane[][] matrizPane;
     private int segundaCeldaX;
@@ -27,14 +36,214 @@ public class Cables extends Line {
         pane.getChildren().add(this);
 
         this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                pane.getChildren().remove(this);
+            if (event.getButton() == MouseButton.SECONDARY) { // Verificar si es clic derecho
+                double xLocalInicial = this.getStartX();
+                double yLocalInicial = this.getStartY();
+                double xLocalFinal = this.getEndX();
+                double yLocalFinal = this.getEndY();
+                filaInicial = (int) (yLocalInicial / CELL_SIZE);
+                columnaInicial = (int) (xLocalInicial / CELL_SIZE);
+                filaFinal = (int) (yLocalFinal / CELL_SIZE);
+                columnaFinal = (int) (xLocalFinal / CELL_SIZE);
+
+                filaInicial = ajustarFila(filaInicial);
+                columnaInicial = ajustarColumna(columnaInicial);
+                filaFinal = ajustarFila(filaFinal);
+                columnaFinal = ajustarColumna(columnaFinal);
+
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+
+                pane.getChildren().remove(this); // Eliminar el cable del pane
+
                 if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
                     matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
                 }
                 Main.actualizarMatriz();
             }
         });
+
+        // Monitoreo constante de las celdas
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            monitorearCeldas();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void monitorearCeldas() {
+        double xLocalInicial = this.getStartX();
+        double yLocalInicial = this.getStartY();
+        double xLocalFinal = this.getEndX();
+        double yLocalFinal = this.getEndY();
+        filaInicial = (int) (yLocalInicial / CELL_SIZE);
+        columnaInicial = (int) (xLocalInicial / CELL_SIZE);
+        filaFinal = (int) (yLocalFinal / CELL_SIZE);
+        columnaFinal = (int) (xLocalFinal / CELL_SIZE);
+    
+        filaInicial = ajustarFila(filaInicial);
+        columnaInicial = ajustarColumna(columnaInicial);
+        filaFinal = ajustarFila(filaFinal);
+        columnaFinal = ajustarColumna(columnaFinal);
+    
+        // Verificar que los índices estén dentro de los límites de la matriz
+        if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
+            filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
+
+            // Monitorear y actualizar valores de las celdas
+            int valorInicial = matrizEnteros[filaInicial][columnaInicial];
+            int valorFinal = matrizEnteros[filaFinal][columnaFinal];
+
+            if (!(valorInicial != 0 && valorFinal != 0)) {
+                if (valorInicial == 1 || valorInicial == -1) {
+                    if (columnaFinal == 0) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 1) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 2) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 3) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 4) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 5) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 6) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 7) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 8) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaFinal == 9) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = valorInicial;
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else {
+                        matrizPane[filaFinal][columnaFinal].setStyle("-fx-background-color: black;");
+                    }
+                }
+            
+                if (valorFinal == 1 || valorFinal == -1) {
+                    if (filaInicial == 0) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 1) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 2) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 3) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 4) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 5) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 6) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 7) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 8) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else if (filaInicial == 9) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = valorFinal;
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: yellow;");
+                        }
+                    } else {
+                        matrizPane[filaFinal][columnaFinal].setStyle("-fx-background-color: black;");
+                    }
+                }
+            
+                Main.actualizarMatriz();
+            }
+        }
+    }
+
+    public int getFilaInicial() {
+        return filaInicial;
+    }
+
+    public int getColumnaInicial() {
+        return columnaInicial;
+    }
+
+    public int getFilaFinal() {
+        return filaFinal;
+    }
+
+    public int getColumnaFinal() {
+        return columnaFinal;
+    }
+
+    // Método para ajustar la fila según las reglas específicas
+    private int ajustarFila(int fila) {
+        fila -= (fila / 2);
+        if (fila >= 7) {
+            fila -= 2;
+        }
+        return fila;
+    }
+
+    // Método para ajustar la columna según las reglas específicas
+    private int ajustarColumna(int columna) {
+        columna -= (columna / 2);
+        if (columna > 20) {
+            columna += 1;
+        }
+        return columna;
     }
 
     public void iniciarDibujoCable(double startX, double startY) {
@@ -80,18 +289,6 @@ public class Cables extends Line {
                 Main.actualizarMatriz();
             }
         });
-    }
-
-    private void imprimirMatriz() {
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            if (i == 5) {
-                System.out.println("-----------------------------------------------------------");
-            }
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                System.out.print(matrizEnteros[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 
     public void setTipo(Color color) {

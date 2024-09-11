@@ -6,8 +6,7 @@ public class Protoboard{
     private int [][] matrizEnteros;
     private int energiaRoja=0,energiaAzul=0;
     private int filaRoja=0,filaAzul=0;
-    public static int[][] matrizCables;
-
+    private int[][] matrizCables;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -45,7 +44,7 @@ public class Protoboard{
         }
         matrizPane.setPrefSize(ancho, alto);
     }
-    
+
     //Método para manejar el click en la matriz central
     public void manejarClickMatrizSupInf(int fila, int columna, int energia){
         for (int col = 0; col < 30; col++) {
@@ -235,9 +234,17 @@ public class Protoboard{
     public Pane[][] getMatriz() {
         return matriz;
     }
-    
+
     public int[][] getMatrizEnteros() {
         return matrizEnteros;
+    }
+
+    public int[][] getMatrizCables() {
+        return matrizCables;
+    }
+    
+    public void setMatrizCables(int fila ,int columna, int valor){ 
+        this.matrizCables[fila][columna] = valor;
     }
 
     public void desactivarEventosDeDibujo(){
