@@ -104,7 +104,7 @@ public class Led{
     }
 
     private void startMonitoring() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> actualizar()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> actualizar()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
