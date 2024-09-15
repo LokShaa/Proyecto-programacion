@@ -73,7 +73,7 @@ public class Main extends Application{
     private Cables cableActual;
     private Color colorActual;
 
-    static final Protoboard matrizCentralProtoboard = new Protoboard();
+    static Protoboard matrizCentralProtoboard = new Protoboard();
     Protoboard matrizSuperior = new Protoboard();
     Protoboard matrizInferior = new Protoboard();
     Protoboard matrizCableSuperiorAzul = new Protoboard();
@@ -394,7 +394,12 @@ public class Main extends Application{
             });
         }
     }
-
+    public static void setMatrizCables(int fila, int columna, int valor) {
+        matrizCentralProtoboard.setMatrizCables(fila, columna, valor);
+    }
+    public static int[][] getMatrizCables() {
+        return matrizCentralProtoboard.getMatrizCables();
+    }
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
             // Convertir las coordenadas del clic a coordenadas de la escena
