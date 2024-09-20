@@ -16,7 +16,6 @@ public class Switch extends Line {
 
     private ImageView imagenSwitch;
     private Circle circle;
-    private Integer valorEnteroSeleccionado = null; // Variable para almacenar el valor del entero seleccionado
     private int[][] matrizEnteros; // Matriz de enteros
     private Pane matrizPane; // Pane que contiene la matriz
     private Timeline timeline; // Timeline para el monitoreo

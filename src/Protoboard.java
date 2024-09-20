@@ -5,7 +5,8 @@ public class Protoboard{
     private Pane[][] matriz;
     private int [][] matrizEnteros;
     private int energiaRoja=0,energiaAzul=0;
-    private int filaRoja=0,filaAzul=0;
+    private int filaRoja=-1,filaAzul=-1;
+    private int columnaRoja=-1,columnaAzul=-1;
     private int[][] matrizCables;
     
     //metodo para iniciar la matriz central de panes
@@ -105,7 +106,107 @@ public class Protoboard{
         }
         //imprimirMatrizEnteros();
     }
+    //Método para manejar el click en la matriz central
+    public void manejarClickMatrizCentral(int fila, int columna, int energia){
+        if (fila >= 0 && fila <5){
+            for(int fil = 0; fil < 5; fil++){
+                if(energia == 1){
+                    columnaRoja = columna;
+                    filaRoja = fila;
+                    if (Bateria.banderaBateria == true){
+                        matrizEnteros[fil][columnaRoja] = 1; 
+                        matriz[fil][columnaRoja].setStyle("-fx-background-color: red ;");
+                    }
+                    energiaRoja = 1;
+                }
+                if(energia == -1){
+                    columnaAzul = columna;
+                    filaAzul = fila;
+                    if(Bateria.banderaBateria == true){
+                        matrizEnteros[fil][columnaAzul] = -1;
+                        matriz[fil][columnaAzul].setStyle("-fx-background-color: blue ;");
+                    }
+                    energiaAzul = -1;
+                }
+
+            }
+        }
+        if (fila >= 5 && fila <10){
+            for(int fil = 5; fil < 10; fil++){
+                if(energia == 1){
+                    columnaRoja = columna;
+                    filaRoja = fila;
+                    if (Bateria.banderaBateria == true){
+                        matrizEnteros[fil][columnaRoja] = 1; 
+                        matriz[fil][columnaRoja].setStyle("-fx-background-color: red ;");
+                    }
+                    energiaRoja = 1;
+                }
+                if(energia == -1){
+                    columnaAzul = columna;
+                    filaAzul = fila;
+                    if(Bateria.banderaBateria == true){
+                        matrizEnteros[fil][columnaAzul] = -1;
+                        matriz[fil][columnaAzul].setStyle("-fx-background-color: blue ;");
+                    }
+                    energiaAzul = -1;
+                }
+            }
+        }
+    }
     
+    public void configurarManejadoresDeEventosCentral(int energia){
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++){
+                final int fila = i;
+                final int columna = j;
+                matriz[i][j].setOnMouseClicked(event -> manejarClickMatrizCentral(fila, columna, energia));
+            }
+        }
+    }
+
+    public void actualizarEstadoLuzCentral(boolean banderaBateria) {
+        if (banderaBateria) {
+            if (filaRoja >= 0 && filaRoja < 5) {
+                for (int i = 0; i < 5; i++) {
+                    actualizarCelda(i, columnaRoja, energiaRoja);
+                }
+            }
+            if (filaRoja >= 5 && filaRoja < 10) {
+                for (int i = 5; i < 10; i++) {
+                    actualizarCelda(i, columnaRoja, energiaRoja);
+                }
+            }
+            if (filaAzul >= 0 && filaAzul < 5) {
+                for (int i = 0; i < 5; i++) {
+                    actualizarCelda(i, columnaAzul, energiaAzul);
+                }
+            }
+            if (filaAzul >= 5 && filaAzul < 10) {
+                for (int i = 5; i < 10; i++) {
+                    actualizarCelda(i, columnaAzul, energiaAzul);
+                }
+            }
+        } else {
+            for (int i = 0; i < matriz.length; i++) {
+                for (int j = 0; j < matriz[i].length; j++) {
+                    matrizEnteros[i][j] = 0;
+                    matriz[i][j].setStyle("-fx-background-color: black;");
+                }
+            }
+        }
+    }
+    
+    private void actualizarCelda(int fila, int columna, int energia) {
+        if (energia == 1) {
+            matriz[fila][columna].setStyle("-fx-background-color: red;");
+            matrizEnteros[fila][columna] = 1;
+        } else if (energia == -1) {
+            matriz[fila][columna].setStyle("-fx-background-color: blue;");
+            matrizEnteros[fila][columna] = -1;
+        }
+    }
+
     //Método para inicializar la matriz de la parte superior e inferior
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
@@ -257,3 +358,4 @@ public class Protoboard{
         }
     }
 }
+
