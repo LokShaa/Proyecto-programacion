@@ -48,7 +48,6 @@ public class Led{
         int columna = (int) (x / 20);
         fila = ajustarFila(fila);
         columna = ajustarColumna(columna);
-        System.out.println("Fila: " + fila + " Columna: " + columna);
     
         if (firstClick) {
             startX = x;
@@ -118,8 +117,6 @@ public class Led{
                 columnaInicial = ajustarColumna(columnaInicial);
                 filaFinal = ajustarFila(filaFinal);
                 columnaFinal = ajustarColumna(columnaFinal);
-                System.out.println("Fila inicial: " + filaInicial + " Columna inicial: " + columnaInicial);
-                System.out.println("Fila final: " + filaFinal + " Columna final: " + columnaFinal);
                 Main.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.setMatrizCables(filaFinal, columnaFinal, 0);
 
