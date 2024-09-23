@@ -1,5 +1,7 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -11,7 +13,9 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Led{
+public class Led {
+    private static final double MAX_DISTANCE = 130.0; // Distancia máxima permitida en píxeles
+
     private Pane matrizPane;
     private Pane[][] matriz;
     private int[][] matrizEnteros;
@@ -19,6 +23,10 @@ public class Led{
     private boolean firstClick = true;
     private int valorCelda1 = 0;
     private int valorCelda2 = 0;
+    int filaInicial;
+    int columnaInicial;
+    int filaFinal;
+    int columnaFinal;
 
     private List<Circle> leds = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
@@ -31,27 +39,59 @@ public class Led{
     }
 
     public void handleMouseClick(MouseEvent event) {
-        if (firstClick) {
-            startX = event.getX();
-            startY = event.getY();
+        double x = event.getX();
+        double y = event.getY();
 
-            if (!comprobarCuadradoEnMatrices(matrizPane, startX, startY)) {
+        if (!comprobarCuadradoEnMatrices(matrizPane, x, y)) {
+            return;
+        }
+
+        int fila = (int) (y / 20);
+        int columna = (int) (x / 20);
+        fila = ajustarFila(fila);
+        columna = ajustarColumna(columna);
+
+        if (firstClick) {
+            startX = x;
+            startY = y;
+
+            if (Main.getMatrizCables()[fila][columna] == 1) {
+                mostrarAlerta("El cuadrado ya está ocupado.");
                 return;
             }
+
+            Main.setMatrizCables(fila, columna, 1);
             valorCelda1 = obtenerValorMatrizEnteros(event); // Obtener el valor de la primera celda
             firstClick = false;
         } else {
-            endX = event.getX();
-            endY = event.getY();
+            endX = x;
+            endY = y;
 
-            if (!comprobarCuadradoEnMatrices(matrizPane, endX, endY)) {
+            if (Main.getMatrizCables()[fila][columna] == 1) {
+                mostrarAlerta("El cuadrado ya está ocupado.");
                 return;
             }
 
+            // Calcular la distancia entre los puntos de inicio y fin
+            double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+            if (distance > MAX_DISTANCE) {
+                mostrarAlerta("La distancia entre los puntos es demasiado grande.");
+                return;
+            }
+
+            Main.setMatrizCables(fila, columna, 1);
             valorCelda2 = obtenerValorMatrizEnteros(event); // Obtener el valor de la segunda celda
             firstClick = true;
             drawCable(startX, startY, endX, endY);
         }
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Excede los limites");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
 
     private void drawCable(double startX, double startY, double endX, double endY) {
@@ -65,28 +105,62 @@ public class Led{
         Circle circle = new Circle(midX, midY, 10, Color.DARKGREEN); // Inicializar con verde oscuro
 
         if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
-            circle.setFill(Color.web("#00FF00")); //Verde fluorescente
+            circle.setFill(Color.web("#00FF00")); // Verde fluorescente
         } else {
-            circle.setFill(Color.DARKGREEN); //Verde oscuro
+            circle.setFill(Color.DARKGREEN); // Verde oscuro
         }
 
-        //Agregar manejador de eventos para borrar el LED y la línea
+        // Agregar manejador de eventos para borrar el LED y la línea
         circle.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
+                double xLocalInicial = this.startX;
+                double yLocalInicial = this.startY;
+                double xLocalFinal = this.endX;
+                double yLocalFinal = this.endY;
+                filaInicial = (int) (yLocalInicial / 20);
+                columnaInicial = (int) (xLocalInicial / 20);
+                filaFinal = (int) (yLocalFinal / 20);
+                columnaFinal = (int) (xLocalFinal / 20);
+
+                filaInicial = ajustarFila(filaInicial);
+                columnaInicial = ajustarColumna(columnaInicial);
+                filaFinal = ajustarFila(filaFinal);
+                columnaFinal = ajustarColumna(columnaFinal);
+                Main.setMatrizCables(filaInicial, columnaInicial, 0);
+                Main.setMatrizCables(filaFinal, columnaFinal, 0);
+
                 matrizPane.getChildren().removeAll(line, circle);
                 leds.remove(circle);
                 lines.remove(line);
             }
         });
 
-        //Agregar la línea y el círculo al Pane
+        // Agregar la línea y el círculo al Pane
         matrizPane.getChildren().addAll(line, circle);
         leds.add(circle);
         lines.add(line);
     }
 
+    // Método para ajustar la fila según las reglas específicas
+    private int ajustarFila(int fila) {
+        fila -= (fila / 2);
+        if (fila >= 7) {
+            fila -= 2;
+        }
+        return fila;
+    }
+
+    // Método para ajustar la columna según las reglas específicas
+    private int ajustarColumna(int columna) {
+        columna -= (columna / 2);
+        if (columna > 20) {
+            columna += 1;
+        }
+        return columna;
+    }
+
     private boolean comprobarCuadradoEnMatrices(Pane matrizPane, double x, double y) {
-        return x >= 0 && x <= matrizPane.getWidth() && y >= 0 && y <= matrizPane.getHeight();
+        return Main.matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, matrizPane, x, y);
     }
 
     private int obtenerValorMatrizEnteros(MouseEvent event) {
@@ -104,7 +178,7 @@ public class Led{
     }
 
     private void startMonitoring() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> actualizar()));
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> actualizar()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
@@ -123,9 +197,9 @@ public class Led{
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
 
             if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
-                led.setFill(Color.web("#00FF00")); //Verde fluorescente
+                led.setFill(Color.web("#00FF00")); // Verde fluorescente
             } else {
-                led.setFill(Color.DARKGREEN); //Verde oscuro
+                led.setFill(Color.DARKGREEN); // Verde oscuro
             }
         }
     }

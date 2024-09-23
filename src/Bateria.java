@@ -20,6 +20,7 @@ public class Bateria{
         }
         System.out.println("Bateria: " + banderaBateria);
     }
+   
     public static boolean isBanderaBateria() {
         return banderaBateria;
     }
