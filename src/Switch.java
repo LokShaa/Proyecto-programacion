@@ -1,30 +1,18 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Line;
-import javafx.util.Duration;
 import javafx.scene.input.MouseEvent;
 
 public class Switch extends Line {
-
-    private String tipo; // Atributo para saber si es cable positivo o negativo
     private Pane pane; // Atributo para saber en que pane se dibujara el cable
-
     private ImageView imagenSwitch;
     private Circle circle;
-    private Integer valorEnteroSeleccionado = null; // Variable para almacenar el valor del entero seleccionado
     private int[][] matrizEnteros; // Matriz de enteros
     private Pane matrizPane; // Pane que contiene la matriz
-    private Timeline timeline; // Timeline para el monitoreo
-    private Integer valorActual = null; // Variable para almacenar el valor actual de la celda
-    private int filaSwitch; // Fila del switch
-    private int columnaSwitch; // Columna del switch
     private boolean estadoSwitch = false; // Estado del switch (false = rojo, true = verde)
-    private int[] estadoColumna; // Estado anterior de la columna
     int filaInicial;
     int columnaInicial;
     int filaFinal;
@@ -173,6 +161,7 @@ public class Switch extends Line {
             }
         }
     }     
+    
     private void actualizarApagado(){
         if(filaFinal>=0 && filaFinal<5){
             for(int i = 0; i < 5; i++){
@@ -211,7 +200,6 @@ public class Switch extends Line {
             }
         }
     }
-    
     
     // Método auxiliar para cambiar el color de una celda en la matriz
     private void cambiarColorCelda(int fila, int columna, Color color) {

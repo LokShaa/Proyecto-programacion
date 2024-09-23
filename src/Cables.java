@@ -50,7 +50,7 @@ public class Cables extends Line {
                 columnaInicial = ajustarColumna(columnaInicial);
                 filaFinal = ajustarFila(filaFinal);
                 columnaFinal = ajustarColumna(columnaFinal);
-
+        
                 Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
 
