@@ -17,15 +17,24 @@ public class Cables extends Line {
 
     private int[][] matrizEnteros;
     private Pane[][] matrizPane;
+
+    private int[][] matriSup;
+    private Pane[][] matrizPaneSup;
+
+    private int[][] matriInf;
+    private Pane[][] matrizPaneInf;
+
     private int segundaCeldaX;
     private int segundaCeldaY;
 
-    public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros) {
+    private Timeline timeline; 
+
+    public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros, int[][] matriSup, Pane[][] matrizPaneSup, int[][] matriInf, Pane[][] matrizPaneInf) {
         this.pane = pane;
         this.matrizPane = matrizPane;
         this.matrizEnteros = matrizEnteros;
         this.setStroke(color);
-        this.setStrokeWidth(10);
+        this.setStrokeWidth(8);
 
         this.setStartX(startX);
         this.setStartY(startY);
@@ -56,6 +65,14 @@ public class Cables extends Line {
 
                 pane.getChildren().remove(this); // Eliminar el cable del pane
 
+                // Detener el monitoreo
+                if (timeline != null) {
+                    timeline.stop();
+                }
+
+                // Eliminar solo los valores de energía del segundo clic
+                eliminarValoresEnergia(filaFinal, columnaFinal);
+
                 if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
                     matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
                 }
@@ -64,7 +81,7 @@ public class Cables extends Line {
         });
 
         // Monitoreo constante de las celdas
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             monitorearCeldas();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -136,12 +153,12 @@ public class Cables extends Line {
                             matrizEnteros[i][columnaFinal] = valorInicial;
                             matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
                         }
-                    } else if (filaFinal == 8) {
+                    } else if (filaFinal == 8){
                         for (int i = 5; i < 10; i++) {
                             matrizEnteros[i][columnaFinal] = valorInicial;
                             matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
                         }
-                    } else if (filaFinal == 9) {
+                    } else if (filaFinal == 9){
                         for (int i = 5; i < 10; i++) {
                             matrizEnteros[i][columnaFinal] = valorInicial;
                             matrizPane[i][columnaFinal].setStyle("-fx-background-color: yellow;");
@@ -283,6 +300,10 @@ public class Cables extends Line {
         this.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
                 pane.getChildren().remove(this);
+                if (timeline != null) {
+                    timeline.stop();
+                }
+                eliminarValoresEnergia(filaFinal, columnaFinal);
                 if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
                     matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
                 }
@@ -302,7 +323,7 @@ public class Cables extends Line {
     public Pane getPane() {
         return pane;
     }
-
+    
     public double getXInicial() {
         return this.getStartX();
     }
@@ -333,5 +354,20 @@ public class Cables extends Line {
             }
         }
         return -1;
+    }
+
+    private void eliminarValoresEnergia(int fila, int columna){
+        timeline.stop();
+        if (fila >= 0 && fila <= 4) {
+            for (int i = 0; i < 5; i++) {
+                matrizEnteros[i][columna] = 0;
+                matrizPane[i][columna].setStyle("-fx-background-color: black;");
+            }
+        } else if (fila >= 5 && fila <= 9) {
+            for (int i = 5; i < 10; i++) {
+                matrizEnteros[i][columna] = 0;
+                matrizPane[i][columna].setStyle("-fx-background-color: black;");
+            }
+        }
     }
 }

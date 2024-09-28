@@ -11,7 +11,7 @@ public class Switch extends Line {
     private ImageView imagenSwitch;
     private Circle circle;
     private int[][] matrizEnteros; // Matriz de enteros
-    private Pane matrizPane; // Pane que contiene la matriz
+    private Pane matrizPane; //Pane que contiene la matriz
     private boolean estadoSwitch = false; // Estado del switch (false = rojo, true = verde)
     int filaInicial;
     int columnaInicial;
