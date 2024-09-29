@@ -44,9 +44,13 @@ public class Main extends Application{
     @FXML
     private ImageView imagenLed;
     @FXML
-    private ImageView imagenLed2;
-    @FXML
     private ImageView imagenSwitch;
+    @FXML
+    private ImageView imagenResistencia;
+    @FXML
+    private ImageView imagenSwitchOctogonal;
+    @FXML
+    private ImageView imagenChip;
     @FXML
     private ImageView luzRoja;
     @FXML
@@ -304,8 +308,42 @@ public class Main extends Application{
                 eventosActivos = false; // Desactivar los eventos después de usarlos
             });
         });
-}
+    }
+    @FXML
+    void botonResistencia(MouseEvent event) { 
+        imagenResistencia.setOnMouseEntered(enteredEvent -> { 
+            Glow glowRojo = new Glow(1);
+            imagenResistencia.setEffect(glowRojo);
+        });
     
+        imagenResistencia.setOnMouseExited(exitEvent -> { 
+            imagenResistencia.setEffect(null);
+        });
+    }
+    @FXML
+    void botonSwitchOctogonal(MouseEvent event) { 
+        imagenSwitchOctogonal.setOnMouseEntered(enteredEvent -> { 
+            Glow glowRojo = new Glow(1);
+            imagenSwitchOctogonal.setEffect(glowRojo);
+        });
+    
+        imagenSwitchOctogonal.setOnMouseExited(exitEvent -> { 
+            imagenSwitchOctogonal.setEffect(null);
+        });
+    }
+
+    @FXML
+    void botonChip(MouseEvent event) { 
+        imagenChip.setOnMouseEntered(enteredEvent -> { 
+            Glow glowRojo = new Glow(1);
+            imagenChip.setEffect(glowRojo);
+        });
+    
+        imagenChip.setOnMouseExited(exitEvent -> { 
+            imagenChip.setEffect(null);
+        });
+    }
+
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
         final int cellAlt = 20;
         final int cellAncho = 20; 
