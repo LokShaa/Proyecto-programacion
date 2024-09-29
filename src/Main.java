@@ -190,7 +190,7 @@ public class Main extends Application{
         imprimirMatrices();
     }
     
-    private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
+    /*private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
@@ -212,9 +212,9 @@ public class Main extends Application{
                 });
             }
         }
-    }
+    }*/
 
-    private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
+    /*private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
         for (int i = 0; i < matrizEnteros.length; i++) {
             for (int j = 0; j < matrizEnteros[i].length; j++) {
                 final int fila = i;
@@ -279,7 +279,7 @@ public class Main extends Application{
                 });
             }
         }
-    }
+    }*/
   
     @FXML
     void botonCableGris(MouseEvent event) { 
@@ -296,9 +296,6 @@ public class Main extends Application{
             colorActual = Color.rgb(128, 128, 128); 
             obtenerValorActivo = true; 
             eventosActivos = true; // Activamos los eventos de selección/actualización
-            configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
-            configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
-            configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
 
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 for (Pane matriz : matricesProto) {

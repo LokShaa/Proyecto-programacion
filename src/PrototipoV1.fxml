@@ -90,14 +90,14 @@
                   <Image url="@../Imagenes/Switch%20Octogonal.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenChip" fitHeight="150.0" fitWidth="142.0" layoutX="191.0" layoutY="227.0" onMouseClicked="#botonChip" onMouseEntered="#botonChip" onMouseExited="#botonChip" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenChip" fitHeight="150.0" fitWidth="142.0" layoutX="191.0" layoutY="227.0" onMouseClicked="#botonChip" onMouseEntered="#botonChip" onMouseExited="#botonSwitchOctogonal" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Chip.png" />
                </image>
             </ImageView>
+            <Pane layoutX="437.0" layoutY="1.0" prefHeight="396.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
          </children>
       </Pane>
-      <Pane layoutX="493.0" layoutY="23.0" prefHeight="396.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
       <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="cableAzulBateriaProto2" fitHeight="178.0" fitWidth="291.0" layoutX="400.0" layoutY="783.0" pickOnBounds="true" preserveRatio="true">
          <image>
