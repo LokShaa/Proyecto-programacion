@@ -214,11 +214,11 @@ public class Switch extends Line {
         
         if (fila >=0 && fila <5){
             for(int i = 0; i < 5; i++){
-                if (color == color.YELLOW){
+                if (color == Color.YELLOW){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: yellow;");
                 }
-                else if (color == color.BLACK){
+                else if (color == Color.BLACK){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: black;");
                 }
@@ -226,11 +226,11 @@ public class Switch extends Line {
         }
         if(fila >=5 && fila <10){
             for(int i = 5; i < 10; i++){
-                if (color == color.YELLOW){
+                if (color == Color.YELLOW){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: yellow;");
                 }
-                else if (color == color.BLACK){
+                else if (color == Color.BLACK){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: black;");
                 }
@@ -240,19 +240,68 @@ public class Switch extends Line {
     }
 
     private void iniciarMonitoreo() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> monitorearEstado()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
     private void monitorearEstado() {
-        if (estadoSwitch) {
-            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1) {
-                matrizEnteros[filaFinal][columnaFinal] = matrizEnteros[filaInicial][columnaInicial];
-                cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+        if (estadoSwitch == true){
+            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1){
+
+                if(filaFinal>=0 && filaFinal<5){
+                    for(int i = 0; i < 5; i++){
+                        if(matrizEnteros[filaInicial][columnaInicial] == -1) {
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
+                            matrizEnteros[i][columnaFinal] = 1; 
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else {
+                            matrizEnteros[filaInicial][columnaInicial] = 0;
+                            matrizEnteros[filaFinal][columnaFinal] = 0; 
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                        }
+                    }
+                }   
+                if(filaFinal>=5 && filaFinal<10){
+                    for(int i = 5; i < 10; i++){
+                        if(matrizEnteros[filaInicial][columnaInicial] == -1) {
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
+                            matrizEnteros[i][columnaFinal] = 1; 
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else {
+                            matrizEnteros[filaInicial][columnaInicial] = 0;
+                            matrizEnteros[filaFinal][columnaFinal] = 0; 
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                        }
+                    }
+                }
             } else {
-                matrizEnteros[filaFinal][columnaFinal] = 0;
-                cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                if(matrizEnteros[filaInicial][columnaInicial] == 0) {
+                   if(filaFinal >= 0 && filaFinal <5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaFinal] = 0;
+                        cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                    }
+                   }
+                }
+                if(matrizEnteros[filaInicial][columnaInicial] == 0) {
+                    if(filaFinal >= 5 && filaFinal <10){
+                     for(int i = 5; i < 10; i++){
+                         matrizEnteros[i][columnaFinal] = 0;
+                         cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                     }
+                    }
+                 }
             }
         }
     }
@@ -289,12 +338,6 @@ public class Switch extends Line {
         double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
         double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
         double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
-
-        // Actualizar las coordenadas del cable
-        this.setStartX(xLocalesIniciales);
-        this.setStartY(yLocalesIniciales);
-        this.setEndX(xLocalesFinales);
-        this.setEndY(yLocalesFinales);
 
         // Volver a asignar el EventHandler de clic derecho para eliminar el cable
         this.setOnMouseClicked(event -> {
