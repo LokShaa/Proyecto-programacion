@@ -1,27 +1,17 @@
 import javafx.application.Application;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.effect.Glow;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -78,8 +68,6 @@ public class Main extends Application{
     @FXML
     private Pane paneDibujo;
     @FXML
-    private Pane paneProtoboard;
-    @FXML
     private ImageView portaBaterias;
 
     private Cables cableActual;
@@ -124,7 +112,7 @@ public class Main extends Application{
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
-        
+
         Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
         int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
  
@@ -139,8 +127,6 @@ public class Main extends Application{
         matricesProto.add(matrizPane);
         matricesProto.add(matrizPane2);
         matricesProto.add(matrizPane21);
-
-        anadirProtoboard();
     }
     
     public static void actualizarMatriz() {
@@ -185,21 +171,6 @@ public class Main extends Application{
             System.out.println();
         }
     }
-    //private List<ImageView> protoboardList;
-    
-    public void anadirProtoboard() {
-        //protoboardList = new ArrayList<>();
-        Image image = new Image("file:./Imagenes/Protoboard Sin Cuadrados.png");
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(1280); 
-        imageView.setFitHeight(825);
-
-        double newYPosition = paneProtoboard.getChildren().size() * 900;
-        imageView.setLayoutY(newYPosition);
-    
-        paneProtoboard.getChildren().add(imageView); 
-        //protoboardList.add(imageView); 
-    }
 
     public static void actualizarEstadoLuz() {
         instance.matrizSuperior.actualizarEstadoLuz(Bateria.banderaBateria);
@@ -209,11 +180,10 @@ public class Main extends Application{
 
     @FXML
     void botonConDesc(ActionEvent event) {
-        /*Bateria bateria = new Bateria();
+        Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
-        imprimirMatrices();*/
-        anadirProtoboard();
+        imprimirMatrices();
     }
     
     private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
@@ -759,70 +729,16 @@ public class Main extends Application{
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
 
-        // Crear botones para el zoom
-        Button zoomInButton = new Button("Zoom +");
-        Button zoomOutButton = new Button("Zoom -");
-
-        // Nivel de zoom inicial
-        DoubleProperty zoomLevelX = new SimpleDoubleProperty(1);
-        DoubleProperty zoomLevelY = new SimpleDoubleProperty(1);
-
-        // Vincular el zoom del root al nivel de zoom en los ejes X e Y
-        root.scaleXProperty().bind(zoomLevelX);
-        root.scaleYProperty().bind(zoomLevelY);
-
-        // Configurar acciones de los botones
-        zoomInButton.setOnAction(e -> {
-            zoomLevelX.set(zoomLevelX.get() * 1.1); // Aumentar zoom en el eje X en 10%
-            zoomLevelY.set(zoomLevelY.get() * 1.1); // Aumentar zoom en el eje Y en 10%
-        });
-        zoomOutButton.setOnAction(e -> {
-            zoomLevelX.set(zoomLevelX.get() / 1.1); // Disminuir zoom en el eje X en 10%
-            zoomLevelY.set(zoomLevelY.get() / 1.1); // Disminuir zoom en el eje Y en 10%
-        });
-
-        // Crear un HBox para contener los botones
-        HBox zoomControls = new HBox(10, zoomInButton, zoomOutButton);
-        zoomControls.setAlignment(Pos.CENTER_RIGHT);
-
-        // Crear un StackPane para alinear los controles en la esquina superior derecha
-        StackPane topRightPane = new StackPane(zoomControls);
-        StackPane.setAlignment(zoomControls, Pos.TOP_RIGHT);
-
-        // Crear un BorderPane y colocar el root en el centro y los controles en la parte superior
-        BorderPane borderPane = new BorderPane();
-        borderPane.setCenter(root);
-        borderPane.setTop(topRightPane);
-
-        // Envolver el BorderPane en un ScrollPane para permitir el desplazamiento
-        ScrollPane scrollPane = new ScrollPane(borderPane);
-        scrollPane.setFitToWidth(true); // Ajustar el ancho del contenido al ancho del ScrollPane
-        scrollPane.setFitToHeight(true); // Ajustar la altura del contenido al alto del ScrollPane
-
-        // Agregar manejador de eventos de desplazamiento para el zoom con la rueda del mouse
-        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            if (event.isControlDown()) {
-                if (event.getDeltaY() > 0) {
-                    zoomLevelX.set(zoomLevelX.get() * 1.1); // Aumentar zoom en el eje X en 10%
-                    zoomLevelY.set(zoomLevelY.get() * 1.1); // Aumentar zoom en el eje Y en 10%
-                } else {
-                    zoomLevelX.set(zoomLevelX.get() / 1.1); // Disminuir zoom en el eje X en 10%
-                    zoomLevelY.set(zoomLevelY.get() / 1.1); // Disminuir zoom en el eje Y en 10%
-                }
-                event.consume();
-            }
-        });
-
         primaryStage.setTitle("Protoboard");
-        primaryStage.setScene(new Scene(scrollPane, 800, 600)); // Tamaño inicial más pequeño
+        primaryStage.setScene(new Scene(root,1920,1000));
         primaryStage.show();
     }
-    
-    public static void main(String[] args) {
+
+    public static void main(String[] args){
         launch(args);
     }
 }
