@@ -1,10 +1,13 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Line;
-import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 public class Switch extends Line {
     private Pane pane; // Atributo para saber en que pane se dibujara el cable
@@ -17,6 +20,7 @@ public class Switch extends Line {
     int columnaInicial;
     int filaFinal;
     int columnaFinal;
+    private Timeline timeline;
 
     public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane) {
         this.pane = pane;
@@ -58,6 +62,9 @@ public class Switch extends Line {
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
             }
         });
+
+        // Iniciar el monitoreo constante
+        iniciarMonitoreo();
     }
 
     // Método para ajustar la fila según las reglas específicas
@@ -232,6 +239,24 @@ public class Switch extends Line {
         
     }
 
+    private void iniciarMonitoreo() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> monitorearEstado()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void monitorearEstado() {
+        if (estadoSwitch) {
+            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1) {
+                matrizEnteros[filaFinal][columnaFinal] = matrizEnteros[filaInicial][columnaInicial];
+                cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+            } else {
+                matrizEnteros[filaFinal][columnaFinal] = 0;
+                cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+            }
+        }
+    }
+
     public void iniciarDibujoCable(double startX, double startY) {
         this.setStartX(startX);
         this.setStartY(startY);
@@ -277,6 +302,10 @@ public class Switch extends Line {
                 nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
                 nuevoPane.getChildren().remove(this.imagenSwitch);
                 nuevoPane.getChildren().remove(circle);
+                if (estadoSwitch) {
+                    matrizEnteros[filaFinal][columnaFinal] = 0;
+                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                }
             }
         });
         crearImagenSwitch(imagenSwitch); // Actualizar la imagen y el círculo cuando se actualiza el pane

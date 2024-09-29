@@ -394,6 +394,7 @@ public class Main extends Application{
             });
         }
     }
+  
     public static void setMatrizCables(int fila, int columna, int valor) {
         matrizCentralProtoboard.setMatrizCables(fila, columna, valor);
     }
