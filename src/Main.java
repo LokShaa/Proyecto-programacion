@@ -101,6 +101,7 @@ public class Main extends Application{
     private boolean obtenerValorActivo = false; // Bandera para controlar la obtención de valores
     private boolean eventosActivos = false;
 
+    
 
     @FXML
     void initialize() {
@@ -115,7 +116,7 @@ public class Main extends Application{
 
         Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
         int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
- 
+
          // Crear una instancia de la clase Led y pasarle las matrices
         led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
 
@@ -131,8 +132,7 @@ public class Main extends Application{
     
     public static void actualizarMatriz() {
         if (instance != null) {
-           // instance.imprimirMatrices();
-           //System.out.println("..............................................................");
+           
         }
     }
 
@@ -186,7 +186,7 @@ public class Main extends Application{
         imprimirMatrices();
     }
     
-    private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
+  /*   private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
                 final int fila = i;
@@ -276,7 +276,7 @@ public class Main extends Application{
             }
         }
     }
-  
+  */
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -292,9 +292,9 @@ public class Main extends Application{
             colorActual = Color.rgb(128, 128, 128); 
             obtenerValorActivo = true; 
             eventosActivos = true; // Activamos los eventos de selección/actualización
-            configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
-            configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
-            configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
+           // configurarEventosDeSeleccion(matrizSuperior.getMatrizEnteros(), matrizPane2);
+           // configurarEventosDeSeleccion(matrizInferior.getMatrizEnteros(), matrizPane21);
+           // configurarEventosDeActualizacion(matrizCentralProtoboard.getMatrizEnteros(), matrizPane);
 
             configurarEventosDeDibujoCablesProtoboard(matricesProto, () -> {
                 for (Pane matriz : matricesProto) {
@@ -304,97 +304,121 @@ public class Main extends Application{
                 eventosActivos = false; // Desactivar los eventos después de usarlos
             });
         });
-}
-    
+    }
+
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
-        final int cellAlt = 20;
-        final int cellAncho = 20; 
-    
-        for (Pane matriz : matrices) {
-            matriz.setOnMouseClicked(mouseClickedEvent -> {
-                // Convertir las coordenadas del clic a coordenadas de la escena
-                double xEscena = mouseClickedEvent.getSceneX();
-                double yEscena = mouseClickedEvent.getSceneY();
-                if (cableActual == null) {
-                    for (Pane matrizActual : matrices) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
-                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            fila -= fila/2;
-                            if (fila >= 7){
-                                fila -=2;
-                            }
-                            columna -= columna/2;
-                            if (columna > 20 ){
-                                columna += 1;
-                            }
-                            if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
-                                int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
-                                if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Información");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("El cuadrado ya está ocupado.");
-                                    alert.showAndWait();
-                                    return;
-                                }
-                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
-                                cableActual.iniciarDibujoCable(xLocal, yLocal);
-                                if (matrizActual == matrizPane) {
-                                    matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
-                                }
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    for (Pane matrizActual : matrices) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
-                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            fila -= fila/2;
-                            if (fila >= 7){
-                                fila -=2;
-                            }
-                            columna -=columna/2;
-                            if (columna > 20 ){
-                                columna += 1;
-                            }
-                            if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
-                            int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
-                                if (matrizActual1[fila][columna] == 1) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Información");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("El cuadrado ya está ocupado.");
-                                    alert.showAndWait();
-                                    return;
-                                }
-    
-                                if (cableActual.getPane() != matrizActual) {
-                                    cableActual.actualizarPane(matrizActual);
-                                }
-                                cableActual.finalizarDibujoCable(xLocal, yLocal);
-                                if (matrizActual == matrizPane) {
-                                    matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
-                                }
-                                cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
-                                onComplete.run();
-                               
-                                break;
-                                
-                            }
-                        }
-                    }
+    final int cellAlt = 20;
+    final int cellAncho = 20;
+
+    for (Pane matriz : matrices) {
+    matriz.setOnMouseClicked(mouseClickedEvent -> {
+    // Convertir las coordenadas del clic a coordenadas de la escena
+    double xEscena = mouseClickedEvent.getSceneX();
+    double yEscena = mouseClickedEvent.getSceneY();
+    if (cableActual == null) {
+        for (Pane matrizActual : matrices) {
+            double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+            double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+            int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
+            int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+            if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                fila -= fila / 2;
+                if (fila >= 7) {
+                    fila -= 2;
                 }
-            });
+                columna -= columna / 2;
+                if (columna > 20) {
+                    columna += 1;
+                }
+                if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
+                    int[][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();
+                    if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Información");
+                        alert.setHeaderText(null);
+                        alert.setContentText("El cuadrado ya está ocupado.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+                    crearCable(matrizActual, xLocal, yLocal, colorActual);
+                    cableActual.iniciarDibujoCable(xLocal, yLocal);
+                    if (matrizActual == matrizPane) {
+                        matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                    }
+                    break;
+                }
+            }
+        }
+    } else {
+        for (Pane matrizActual : matrices) {
+            double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+            double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+            int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
+            int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+            if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                fila -= fila / 2;
+                if (fila >= 7) {
+                    fila -= 2;
+                }
+                columna -= columna / 2;
+                if (columna > 20) {
+                    columna += 1;
+                }
+                if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
+                    int[][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();
+                    if (matrizActual1[fila][columna] == 1) {
+                        Alert alert = new Alert(AlertType.INFORMATION);
+                        alert.setTitle("Información");
+                        alert.setHeaderText(null);
+                        alert.setContentText("El cuadrado ya está ocupado.");
+                        alert.showAndWait();
+                        return;
+                    }
+
+                    if (cableActual.getPane() != matrizActual) {
+                        cableActual.actualizarPane(matrizActual);
+                    }
+                    cableActual.finalizarDibujoCable(xLocal, yLocal);
+                    if (matrizActual == matrizPane) {
+                        matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                    }
+                    cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                    onComplete.run();
+
+                    break;
+                }
+            }
         }
     }
-  
+    });
+    }
+    }
+
+    private void crearCable(Pane pane, double startX, double startY, Color color) {
+        Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+        int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+    
+        Pane[][] matrizSuperiorPane = matrizSuperior.getMatriz();
+        Pane[][] matrizInferiorPane = matrizInferior.getMatriz();
+    
+        int[][] matrizSuperiorEnteros = matrizSuperior.getMatrizEnteros();
+        int[][] matrizInferiorEnteros = matrizInferior.getMatrizEnteros();
+    
+        cableActual = new Cables(
+            pane,
+            matrizCentral,
+            color,
+            startX,
+            startY,
+            matrizEnterosCentral,
+            matrizSuperiorEnteros,
+            matrizSuperiorPane,
+            matrizInferiorEnteros,
+            matrizInferiorPane
+        );
+    }
+
     public static void setMatrizCables(int fila, int columna, int valor) {
         matrizCentralProtoboard.setMatrizCables(fila, columna, valor);
     }
@@ -403,49 +427,47 @@ public class Main extends Application{
         return matrizCentralProtoboard.getMatrizCables();
     }
     
-    private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
-        matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
+    private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices, Pane matrizInicial, Runnable onComplete) {
+        matrizInicial.setOnMouseClicked(mouseClickedEvent -> {
             // Convertir las coordenadas del clic a coordenadas de la escena
             double xEscena = mouseClickedEvent.getSceneX();
             double yEscena = mouseClickedEvent.getSceneY();
             double xLocal = matrizInicial.sceneToLocal(xEscena, yEscena).getX();
             double yLocal = matrizInicial.sceneToLocal(xEscena, yEscena).getY();
-
+    
             if (cableActual == null) {
                 if (comprobarCuadradoEnMatricesBateria(matrizInicial, xLocal, yLocal)) {
-                   cableActual = new Cables(matrizInicial,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz());
+                    crearCable(matrizInicial, xLocal, yLocal, colorActual);
                     cableActual.iniciarDibujoCable(xLocal, yLocal);
                 }
             }
         });
-        
+    
         for (Pane matriz : matrices) {
-            
-            matriz.setOnMouseClicked(mouseClickedEvent ->{
-                //Convertir las coordenadas del clic a coordenadas de la escena
-
+            matriz.setOnMouseClicked(mouseClickedEvent -> {
+                // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
                 double xLocal = matriz.sceneToLocal(xEscena, yEscena).getX();
                 double yLocal = matriz.sceneToLocal(xEscena, yEscena).getY();
-                
+    
                 if (cableActual != null) {
                     if (comprobarCuadradoEnMatrices(matriz, xLocal, yLocal)) {
-                        if(matriz == matrizPane){
-
+                        if (matriz == matrizPane) {
+                            // Lógica específica para matrizPane si es necesario
                         }
                         if (cableActual.getPane() != matriz) {
                             cableActual.actualizarPane(matriz);
                         }
                         cableActual.finalizarDibujoCable(xLocal, yLocal);
-                        cableActual = null; //Finalizamos el dibujo del cable haciendo que sea null otra vez
+                        cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                         onComplete.run();
                     }
-                } 
+                }
             });
         }
     }
-
+    
     // Método auxiliar para comprobar si el clic ocurrió dentro de un cuadrado válido en alguna de las matrices
     private boolean comprobarCuadradoEnMatrices(Pane m, double x, double y) {;
         return matrizCentralProtoboard.comprobarCuadrado(10, 30, 20, 20, 18.6, 20, m, x, y) || matrizSuperior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y) || matrizInferior.comprobarCuadrado(2, 30, 20, 20, 18.6, 20, m, x, y);

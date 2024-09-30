@@ -60,6 +60,7 @@ public class Switch extends Line {
                 pane.getChildren().remove(this); // Eliminar el cable del pane
                 pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
+                timeline.stop(); // Detener el monitoreo constante
             }
         });
 
@@ -318,11 +319,7 @@ public class Switch extends Line {
     }
 
     public void actualizarPane(Pane nuevoPane, ImageView imagenSwitch) {
-        // Guardar las coordenadas globales del cable
-        double xGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getX();
-        double yGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getY();
-        double xGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getX();
-        double yGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getY();
+        
 
         // Remover el cable del pane actual
         this.pane.getChildren().remove(this);
@@ -333,11 +330,6 @@ public class Switch extends Line {
         // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
 
-        // Convertir las coordenadas globales a las coordenadas locales del nuevo pane
-        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();
-        double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
-        double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
-        double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
 
         // Volver a asignar el EventHandler de clic derecho para eliminar el cable
         this.setOnMouseClicked(event -> {

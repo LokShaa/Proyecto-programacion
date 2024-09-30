@@ -265,7 +265,6 @@ public class Protoboard{
         matrizPane.setPrefSize(columnas * (cellAncho + padding1), filas * (cellAlt + padding2));
     }
     
-    
     public void inicializarMatrizCablesBateriaAzul(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         
@@ -319,19 +318,6 @@ public class Protoboard{
         return false;
     }
    
-    public void imprimirMatrizEnteros(){
-        for (int i = 0; i < matrizEnteros.length; i++){
-            if(i == 5){
-                System.out.println("------------------------------------------------------");
-            }
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                System.out.print(matrizEnteros[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("------------------------------------------------------");
-    }
-    
     public Pane[][] getMatriz() {
         return matriz;
     }
