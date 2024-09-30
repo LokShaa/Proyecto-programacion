@@ -141,8 +141,8 @@ public class Cables extends Line {
             int valorFinal = matrizEnteros[filaFinal][columnaFinal];
 
             if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
-                //Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaInicial, columnaInicial, 1);
-                //Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
+                Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaInicial, columnaInicial, 1);
+                Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
             
                 // Cambiar el color de la columna inicial a naranja
                 if (filaInicial >= 0 && filaInicial <= 4) {

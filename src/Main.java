@@ -368,11 +368,11 @@ public class Main extends Application{
                             if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
                                 int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
                                 if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Información");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("El cuadrado ya está ocupado.");
-                                    alert.showAndWait();
+                                    mostrarAlerta("El cuadrado ya está ocupado.");
+                                    return;
+                                }
+                                if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
+                                    mostrarAlerta("El cuadrado tiene un corto circuito.");
                                     return;
                                 }
                                 cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
@@ -402,11 +402,11 @@ public class Main extends Application{
                             if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
                             int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
                                 if (matrizActual1[fila][columna] == 1) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Información");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("El cuadrado ya está ocupado.");
-                                    alert.showAndWait();
+                                    mostrarAlerta("El cuadrado ya está ocupado.");
+                                    return;
+                                }
+                                if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
+                                    mostrarAlerta("El cuadrado tiene un corto circuito.");
                                     return;
                                 }
     
@@ -545,11 +545,11 @@ public class Main extends Application{
                             if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
                                 int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
                                 if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
-                                    Alert alert = new Alert(AlertType.INFORMATION);
-                                    alert.setTitle("Información");
-                                    alert.setHeaderText(null);
-                                    alert.setContentText("El cuadrado ya está ocupado.");
-                                    alert.showAndWait();
+                                    mostrarAlerta("El cuadrado ya está ocupado.");
+                                    return;
+                                }
+                                if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
+                                    mostrarAlerta("El cuadrado tiene un corto circuito.");
                                     return;
                                 }
 
@@ -582,11 +582,11 @@ public class Main extends Application{
                                 if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
                                 int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
                                     if (matrizActual1[fila][columna] == 1) {
-                                        Alert alert = new Alert(AlertType.INFORMATION);
-                                        alert.setTitle("Información");
-                                        alert.setHeaderText(null);
-                                        alert.setContentText("El cuadrado ya está ocupado.");
-                                        alert.showAndWait();
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }
+                                    if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
                                         return;
                                     }
         
@@ -602,11 +602,7 @@ public class Main extends Application{
                                     break;
                                 }
                             }else{
-                                Alert alert = new Alert(AlertType.INFORMATION);
-                                alert.setTitle("Información");
-                                alert.setHeaderText(null);
-                                alert.setContentText("El cuadrado está a mas de 120 pixeles.");
-                                alert.showAndWait();
+                                mostrarAlerta("El cuadrado está a mas de 120 pixeles.");
                                 return;
                             }
                         }
@@ -614,6 +610,13 @@ public class Main extends Application{
                 }
             });
         }
+    }
+    private void mostrarAlerta(String mensaje) {
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Información");
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+        alert.showAndWait();
     }
     
     @FXML

@@ -352,7 +352,16 @@ public class Protoboard{
     }
 
     public void setMatrizCortoCircuito(int fila ,int columna, int valor){ 
-        this.matrizCortoCircuito[fila][columna] = valor;
+        if (fila >= 0 && fila <5){
+            for(int fil = 0; fil < 5; fil++){
+                this.matrizCortoCircuito[fil][columna] = valor;
+            }
+        }
+        if (fila >= 5 && fila <10){
+            for(int fil = 5; fil < 10; fil++){
+                this.matrizCortoCircuito[fil][columna] = valor;
+            }
+        }
     }
     
     public void setMatrizCables(int fila ,int columna, int valor){ 
