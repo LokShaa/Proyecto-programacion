@@ -1,10 +1,13 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.input.MouseButton;
 import javafx.scene.shape.Line;
-import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 
 public class Switch extends Line {
     private Pane pane; // Atributo para saber en que pane se dibujara el cable
@@ -17,6 +20,7 @@ public class Switch extends Line {
     int columnaInicial;
     int filaFinal;
     int columnaFinal;
+    private Timeline timeline;
 
     public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane) {
         this.pane = pane;
@@ -56,8 +60,12 @@ public class Switch extends Line {
                 pane.getChildren().remove(this); // Eliminar el cable del pane
                 pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
+                timeline.stop(); // Detener el monitoreo constante
             }
         });
+
+        // Iniciar el monitoreo constante
+        iniciarMonitoreo();
     }
 
     // Método para ajustar la fila según las reglas específicas
@@ -207,11 +215,11 @@ public class Switch extends Line {
         
         if (fila >=0 && fila <5){
             for(int i = 0; i < 5; i++){
-                if (color == color.YELLOW){
+                if (color == Color.YELLOW){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: yellow;");
                 }
-                else if (color == color.BLACK){
+                else if (color == Color.BLACK){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: black;");
                 }
@@ -219,17 +227,84 @@ public class Switch extends Line {
         }
         if(fila >=5 && fila <10){
             for(int i = 5; i < 10; i++){
-                if (color == color.YELLOW){
+                if (color == Color.YELLOW){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: yellow;");
                 }
-                else if (color == color.BLACK){
+                else if (color == Color.BLACK){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: black;");
                 }
             }
         }
         
+    }
+
+    private void iniciarMonitoreo() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), event -> monitorearEstado()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    private void monitorearEstado() {
+        if (estadoSwitch == true){
+            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1){
+
+                if(filaFinal>=0 && filaFinal<5){
+                    for(int i = 0; i < 5; i++){
+                        if(matrizEnteros[filaInicial][columnaInicial] == -1) {
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
+                            matrizEnteros[i][columnaFinal] = 1; 
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else {
+                            matrizEnteros[filaInicial][columnaInicial] = 0;
+                            matrizEnteros[filaFinal][columnaFinal] = 0; 
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                        }
+                    }
+                }   
+                if(filaFinal>=5 && filaFinal<10){
+                    for(int i = 5; i < 10; i++){
+                        if(matrizEnteros[filaInicial][columnaInicial] == -1) {
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
+                            matrizEnteros[i][columnaFinal] = 1; 
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                        }
+                        else {
+                            matrizEnteros[filaInicial][columnaInicial] = 0;
+                            matrizEnteros[filaFinal][columnaFinal] = 0; 
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                        }
+                    }
+                }
+            } else {
+                if(matrizEnteros[filaInicial][columnaInicial] == 0) {
+                   if(filaFinal >= 0 && filaFinal <5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaFinal] = 0;
+                        cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                    }
+                   }
+                }
+                if(matrizEnteros[filaInicial][columnaInicial] == 0) {
+                    if(filaFinal >= 5 && filaFinal <10){
+                     for(int i = 5; i < 10; i++){
+                         matrizEnteros[i][columnaFinal] = 0;
+                         cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                     }
+                    }
+                 }
+            }
+        }
     }
 
     public void iniciarDibujoCable(double startX, double startY) {
@@ -244,11 +319,7 @@ public class Switch extends Line {
     }
 
     public void actualizarPane(Pane nuevoPane, ImageView imagenSwitch) {
-        // Guardar las coordenadas globales del cable
-        double xGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getX();
-        double yGlobalesIniciales = pane.localToScene(this.getStartX(), this.getStartY()).getY();
-        double xGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getX();
-        double yGlobalesFinales = pane.localToScene(this.getEndX(), this.getEndY()).getY();
+        
 
         // Remover el cable del pane actual
         this.pane.getChildren().remove(this);
@@ -259,17 +330,6 @@ public class Switch extends Line {
         // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
 
-        // Convertir las coordenadas globales a las coordenadas locales del nuevo pane
-        double xLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getX();
-        double yLocalesIniciales = nuevoPane.sceneToLocal(xGlobalesIniciales, yGlobalesIniciales).getY();
-        double xLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getX();
-        double yLocalesFinales = nuevoPane.sceneToLocal(xGlobalesFinales, yGlobalesFinales).getY();
-
-        // Actualizar las coordenadas del cable
-        this.setStartX(xLocalesIniciales);
-        this.setStartY(yLocalesIniciales);
-        this.setEndX(xLocalesFinales);
-        this.setEndY(yLocalesFinales);
 
         // Volver a asignar el EventHandler de clic derecho para eliminar el cable
         this.setOnMouseClicked(event -> {
@@ -277,6 +337,10 @@ public class Switch extends Line {
                 nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
                 nuevoPane.getChildren().remove(this.imagenSwitch);
                 nuevoPane.getChildren().remove(circle);
+                if (estadoSwitch) {
+                    matrizEnteros[filaFinal][columnaFinal] = 0;
+                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                }
             }
         });
         crearImagenSwitch(imagenSwitch); // Actualizar la imagen y el círculo cuando se actualiza el pane

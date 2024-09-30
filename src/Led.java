@@ -9,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +58,10 @@ public class Led {
                 mostrarAlerta("El cuadrado ya está ocupado.");
                 return;
             }
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
+                mostrarAlerta("El cuadrado tiene un corto circuito.");
+                return;
+            }
 
             Main.setMatrizCables(fila, columna, 1);
             valorCelda1 = obtenerValorMatrizEnteros(event); // Obtener el valor de la primera celda
@@ -69,6 +72,10 @@ public class Led {
 
             if (Main.getMatrizCables()[fila][columna] == 1) {
                 mostrarAlerta("El cuadrado ya está ocupado.");
+                return;
+            }
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
+                mostrarAlerta("El cuadrado tiene un corto circuito.");
                 return;
             }
 
@@ -87,8 +94,8 @@ public class Led {
     }
 
     private void mostrarAlerta(String mensaje) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Excede los limites");
+        Alert alert = new Alert(AlertType.WARNING);
+        alert.setTitle("Información");
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
