@@ -172,26 +172,8 @@ public class Cables extends Line {
             // Lógica para primer clic en matriz inferior y segundo en matriz superior
         }
     }
+    
     private void actualizarMatrizCentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-        if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
-            filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
-            int valorInicial = matrizEnteros[filaInicial][columnaInicial];
-            int valorFinal = matrizEnteros[filaFinal][columnaFinal];
-            //System.out.println("Valor inicial en matriz central: " + valorInicial);
-            //System.out.println("Valor final en matriz central: " + valorFinal);
-
-            if (!(valorInicial != 0 && valorFinal != 0)) {
-                if (valorInicial == 1  valorInicial == -1) {
-                    actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
-                }
-
-                if (valorFinal == 1  valorFinal == -1) {
-                    actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
-                }
-            }
-        }
-    }
-    /*private void actualizarMatrizCentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
             if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
                 filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
                 int valorInicial = matrizEnteros[filaInicial][columnaInicial];
@@ -230,8 +212,8 @@ public class Cables extends Line {
                     }
                 }
     
-                else if (!(valorInicial != 0 || valorFinal != 0)) {
-                    if (valorInicial == 1  && valorInicial == -1) {
+                else if (!(valorInicial != 0 && valorFinal != 0)) {
+                    if (valorInicial == 1  || valorInicial == -1) {
                         actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
                     }
     
@@ -240,7 +222,7 @@ public class Cables extends Line {
                     }
                 }
             }
-    }*/
+    }
     
     private void actualizarMatrizSuperiorACentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
         System.out.println("Fila inicial: " + filaInicial);
