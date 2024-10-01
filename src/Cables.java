@@ -1,8 +1,12 @@
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
@@ -63,7 +67,7 @@ public class Cables extends Line {
                 columnaInicial = ajustarColumna(columnaInicial);
                 filaFinal = ajustarFila(filaFinal);
                 columnaFinal = ajustarColumna(columnaFinal);
-
+        
                 Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
 
@@ -91,7 +95,32 @@ public class Cables extends Line {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-   
+
+    private void crearParticulaDeHumo(Pane root, double x, double y) {
+        Circle particula = new Circle(5, Color.GRAY);
+        particula.setOpacity(0.5);
+        particula.setCenterX(x);
+        particula.setCenterY(y);
+        root.getChildren().add(particula);
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.ZERO,
+                new KeyValue(particula.translateXProperty(), 0),
+                new KeyValue(particula.translateYProperty(), 0),
+                new KeyValue(particula.opacityProperty(), 0.5)
+            ),
+            new KeyFrame(new Duration(5000),
+                new KeyValue(particula.translateXProperty(), Math.random() * 200 - 100),
+                new KeyValue(particula.translateYProperty(), Math.random() * -200 - 100),
+                new KeyValue(particula.opacityProperty(), 0)
+            )
+        );
+
+        timeline.setCycleCount(1);
+        timeline.setOnFinished(event -> root.getChildren().remove(particula));
+        timeline.play();
+    }
+
     private void monitorearCeldas() {
         double xLocalInicial = this.getStartX();
         double yLocalInicial = this.getStartY();
@@ -115,14 +144,14 @@ public class Cables extends Line {
     
         String matrizInicial = identificarMatriz(xGlobalInicial, yGlobalInicial);
         String matrizFinal = identificarMatriz(xGlobalFinal, yGlobalFinal);
-        //System.out.println("Matriz inicial: " + matrizInicial);
-        //System.out.println("Matriz final: " + matrizFinal);
+        System.out.println("Matriz inicial: " + matrizInicial);
+        System.out.println("Matriz final: " + matrizFinal);
     
         if (matrizInicial.equals("central") && matrizFinal.equals("central")){
             actualizarMatrizCentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
         } else if (matrizInicial.equals("superior") && matrizFinal.equals("central")){
-           filaInicial = ajustarFilaMatrizSup(filaFinal);
+           filaInicial = ajustarFilaMatrizSup(filaInicial);
            actualizarMatrizSuperiorACentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
         } else if (matrizInicial.equals("central") && matrizFinal.equals("superior")) {
@@ -145,30 +174,61 @@ public class Cables extends Line {
     }
     
     private void actualizarMatrizCentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-        if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
-            filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
-            int valorInicial = matrizEnteros[filaInicial][columnaInicial];
-            int valorFinal = matrizEnteros[filaFinal][columnaFinal];
-            //System.out.println("Valor inicial en matriz central: " + valorInicial);
-            //System.out.println("Valor final en matriz central: " + valorFinal);
-    
-            if (!(valorInicial != 0 && valorFinal != 0)) {
-                if (valorInicial == 1 || valorInicial == -1) {
-                    actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
+            if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
+                filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
+                int valorInicial = matrizEnteros[filaInicial][columnaInicial];
+                int valorFinal = matrizEnteros[filaFinal][columnaFinal];
+                System.out.println("Valor inicial en matriz central: " + valorInicial);
+                System.out.println("Valor final en matriz central: " + valorFinal);
+                
+                if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
+                    Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaInicial, columnaInicial, 1);
+                    Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
+                
+                    // Cambiar el color de la columna inicial a naranja
+                    if (filaInicial >= 0 && filaInicial <= 4) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: orange;");
+                            crearParticulaDeHumo(pane, matrizPane[i][columnaInicial].getLayoutX(), matrizPane[i][columnaInicial].getLayoutY());
+                        }
+                    } else if (filaInicial >= 5 && filaInicial <= 9) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: orange;");
+                            crearParticulaDeHumo(pane, matrizPane[i][columnaInicial].getLayoutX(), matrizPane[i][columnaInicial].getLayoutY());
+                        }
+                    }
+                
+                    // Cambiar el color de la columna final a naranja
+                    if (filaFinal >= 0 && filaFinal <= 4) {
+                        for (int i = 0; i < 5; i++) {
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: orange;");
+                            crearParticulaDeHumo(pane, matrizPane[i][columnaFinal].getLayoutX(), matrizPane[i][columnaFinal].getLayoutY());
+                        }
+                    } else if (filaFinal >= 5 && filaFinal <= 9) {
+                        for (int i = 5; i < 10; i++) {
+                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: orange;");
+                            crearParticulaDeHumo(pane, matrizPane[i][columnaFinal].getLayoutX(), matrizPane[i][columnaFinal].getLayoutY());
+                        }
+                    }
                 }
     
-                if (valorFinal == 1 || valorFinal == -1) {
-                    actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
+                else if (!(valorInicial != 0 && valorFinal != 0)) {
+                    if (valorInicial == 1  || valorInicial == -1) {
+                        actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
+                    }
+    
+                    if (valorFinal == 1 || valorFinal == -1) {
+                        actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
+                    }
                 }
             }
-        }
     }
     
     private void actualizarMatrizSuperiorACentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-         //System.out.println("Fila inicial: " + filaInicial);
-        //System.out.println("Columna inicial: " + columnaInicial);
-        //System.out.println("Fila final: " + filaFinal);
-        //System.out.println("Columna final: " + columnaFinal);
+        System.out.println("Fila inicial: " + filaInicial);
+        System.out.println("Columna inicial: " + columnaInicial);
+        System.out.println("Fila final: " + filaFinal);
+        System.out.println("Columna final: " + columnaFinal);
     
         if (filaInicial >= 0 && filaInicial < matriSup.length && columnaInicial >= 0 && columnaInicial < matriSup[0].length &&
             filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
@@ -248,10 +308,10 @@ public class Cables extends Line {
 
     // Método para ajustar la fila según las reglas específicas para la matriz superior
     private int ajustarFilaMatrizSup(int fila) {
-        if(fila == -7){
+        if(fila == -4){
             fila = 0;
         }  
-        if(fila == -5){
+        else if(fila == -3){
             fila = 1;
         }
         return fila; // Ajusta según sea necesario

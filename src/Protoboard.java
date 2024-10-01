@@ -4,6 +4,7 @@ public class Protoboard{
     //Declara matriz como atributo de la clase
     private Pane[][] matriz;
     private int [][] matrizEnteros;
+    private int [][] matrizCortoCircuito;
     private int energiaRoja=0,energiaAzul=0;
     private int filaRoja=-1,filaAzul=-1;
     private int columnaRoja=-1,columnaAzul=-1;
@@ -14,10 +15,12 @@ public class Protoboard{
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
         matrizCables = new int[filas][columnas];
+        matrizCortoCircuito = new int[filas][columnas];
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 matrizCables[i][j] = 0;
                 matrizEnteros[i][j] = 0; // inicializar matriz con 0
+                matrizCortoCircuito[i][j] = 0; 
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -328,6 +331,23 @@ public class Protoboard{
 
     public int[][] getMatrizCables() {
         return matrizCables;
+    }
+
+    public int[][] getMatrizCortoCircuito() {
+        return matrizCortoCircuito;
+    }
+
+    public void setMatrizCortoCircuito(int fila ,int columna, int valor){ 
+        if (fila >= 0 && fila <5){
+            for(int fil = 0; fil < 5; fil++){
+                this.matrizCortoCircuito[fil][columna] = valor;
+            }
+        }
+        if (fila >= 5 && fila <10){
+            for(int fil = 5; fil < 10; fil++){
+                this.matrizCortoCircuito[fil][columna] = valor;
+            }
+        }
     }
     
     public void setMatrizCables(int fila ,int columna, int valor){ 
