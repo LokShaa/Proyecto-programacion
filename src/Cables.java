@@ -91,6 +91,7 @@ public class Cables extends Line {
         // Monitoreo constante de las celdas
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             monitorearCeldas();
+            revisarYMantenerMatriz(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), matrizPane);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
@@ -172,56 +173,39 @@ public class Cables extends Line {
             // Lógica para primer clic en matriz inferior y segundo en matriz superior
         }
     }
-    
-    private void actualizarMatrizCentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-            if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
-                filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
-                int valorInicial = matrizEnteros[filaInicial][columnaInicial];
-                int valorFinal = matrizEnteros[filaFinal][columnaFinal];
-                System.out.println("Valor inicial en matriz central: " + valorInicial);
-                System.out.println("Valor final en matriz central: " + valorFinal);
-                
-                if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
-                    Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaInicial, columnaInicial, 1);
-                    Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
-                
-                    // Cambiar el color de la columna inicial a naranja
-                    if (filaInicial >= 0 && filaInicial <= 4) {
-                        for (int i = 0; i < 5; i++) {
-                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: orange;");
-                            crearParticulaDeHumo(pane, matrizPane[i][columnaInicial].getLayoutX(), matrizPane[i][columnaInicial].getLayoutY());
-                        }
-                    } else if (filaInicial >= 5 && filaInicial <= 9) {
-                        for (int i = 5; i < 10; i++) {
-                            matrizPane[i][columnaInicial].setStyle("-fx-background-color: orange;");
-                            crearParticulaDeHumo(pane, matrizPane[i][columnaInicial].getLayoutX(), matrizPane[i][columnaInicial].getLayoutY());
-                        }
-                    }
-                
-                    // Cambiar el color de la columna final a naranja
-                    if (filaFinal >= 0 && filaFinal <= 4) {
-                        for (int i = 0; i < 5; i++) {
-                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: orange;");
-                            crearParticulaDeHumo(pane, matrizPane[i][columnaFinal].getLayoutX(), matrizPane[i][columnaFinal].getLayoutY());
-                        }
-                    } else if (filaFinal >= 5 && filaFinal <= 9) {
-                        for (int i = 5; i < 10; i++) {
-                            matrizPane[i][columnaFinal].setStyle("-fx-background-color: orange;");
-                            crearParticulaDeHumo(pane, matrizPane[i][columnaFinal].getLayoutX(), matrizPane[i][columnaFinal].getLayoutY());
-                        }
-                    }
-                }
-    
-                else if (!(valorInicial != 0 && valorFinal != 0)) {
-                    if (valorInicial == 1  || valorInicial == -1) {
-                        actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
-                    }
-    
-                    if (valorFinal == 1 || valorFinal == -1) {
-                        actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
-                    }
+
+    private void revisarYMantenerMatriz(int[][] matriz, Pane[][] matrizPane) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                if (matriz[i][j] == 1) {
+                    matrizPane[i][j].setStyle("-fx-background-color: orange;");
+                    crearParticulaDeHumo(pane, matrizPane[i][j].getLayoutX(), matrizPane[i][j].getLayoutY());
                 }
             }
+        }
+    }
+    
+    private void actualizarMatrizCentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
+        if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
+            filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
+            int valorInicial = matrizEnteros[filaInicial][columnaInicial];
+            int valorFinal = matrizEnteros[filaFinal][columnaFinal];
+            System.out.println("Valor inicial en matriz central: " + valorInicial);
+            System.out.println("Valor final en matriz central: " + valorFinal);
+            
+            if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
+                Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaInicial, columnaInicial, 1);
+                Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
+            } else if (!(valorInicial != 0 && valorFinal != 0)) {
+                if (valorInicial == 1 || valorInicial == -1) {
+                    actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
+                }
+            
+                if (valorFinal == 1 || valorFinal == -1) {
+                    actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
+                }
+            }
+        }
     }
     
     private void actualizarMatrizSuperiorACentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
@@ -271,12 +255,20 @@ public class Cables extends Line {
             if (fila < 5) {
                 for (int i = 0; i < 5; i++) {
                     matriz[i][columna] = valor;
-                    matrizPane[i][columna].setStyle("-fx-background-color: yellow;");
+                    if (valor == 1) {
+                        matrizPane[i][columna].setStyle("-fx-background-color: red;");
+                    } else {
+                        matrizPane[i][columna].setStyle("-fx-background-color: blue;");
+                    }
                 }
             } else {
                 for (int i = 5; i < 10; i++) {
                     matriz[i][columna] = valor;
-                    matrizPane[i][columna].setStyle("-fx-background-color: yellow;");
+                    if (valor == 1) {
+                        matrizPane[i][columna].setStyle("-fx-background-color: red;");
+                    } else {
+                        matrizPane[i][columna].setStyle("-fx-background-color: blue;");
+                    }
                 }
             }
         }

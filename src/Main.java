@@ -13,6 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +91,7 @@ public class Main extends Application{
     private List<Pane> matrices1;
     private Switch switch1;
     private Led led;
+    private Resistencia resistencia;
 
     public boolean banderaCableAzulInferiorBateria = false;
     public boolean banderaCableAzulSuperiorBateria = false;
@@ -119,9 +122,10 @@ public class Main extends Application{
 
         Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
         int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
- 
+        
          // Crear una instancia de la clase Led y pasarle las matrices
         led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+        resistencia = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral);
 
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
@@ -189,97 +193,6 @@ public class Main extends Application{
         actualizarEstadoLuz();
         imprimirMatrices();
     }
-    
-    /*private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                final int fila = i;
-                final int columna = j;
-                Pane cell = (Pane) matrizPane.getChildren().get(i * matriz[i].length + j);
-                cell.setOnMouseClicked(event -> {
-                    valorSeleccionado = matriz[fila][columna];
-                    valorSeleccionadoFlag = true;
-                    filaSeleccionada = fila;
-                    columnaSeleccionada = columna;
-                    System.out.println("Valor seleccionado: " + valorSeleccionado);
-                    if (eventosActivos){ 
-                        valorSeleccionado = matriz[fila][columna];
-                        valorSeleccionadoFlag = true;
-                        filaSeleccionada = fila;
-                        columnaSeleccionada = columna;
-                        System.out.println("Valor seleccionado: " + valorSeleccionado);
-                    }
-                });
-            }
-        }
-    }*/
-
-    /*private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                final int fila = i;
-                final int columna = j;
-                Pane cell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[i].length + j);
-                cell.setOnMouseClicked(event -> {
-                    // Verificamos si los eventos están activos antes de proceder
-                    if (eventosActivos) {
-                        if (valorSeleccionadoFlag) {
-                            if (matrizEnteros[filaSeleccionada][columnaSeleccionada] == 0 && (matrizEnteros[fila][columna] == 1 || matrizEnteros[fila][columna] == -1)) {
-                                // Cambiar la columna completa donde fue el primer clic
-                                if (filaSeleccionada >= 0 && filaSeleccionada < 5) {
-                                    for (int k = 0; k < 5; k++) {
-                                        matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
-                                        if (matrizEnteros[fila][columna] != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                } else if (filaSeleccionada >= 5 && filaSeleccionada < 10) {
-                                    for (int k = 5; k < 10; k++) {
-                                        matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
-                                        if (matrizEnteros[fila][columna] != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                }
-                                System.out.println("Columna actualizada debido a la condición especial.");
-                            } else {
-                                //Lógica existente para actualizar la columna
-                                if (fila >= 0 && fila < 5) {
-                                    for (int k = 0; k < 5; k++) {
-                                        matrizEnteros[k][columna] = valorSeleccionado;
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                        if (valorSeleccionado != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                } else if (fila >= 5 && fila < 10) {
-                                    for (int k = 5; k < 10; k++) {
-                                        matrizEnteros[k][columna] = valorSeleccionado;
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                        if (valorSeleccionado != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                }
-                                System.out.println("Columna actualizada con el valor: " + valorSeleccionado);
-                            }
-                            valorSeleccionadoFlag = false;
-                            eventosActivos = false; //Desactivar eventos después de usar
-                        } else {
-                            valorSeleccionado = matrizEnteros[fila][columna];
-                            valorSeleccionadoFlag = true;
-                            filaSeleccionada = fila;
-                            columnaSeleccionada = columna;
-                            //Mensaje en la terminal mostrando el valor seleccionado
-                            System.out.println("Valor seleccionado: " + valorSeleccionado + " en la fila " + filaSeleccionada + ", columna " + columnaSeleccionada);
-                        }
-                    }
-                });
-            }
-        }
-    }*/
   
     @FXML
     void botonCableGris(MouseEvent event) { 
@@ -316,7 +229,15 @@ public class Main extends Application{
         imagenResistencia.setOnMouseExited(exitEvent -> { 
             imagenResistencia.setEffect(null);
         });
+        imagenResistencia.setOnMouseClicked(clickedEvent->{
+            // Desactivar eventos de dibujo de LED en todas las matrices
+            desactivarEventosDeDibujo(matrizPane);
+    
+            // Reactivar el evento de dibujo de LED en la matriz principal
+            matrizPane.setOnMouseClicked(resistencia::handleMouseClick);
+        });
     }
+
     @FXML
     void botonSwitchOctogonal(MouseEvent event) { 
         imagenSwitchOctogonal.setOnMouseEntered(enteredEvent -> { 
@@ -767,12 +688,12 @@ public class Main extends Application{
     }
 
     @Override
-    public void start (Stage primaryStage) throws Exception { //Metodo para iniciar la aplicacion
+    public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
 
         primaryStage.setTitle("Protoboard");
-        primaryStage.setScene(new Scene(root,1920,1000));
+        primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
 
