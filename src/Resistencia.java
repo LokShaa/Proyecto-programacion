@@ -9,9 +9,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.Group;
 
 public class Resistencia {
     private static final double MAX_DISTANCE = 130.0; // Distancia máxima permitida en píxeles
@@ -83,8 +85,12 @@ public class Resistencia {
 
             // Calcular la distancia entre los puntos de inicio y fin
             double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-            if (distance > MAX_DISTANCE) {
+            if (distance > 120) {
                 mostrarAlerta("La distancia entre los puntos es demasiado grande.");
+                return;
+            }
+            if(distance < 80){
+                mostrarAlerta("La distancia entre los puntos es demasiado pequeña.");
                 return;
             }
 
@@ -115,15 +121,37 @@ public class Resistencia {
         // Ajustar las coordenadas del rectángulo para que su centro esté en el punto medio
         double rectWidth = 50;
         double rectHeight = 20;
-        Rectangle rectangle = new Rectangle(midX - rectWidth / 2, midY - rectHeight / 2, rectWidth, rectHeight);
-        rectangle.setFill(Color.PALEGOLDENROD);
-    
+        Rectangle rectangulo = new Rectangle(midX - rectWidth / 2, midY - rectHeight / 2, rectWidth, rectHeight);
+        rectangulo.setFill(Color.PALEGOLDENROD);
+        
         // Calcular el ángulo de rotación
         double angulo = Math.toDegrees(Math.atan2(endY - startY, endX - startX));
-        rectangle.setRotate(angulo);
+        rectangulo.setRotate(angulo);
+    
+        // Crear bandas de colores
+        double bandWidth = rectWidth / 9;
+        double bandHeight = rectHeight; 
+    
+        Rectangle primerBanda = new Rectangle(bandWidth, 0, bandWidth, bandHeight);
+        primerBanda.setFill(Color.RED);
+    
+        Rectangle segundaBanda = new Rectangle(3 * bandWidth, 0, bandWidth, bandHeight);
+        segundaBanda.setFill(Color.RED);
+    
+        Rectangle terceraBanda = new Rectangle(5 * bandWidth, 0, bandWidth, bandHeight);
+        terceraBanda.setFill(Color.MAROON);
+    
+        Rectangle cuartaBanda = new Rectangle(7 * bandWidth, 0, bandWidth, bandHeight);
+        cuartaBanda.setFill(Color.GOLD);
+    
+        // Crear un grupo para las bandas y aplicar la rotación y traslación
+        Group bandsGroup = new Group(primerBanda, segundaBanda, terceraBanda, cuartaBanda);
+        bandsGroup.setLayoutX(midX - rectWidth / 2);
+        bandsGroup.setLayoutY(midY - rectHeight / 2);
+        bandsGroup.getTransforms().add(new Rotate(angulo, rectWidth / 2, rectHeight / 2));
     
         // Agregar manejador de eventos para borrar el LED y la línea
-        rectangle.setOnMouseClicked(event -> {
+        rectangulo.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
                 double xLocalInicial = startX;
                 double yLocalInicial = startY;
@@ -141,15 +169,15 @@ public class Resistencia {
                 Main.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.setMatrizCables(filaFinal, columnaFinal, 0);
     
-                matrizPane.getChildren().removeAll(line, rectangle);
-                resistenciaList.remove(rectangle);
+                matrizPane.getChildren().removeAll(line, rectangulo, bandsGroup);
+                resistenciaList.remove(rectangulo);
                 lines.remove(line);
             }
         });
     
-        // Agregar la línea y el rectángulo al Pane
-        matrizPane.getChildren().addAll(line, rectangle);
-        resistenciaList.add(rectangle);
+        // Agregar la línea, el rectángulo y las bandas de colores al Pane
+        matrizPane.getChildren().addAll(line, rectangulo, bandsGroup);
+        resistenciaList.add(rectangulo);
         lines.add(line);
     }
 
