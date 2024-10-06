@@ -117,11 +117,8 @@ public class Main extends Application{
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
 
-        Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-        int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+        
  
-         // Crear una instancia de la clase Led y pasarle las matrices
-        led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
 
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
@@ -611,6 +608,7 @@ public class Main extends Application{
             });
         }
     }
+    
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Información");
@@ -625,19 +623,25 @@ public class Main extends Application{
             Glow glowRojo = new Glow(1);
             imagenLed.setEffect(glowRojo);
         });
-    
+
         imagenLed.setOnMouseExited(exitEvent -> { 
             imagenLed.setEffect(null);
         });
-    
+
         imagenLed.setOnMouseClicked(clickedEvent -> {
+            // Inicializar la instancia de Led
+            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+            led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+
             // Desactivar eventos de dibujo de LED en todas las matrices
             desactivarEventosDeDibujo(matrizPane);
-    
+
             // Reactivar el evento de dibujo de LED en la matriz principal
             matrizPane.setOnMouseClicked(led::handleMouseClick);
         });
     }
+
     @FXML
     void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior

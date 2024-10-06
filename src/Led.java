@@ -1,4 +1,5 @@
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,7 +13,8 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Led {
+
+public class Led{
     private static final double MAX_DISTANCE = 130.0; // Distancia máxima permitida en píxeles
 
     private Pane matrizPane;
@@ -22,6 +24,7 @@ public class Led {
     private boolean firstClick = true;
     private int valorCelda1 = 0;
     private int valorCelda2 = 0;
+
     int filaInicial;
     int columnaInicial;
     int filaFinal;
@@ -29,6 +32,8 @@ public class Led {
 
     private List<Circle> leds = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
+     
+   private boolean quemado = false;
 
     public Led(Pane matrizPane, Pane[][] matriz, int[][] matrizEnteros) {
         this.matrizPane = matrizPane;
@@ -93,7 +98,7 @@ public class Led {
         }
     }
 
-    private void mostrarAlerta(String mensaje) {
+    private void mostrarAlerta(String mensaje){
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Información");
         alert.setHeaderText(null);
@@ -102,17 +107,22 @@ public class Led {
     }
 
     private void drawCable(double startX, double startY, double endX, double endY) {
-        Line line = new Line(startX, startY, endX, endY);
-        line.setStroke(Color.GRAY);
-        line.setStrokeWidth(5);
-
         double midX = (startX + endX) / 2;
         double midY = (startY + endY) / 2;
+
+        Line line1 = new Line(startX, startY, midX, midY);
+        line1.setStroke(Color.RED);
+        line1.setStrokeWidth(5);
+
+        Line line2 = new Line(midX, midY, endX, endY);
+        line2.setStroke(Color.BLUE);
+        line2.setStrokeWidth(5);
 
         Circle circle = new Circle(midX, midY, 10, Color.DARKGREEN); // Inicializar con verde oscuro
 
         if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
             circle.setFill(Color.web("#00FF00")); // Verde fluorescente
+            
         } else {
             circle.setFill(Color.DARKGREEN); // Verde oscuro
         }
@@ -136,18 +146,19 @@ public class Led {
                 Main.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.setMatrizCables(filaFinal, columnaFinal, 0);
 
-                matrizPane.getChildren().removeAll(line, circle);
+                matrizPane.getChildren().removeAll(line1, line2, circle);
                 leds.remove(circle);
-                lines.remove(line);
+                lines.remove(line1);
+                lines.remove(line2);
             }
         });
 
         // Agregar la línea y el círculo al Pane
-        matrizPane.getChildren().addAll(line, circle);
+        matrizPane.getChildren().addAll(line1, line2, circle);
         leds.add(circle);
-        lines.add(line);
+        lines.add(line1);
+        lines.add(line2);
     }
-
     // Método para ajustar la fila según las reglas específicas
     private int ajustarFila(int fila) {
         fila -= (fila / 2);
@@ -193,24 +204,80 @@ public class Led {
     private void actualizar() {
         for (int i = 0; i < leds.size(); i++) {
             Circle led = leds.get(i);
-            Line line = lines.get(i);
+            Line line1 = lines.get(i * 2);
+            Line line2 = lines.get(i * 2 + 1);
 
-            double startX = line.getStartX();
-            double startY = line.getStartY();
-            double endX = line.getEndX();
-            double endY = line.getEndY();
+            double startX = line1.getStartX();
+            double startY = line1.getStartY();
+            double endX = line2.getEndX();
+            double endY = line2.getEndY();
+
+            double midX = (startX + endX) / 2;
+            double midY = (startY + endY) / 2;
 
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
+            if(quemado == false){
+                if(valorCelda1 == 1 ){
+                    led.setFill(Color.web("#00FF00")); // Verde fluorescente
+                    transferirEnergia(startX, startY, endX, endY, valorCelda1);
+                } else if(valorCelda2 == -1){
+                    led.setFill(Color.web("#00FF00")); // Verde fluorescente
+                    transferirEnergia(endX, endY, startX, startY, valorCelda2);
+    
+                }else if(valorCelda2 == 1 || valorCelda1 == -1){
+                    led.setFill(Color.web("#FFA500")); // Naranja fosforescente
+                    quemado = true;
+        
+                } else {
+                    led.setFill(Color.DARKGREEN); // Verde oscuro
+                }
 
-            if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
-                led.setFill(Color.web("#00FF00")); // Verde fluorescente
+            }else{
+                led.setFill(Color.web("#FFA500")); // Naranja fosforescente
+            }
+           
+        }   
+    }
+
+    private void transferirEnergia(double fromX, double fromY, double toX, double toY, int valor) {
+        int filaFrom = (int) (fromY / 20);
+        int columnaFrom = (int) (fromX / 20);
+        int filaTo = (int) (toY / 20);
+        int columnaTo = (int) (toX / 20);
+    
+        filaFrom = ajustarFila(filaFrom);
+        columnaFrom = ajustarColumna(columnaFrom);
+        filaTo = ajustarFila(filaTo);
+        columnaTo = ajustarColumna(columnaTo);
+    
+        if (filaTo < 5) {
+            if (valor == 1) {
+                for (int i = 0; i < 5; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: red;");
+                }
             } else {
-                led.setFill(Color.DARKGREEN); // Verde oscuro
+                for (int i = 0; i < 5; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
+                }
+            }
+        } else {
+            if (valor == 1) {
+                for (int i = 5; i < 10; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: red;");
+                }
+            } else {
+                for (int i = 5; i < 10; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
+                }
             }
         }
     }
-
+    
     private int obtenerValorMatrizEnteros(double x, double y) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
