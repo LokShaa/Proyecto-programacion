@@ -217,6 +217,7 @@ public class Switch extends Line {
             for(int i = 0; i < 5; i++){
                 if (color == Color.YELLOW){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
+                    
                     targetCell.setStyle("-fx-background-color: yellow;");
                 }
                 else if (color == Color.BLACK){

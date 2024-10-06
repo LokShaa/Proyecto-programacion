@@ -255,15 +255,14 @@ public class Main extends Application{
     
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
-                // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
                 if (cableActual == null) {
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+                        int fila = (int)(yLocal / cellAlt);
+                        int columna = (int)(xLocal / cellAncho);
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             fila -= fila/2;
                             if (fila >= 7){
@@ -285,6 +284,7 @@ public class Main extends Application{
                                 }
                                 cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
+                                matrizPane.toFront();
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
                                 }
@@ -296,8 +296,8 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+                        int fila = (int) (yLocal / cellAlt);
+                        int columna = (int) (xLocal / cellAncho);
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             fila -= fila/2;
                             if (fila >= 7){
@@ -325,11 +325,9 @@ public class Main extends Application{
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
                                 }
-                                cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                                cableActual = null;
                                 onComplete.run();
-                               
                                 break;
-                                
                             }
                         }
                     }
@@ -337,7 +335,7 @@ public class Main extends Application{
             });
         }
     }
-    
+
     public static void setMatrizCables(int fila, int columna, int valor) {
         matrizCentralProtoboard.setMatrizCables(fila, columna, valor);
     }

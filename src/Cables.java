@@ -379,6 +379,8 @@ public class Cables extends Line {
         //System.out.println("Columna inicial: " + columnaInicial);
         //System.out.println("Fila final: " + filaFinal);
         //System.out.println("Columna final: " + columnaFinal);
+       
+
         if(filaInicial >= 0 && filaInicial < matriSup.length && columnaInicial >= 0 && columnaInicial < matriSup[0].length &&
             filaFinal >= 0 && filaFinal < matriInf.length && columnaFinal >= 0 && columnaFinal < matriInf[0].length){
             int valorInicial = matriSup[filaInicial][columnaInicial];
