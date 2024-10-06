@@ -1,6 +1,7 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
@@ -91,35 +92,20 @@ public class Cables extends Line {
         // Monitoreo constante de las celdas
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             monitorearCeldas();
-            revisarYMantenerMatriz(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), matrizPane);
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
-    private void crearParticulaDeHumo(Pane root, double x, double y) {
-        Circle particula = new Circle(5, Color.GRAY);
-        particula.setOpacity(0.5);
-        particula.setCenterX(x);
-        particula.setCenterY(y);
-        root.getChildren().add(particula);
-
-        Timeline timeline = new Timeline(
-            new KeyFrame(Duration.ZERO,
-                new KeyValue(particula.translateXProperty(), 0),
-                new KeyValue(particula.translateYProperty(), 0),
-                new KeyValue(particula.opacityProperty(), 0.5)
-            ),
-            new KeyFrame(new Duration(5000),
-                new KeyValue(particula.translateXProperty(), Math.random() * 200 - 100),
-                new KeyValue(particula.translateYProperty(), Math.random() * -200 - 100),
-                new KeyValue(particula.opacityProperty(), 0)
-            )
-        );
-
-        timeline.setCycleCount(1);
-        timeline.setOnFinished(event -> root.getChildren().remove(particula));
-        timeline.play();
+    private void revisarYMantenerMatriz(int[][] matriz, Pane[][] matrizPane) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 30; j++) {
+                if (matriz[i][j] == 1) {
+                    matrizPane[i][j].setStyle("-fx-background-color: orange;");
+                    Main.crearParticulaDeHumoEstatico(matrizPane[i][j].getLayoutX(), matrizPane[i][j].getLayoutY());
+                }
+            }
+        }
     }
 
     private void monitorearCeldas() {
@@ -172,17 +158,7 @@ public class Cables extends Line {
         } else if (matrizInicial.equals("inferior") && matrizFinal.equals("superior")) {
             // Lógica para primer clic en matriz inferior y segundo en matriz superior
         }
-    }
-
-    private void revisarYMantenerMatriz(int[][] matriz, Pane[][] matrizPane) {
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                if (matriz[i][j] == 1) {
-                    matrizPane[i][j].setStyle("-fx-background-color: orange;");
-                    crearParticulaDeHumo(pane, matrizPane[i][j].getLayoutX(), matrizPane[i][j].getLayoutY());
-                }
-            }
-        }
+        revisarYMantenerMatriz(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
     }
     
     private void actualizarMatrizCentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
@@ -457,5 +433,3 @@ public class Cables extends Line {
         }
     }
 }
-
-

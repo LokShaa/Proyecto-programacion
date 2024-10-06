@@ -1,3 +1,6 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,12 +11,14 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,7 +124,7 @@ public class Main extends Application{
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
-
+        led = new Led(matrizPane, matrizCentralProtoboard.getMatriz(), matrizCentralProtoboard.getMatrizEnteros());
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
         matrices1.add(matrizPane);
@@ -354,6 +359,36 @@ public class Main extends Application{
         return matrizCentralProtoboard.getMatrizCables();
     }
 
+    public void crearParticulaDeHumo(double x, double y) {
+        Circle particula = new Circle(3, Color.GRAY);
+        particula.setOpacity(0.5);
+        particula.setCenterX(x);
+        particula.setCenterY(y);
+        matrizPane.getChildren().add(particula);
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.ZERO,
+                new KeyValue(particula.translateXProperty(), 0),
+                new KeyValue(particula.translateYProperty(), 0),
+                new KeyValue(particula.opacityProperty(), 0.5)
+            ),
+            new KeyFrame(new Duration(5000),
+                new KeyValue(particula.translateXProperty(), Math.random() * 200 - 100),
+                new KeyValue(particula.translateYProperty(), Math.random() * -200 - 100),
+                new KeyValue(particula.opacityProperty(), 0)
+            )
+        );
+
+        timeline.setCycleCount(1);
+        timeline.setOnFinished(event -> {
+            matrizPane.getChildren().remove(particula);
+        });
+        timeline.play();
+    }
+    public static void crearParticulaDeHumoEstatico(double x, double y) {
+        instance.crearParticulaDeHumo(x, y);
+    }
+
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
             // Convertir las coordenadas del clic a coordenadas de la escena
@@ -365,7 +400,7 @@ public class Main extends Application{
             if (cableActual == null) {
                 if (comprobarCuadradoEnMatricesBateria(matrizInicial, xLocal, yLocal)) {
                    cableActual = new Cables(matrizInicial,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz());
-                    cableActual.iniciarDibujoCable(xLocal, yLocal);
+                   cableActual.iniciarDibujoCable(xLocal, yLocal);
                 }
             }
         });
@@ -554,6 +589,7 @@ public class Main extends Application{
             matrizPane.setOnMouseClicked(led::handleMouseClick);
         });
     }
+
     @FXML
     void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
         botonCableAzul2.setOnMouseClicked(clickedEvent -> { // Botón clickeable para el cable azul inferior

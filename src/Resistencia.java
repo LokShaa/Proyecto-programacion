@@ -265,12 +265,9 @@ public class Resistencia {
                     transferirEnergia(startX, startY, endX, endY, valorCelda1);
                 } 
                 else if(valorCelda2 == 1 || valorCelda2 == -1){
-
                     quemado = true;
                     generarHumo((startX + endX) / 2, (startY + endY) / 2);
                 }
-            }else{
-                
             }
         }   
     }
