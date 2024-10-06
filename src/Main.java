@@ -132,7 +132,7 @@ public class Main extends Application{
     
     public static void actualizarMatriz() {
         if (instance != null) {
-           // instance.imprimirMatrices();
+            instance.imprimirMatrices();
            //System.out.println("..............................................................");
         }
     }
@@ -187,97 +187,6 @@ public class Main extends Application{
         imprimirMatrices();
     }
     
-    /*private void configurarEventosDeSeleccion(int[][] matriz, Pane matrizPane) {
-        for (int i = 0; i < matriz.length; i++) {
-            for (int j = 0; j < matriz[i].length; j++) {
-                final int fila = i;
-                final int columna = j;
-                Pane cell = (Pane) matrizPane.getChildren().get(i * matriz[i].length + j);
-                cell.setOnMouseClicked(event -> {
-                    valorSeleccionado = matriz[fila][columna];
-                    valorSeleccionadoFlag = true;
-                    filaSeleccionada = fila;
-                    columnaSeleccionada = columna;
-                    System.out.println("Valor seleccionado: " + valorSeleccionado);
-                    if (eventosActivos){ 
-                        valorSeleccionado = matriz[fila][columna];
-                        valorSeleccionadoFlag = true;
-                        filaSeleccionada = fila;
-                        columnaSeleccionada = columna;
-                        System.out.println("Valor seleccionado: " + valorSeleccionado);
-                    }
-                });
-            }
-        }
-    }*/
-
-    /*private void configurarEventosDeActualizacion(int[][] matrizEnteros, Pane matrizPane) {
-        for (int i = 0; i < matrizEnteros.length; i++) {
-            for (int j = 0; j < matrizEnteros[i].length; j++) {
-                final int fila = i;
-                final int columna = j;
-                Pane cell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[i].length + j);
-                cell.setOnMouseClicked(event -> {
-                    // Verificamos si los eventos están activos antes de proceder
-                    if (eventosActivos) {
-                        if (valorSeleccionadoFlag) {
-                            if (matrizEnteros[filaSeleccionada][columnaSeleccionada] == 0 && (matrizEnteros[fila][columna] == 1 || matrizEnteros[fila][columna] == -1)) {
-                                // Cambiar la columna completa donde fue el primer clic
-                                if (filaSeleccionada >= 0 && filaSeleccionada < 5) {
-                                    for (int k = 0; k < 5; k++) {
-                                        matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
-                                        if (matrizEnteros[fila][columna] != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                } else if (filaSeleccionada >= 5 && filaSeleccionada < 10) {
-                                    for (int k = 5; k < 10; k++) {
-                                        matrizEnteros[k][columnaSeleccionada] = matrizEnteros[fila][columna];
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columnaSeleccionada);
-                                        if (matrizEnteros[fila][columna] != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                }
-                                System.out.println("Columna actualizada debido a la condición especial.");
-                            } else {
-                                //Lógica existente para actualizar la columna
-                                if (fila >= 0 && fila < 5) {
-                                    for (int k = 0; k < 5; k++) {
-                                        matrizEnteros[k][columna] = valorSeleccionado;
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                        if (valorSeleccionado != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                } else if (fila >= 5 && fila < 10) {
-                                    for (int k = 5; k < 10; k++) {
-                                        matrizEnteros[k][columna] = valorSeleccionado;
-                                        Pane targetCell = (Pane) matrizPane.getChildren().get(k * matrizEnteros[k].length + columna);
-                                        if (valorSeleccionado != 0) {
-                                            targetCell.setStyle("-fx-background-color: yellow;");
-                                        }
-                                    }
-                                }
-                                System.out.println("Columna actualizada con el valor: " + valorSeleccionado);
-                            }
-                            valorSeleccionadoFlag = false;
-                            eventosActivos = false; //Desactivar eventos después de usar
-                        } else {
-                            valorSeleccionado = matrizEnteros[fila][columna];
-                            valorSeleccionadoFlag = true;
-                            filaSeleccionada = fila;
-                            columnaSeleccionada = columna;
-                            //Mensaje en la terminal mostrando el valor seleccionado
-                            System.out.println("Valor seleccionado: " + valorSeleccionado + " en la fila " + filaSeleccionada + ", columna " + columnaSeleccionada);
-                        }
-                    }
-                });
-            }
-        }
-    }*/
-  
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -303,6 +212,7 @@ public class Main extends Application{
             });
         });
     }
+    
     @FXML
     void botonResistencia(MouseEvent event) { 
         imagenResistencia.setOnMouseEntered(enteredEvent -> { 
@@ -314,6 +224,7 @@ public class Main extends Application{
             imagenResistencia.setEffect(null);
         });
     }
+    
     @FXML
     void botonSwitchOctogonal(MouseEvent event) { 
         imagenSwitchOctogonal.setOnMouseEntered(enteredEvent -> { 
@@ -446,7 +357,7 @@ public class Main extends Application{
             if (cableActual == null) {
                 if (comprobarCuadradoEnMatricesBateria(matrizInicial, xLocal, yLocal)) {
                    cableActual = new Cables(matrizInicial,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz());
-                    cableActual.iniciarDibujoCable(xLocal, yLocal);
+                   cableActual.iniciarDibujoCable(xLocal, yLocal);
                 }
             }
         });
