@@ -1,5 +1,3 @@
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
@@ -10,14 +8,17 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.transform.Rotate;
-import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.scene.Group;
+import javafx.util.Duration;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
 
 public class Resistencia {
-    private static final double MAX_DISTANCE = 130.0; // Distancia máxima permitida en píxeles
-
     private Pane matrizPane;
     private Pane[][] matriz;
     private int[][] matrizEnteros;
@@ -32,6 +33,8 @@ public class Resistencia {
 
     private List<Rectangle> resistenciaList = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
+
+    private boolean quemado = false;
 
     public Resistencia(Pane matrizPane, Pane[][] matriz, int[][] matrizEnteros) {
         this.matrizPane = matrizPane;
@@ -218,31 +221,97 @@ public class Resistencia {
     }
 
     private void startMonitoring() {
-        //Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> actualizar()));
-        //timeline.setCycleCount(Timeline.INDEFINITE);
-        //timeline.play();
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> actualizarMatrizCentral()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
-    /*private void actualizar() {
+    private void generarHumo(double x, double y) {
+    // Crear varios círculos pequeños que simularán el humo
+    for (int i = 0; i < 5; i++) {
+        Circle humo = new Circle(5 + Math.random() * 10); // Tamaños aleatorios
+        humo.setCenterX(x);
+        humo.setCenterY(y);
+        humo.setFill(Color.GRAY);
+        humo.setOpacity(0.8); // Humo inicialmente visible
+
+        // Animación de translación (movimiento hacia arriba)
+        TranslateTransition translate = new TranslateTransition(Duration.seconds(2), humo);
+        translate.setByY(-50 - Math.random() * 30); // Subir el humo
+
+        // Animación de desvanecimiento
+        FadeTransition fade = new FadeTransition(Duration.seconds(2), humo);
+        fade.setToValue(0); // Se desvanece a 0
+
+        // Combinar animaciones en una transición paralela
+        ParallelTransition transition = new ParallelTransition(translate, fade);
+        transition.setOnFinished(event -> matrizPane.getChildren().remove(humo)); // Remover círculo cuando termine la animación
+
+        // Añadir el humo al Pane y a la lista para su control
+        matrizPane.getChildren().add(humo);
+       
+
+        // Iniciar la animación
+        transition.play();
+    }
+}
+
+    private void actualizarMatrizCentral() {
         for (int i = 0; i < resistenciaList.size(); i++) {
-            Rectangle rectangle = resistenciaList.get(i);
-            Line line = lines.get(i);
-
-            double startX = line.getStartX();
-            double startY = line.getStartY();
-            double endX = line.getEndX();
-            double endY = line.getEndY();
-
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
+            if(quemado == false){
+                if(valorCelda1 == 1 || valorCelda1 == -1){
+                    transferirEnergia(startX, startY, endX, endY, valorCelda1);
+                } 
+                else if(valorCelda2 == 1 || valorCelda2 == -1){
 
-            if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
-                led.setFill(Color.web("#00FF00")); // Verde fluorescente
+                    quemado = true;
+                    generarHumo((startX + endX) / 2, (startY + endY) / 2);
+                }
+            }else{
+                
+            }
+        }   
+    }
+
+    private void transferirEnergia(double fromX, double fromY, double toX, double toY, int valor) {
+        int filaFrom = (int) (fromY / 20);
+        int columnaFrom = (int) (fromX / 20);
+        int filaTo = (int) (toY / 20);
+        int columnaTo = (int) (toX / 20);
+    
+        filaFrom = ajustarFila(filaFrom);
+        columnaFrom = ajustarColumna(columnaFrom);
+        filaTo = ajustarFila(filaTo);
+        columnaTo = ajustarColumna(columnaTo);
+    
+        if (filaTo < 5) {
+            if (valor == 1) {
+                for (int i = 0; i < 5; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: red;");
+                }
             } else {
-                led.setFill(Color.DARKGREEN); // Verde oscuro
+                for (int i = 0; i < 5; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
+                }
+            }
+        } else {
+            if (valor == 1) {
+                for (int i = 5; i < 10; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: red;");
+                }
+            } else {
+                for (int i = 5; i < 10; i++) {
+                    matrizEnteros[i][columnaTo] = valor;
+                    matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
+                }
             }
         }
-    }*/
+    }
 
     private int obtenerValorMatrizEnteros(double x, double y) {
         for (int i = 0; i < matriz.length; i++) {

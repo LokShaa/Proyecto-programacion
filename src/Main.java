@@ -120,13 +120,6 @@ public class Main extends Application{
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
 
-        Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-        int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-        
-         // Crear una instancia de la clase Led y pasarle las matrices
-        led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
-        resistencia = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral);
-
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
         matrices1.add(matrizPane);
@@ -230,10 +223,12 @@ public class Main extends Application{
             imagenResistencia.setEffect(null);
         });
         imagenResistencia.setOnMouseClicked(clickedEvent->{
-            // Desactivar eventos de dibujo de LED en todas las matrices
+            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+            resistencia = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral);
+            
             desactivarEventosDeDibujo(matrizPane);
     
-            // Reactivar el evento de dibujo de LED en la matriz principal
             matrizPane.setOnMouseClicked(resistencia::handleMouseClick);
         });
     }
