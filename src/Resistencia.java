@@ -88,11 +88,11 @@ public class Resistencia {
 
             // Calcular la distancia entre los puntos de inicio y fin
             double distance = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
-            if (distance > 120) {
+            if (distance > 60) {
                 mostrarAlerta("La distancia entre los puntos es demasiado grande.");
                 return;
             }
-            if(distance < 80){
+            if(distance < 30){
                 mostrarAlerta("La distancia entre los puntos es demasiado pequeña.");
                 return;
             }
