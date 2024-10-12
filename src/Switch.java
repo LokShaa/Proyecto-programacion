@@ -22,7 +22,7 @@ public class Switch extends Line {
     int columnaFinal;
     private Timeline timeline;
 
-    public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane) {
+    public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane){
         this.pane = pane;
         this.setStroke(color);
         this.setStrokeWidth(10);
@@ -78,7 +78,7 @@ public class Switch extends Line {
     }
 
     // Método para ajustar la columna según las reglas específicas
-    private int ajustarColumna(int columna) {
+    private int ajustarColumna(int columna){
         columna -= (columna / 2);
         if (columna > 20) {
             columna += 1;
@@ -217,6 +217,7 @@ public class Switch extends Line {
             for(int i = 0; i < 5; i++){
                 if (color == Color.YELLOW){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
+                    
                     targetCell.setStyle("-fx-background-color: yellow;");
                 }
                 else if (color == Color.BLACK){

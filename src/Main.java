@@ -124,7 +124,7 @@ public class Main extends Application{
         matrizCableSuperiorAzul.inicializarMatrizCablesBateriaAzul(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorAzul);
         matrizCableInferiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableInferiorRojo);
         matrizCableSuperiorRojo.inicializarMatrizCablesBateriaRojo(1, 1, 10, 10, 0, 0, matrizPaneCableSuperiorRojo);
-        led = new Led(matrizPane, matrizCentralProtoboard.getMatriz(), matrizCentralProtoboard.getMatrizEnteros());
+
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
         matrices1.add(matrizPane);
@@ -137,7 +137,7 @@ public class Main extends Application{
     
     public static void actualizarMatriz() {
         if (instance != null) {
-           // instance.imprimirMatrices();
+            instance.imprimirMatrices();
            //System.out.println("..............................................................");
         }
     }
@@ -191,7 +191,7 @@ public class Main extends Application{
         actualizarEstadoLuz();
         imprimirMatrices();
     }
-  
+
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -217,6 +217,7 @@ public class Main extends Application{
             });
         });
     }
+    
     @FXML
     void botonResistencia(MouseEvent event) { 
         imagenResistencia.setOnMouseEntered(enteredEvent -> { 
@@ -268,15 +269,14 @@ public class Main extends Application{
     
         for (Pane matriz : matrices) {
             matriz.setOnMouseClicked(mouseClickedEvent -> {
-                // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
                 if (cableActual == null) {
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+                        int fila = (int)(yLocal / cellAlt);
+                        int columna = (int)(xLocal / cellAncho);
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             fila -= fila/2;
                             if (fila >= 7){
@@ -298,6 +298,7 @@ public class Main extends Application{
                                 }
                                 cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
+                                matrizPane.toFront();
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
                                 }
@@ -309,8 +310,8 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
+                        int fila = (int) (yLocal / cellAlt);
+                        int columna = (int) (xLocal / cellAncho);
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
                             fila -= fila/2;
                             if (fila >= 7){
@@ -338,11 +339,9 @@ public class Main extends Application{
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
                                 }
-                                cableActual = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
+                                cableActual = null;
                                 onComplete.run();
-                               
                                 break;
-                                
                             }
                         }
                     }
@@ -350,7 +349,7 @@ public class Main extends Application{
             });
         }
     }
-    
+
     public static void setMatrizCables(int fila, int columna, int valor) {
         matrizCentralProtoboard.setMatrizCables(fila, columna, valor);
     }
@@ -562,6 +561,7 @@ public class Main extends Application{
             });
         }
     }
+    
     private void mostrarAlerta(String mensaje) {
         Alert alert = new Alert(AlertType.WARNING);
         alert.setTitle("Información");
@@ -576,15 +576,20 @@ public class Main extends Application{
             Glow glowRojo = new Glow(1);
             imagenLed.setEffect(glowRojo);
         });
-    
+
         imagenLed.setOnMouseExited(exitEvent -> { 
             imagenLed.setEffect(null);
         });
-    
+
         imagenLed.setOnMouseClicked(clickedEvent -> {
+            // Inicializar la instancia de Led
+            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+            led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+
             // Desactivar eventos de dibujo de LED en todas las matrices
             desactivarEventosDeDibujo(matrizPane);
-    
+
             // Reactivar el evento de dibujo de LED en la matriz principal
             matrizPane.setOnMouseClicked(led::handleMouseClick);
         });
