@@ -384,6 +384,7 @@ public class Main extends Application{
         });
         timeline.play();
     }
+  
     public static void crearParticulaDeHumoEstatico(double x, double y) {
         instance.crearParticulaDeHumo(x, y);
     }

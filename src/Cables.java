@@ -31,7 +31,10 @@ public class Cables extends Line {
     private int segundaCeldaX;
     private int segundaCeldaY;
 
-    private Timeline timeline; 
+    private Timeline timeline;
+    
+    private int caso; //se usa para ver que paso en el paso de corriente, si es 1 se paso de click inicial al final , si es dos se paso del final al inicial
+    
 
     public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros, int[][] matriSup, Pane[][] matrizPaneSup, int[][] matriInf, Pane[][] matrizPaneInf) {
         this.pane = pane;
@@ -79,18 +82,20 @@ public class Cables extends Line {
                     timeline.stop();
                 }
 
-                // Eliminar solo los valores de energía del segundo clic
-                eliminarValoresEnergia(filaFinal, columnaFinal);
-
-                if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
-                    matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
+                if(caso == 1){
+                    eliminarValoresEnergia(filaFinal, columnaFinal);
+                }else if(caso == 2){
+                    eliminarValoresEnergia(filaInicial, columnaInicial);
                 }
+                //eliminarValoresEnergia(filaFinal, columnaFinal,caso);
+
+                
                 Main.actualizarMatriz();
             }
         });
 
         // Monitoreo constante de las celdas
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
             monitorearCeldas();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -233,12 +238,14 @@ public class Cables extends Line {
             }
 
             else if (!(valorInicial != 0 && valorFinal != 0)) {
-                if (valorInicial == 1  || valorInicial == -1) {
+                if (valorInicial == 1  || valorInicial == -1){
                     actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
+                    caso = 1;
                 }
 
                 if (valorFinal == 1 || valorFinal == -1) {
                     actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
+                    caso = 2;
                 }
             }
         }
@@ -260,8 +267,10 @@ public class Cables extends Line {
     
             if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
                 actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
+                caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup, matrizPaneSup);
+                caso = 2;
             }
         } else {
             //System.out.println("No se cumple la condición del if para actualizar matriz superior a central.");
@@ -283,8 +292,10 @@ public class Cables extends Line {
             //System.out.println("Valor final en matriz central: " + valorFinal);
             if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
                 actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane);
+                caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf);
+                caso = 2;
             }
         } else {
             //System.out.println("No se cumple la condición del if para actualizar matriz superior a central.");
@@ -305,8 +316,10 @@ public class Cables extends Line {
             //System.out.println("Valor final en matriz superior: " + valorFinal);
             if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriSup, matrizPaneSup);
+                caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
+                caso = 2;   
             }
         } else {
             //System.out.println("No se cumple la condición del if para actualizar matriz central a superior.");
@@ -328,8 +341,10 @@ public class Cables extends Line {
     
             if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf);
+                caso = 1;
             } else if (valorFinal == 1 || valorFinal == -1) {
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
+                caso = 2;
             }
         } else {
            // System.out.println("No se cumple la condición del if para actualizar matriz central a inferior.");
@@ -352,8 +367,10 @@ public class Cables extends Line {
            // System.out.println("Valor final en matriz inferior: " + valorFinal);
             if((valorInicial == 1 || valorInicial == -1) && valorFinal == 0){
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf);
+                caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup, matrizPaneSup);
+                caso = 2;   
             }
         }
     }
@@ -372,8 +389,10 @@ public class Cables extends Line {
             //System.out.println("Valor final en matriz superior: " + valorFinal);
             if((valorInicial == 1 || valorInicial == -1) && valorFinal == 0){
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriSup, matrizPaneSup);
+                caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf);
+                caso = 2;
             }
         }
     }
@@ -423,7 +442,6 @@ public class Cables extends Line {
         }
     }
 
-    
     public int getFilaInicial() {
         return filaInicial;
     }
@@ -571,10 +589,14 @@ public class Cables extends Line {
                 if (timeline != null) {
                     timeline.stop();
                 }
-                eliminarValoresEnergia(filaFinal, columnaFinal);
-                if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
-                    matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
+                if(caso == 1){
+                    eliminarValoresEnergia(filaFinal, columnaFinal);
+                }else if(caso == 2){
+                    eliminarValoresEnergia(filaInicial, columnaInicial);
                 }
+                //if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
+                   // matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
+                //}
                 Main.actualizarMatriz();
             }
         });
