@@ -189,7 +189,7 @@ public class Main extends Application{
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
-        imprimirMatrices();
+        //imprimirMatrices();
     }
    
     public static void BotonBateria2(){

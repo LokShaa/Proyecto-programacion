@@ -96,7 +96,7 @@ public class Cables extends Line {
         });
 
         // Monitoreo constante de las celdas
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.005), event -> {
             monitorearCeldas();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
