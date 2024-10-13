@@ -214,10 +214,11 @@ public class Protoboard{
     public void inicializarMatrizSupInf(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
         matrizEnteros = new int[filas][columnas];
-
+        matrizCortoCircuito = new int[filas][columnas];
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
                 matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
+                matrizCortoCircuito[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE CORTO CIRCUITO SOLO CON 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -346,6 +347,18 @@ public class Protoboard{
         if (fila >= 5 && fila <10){
             for(int fil = 5; fil < 10; fil++){
                 this.matrizCortoCircuito[fil][columna] = valor;
+            }
+        }
+    }
+    public void setMatrizCortoCircuitoSupInf(int fila ,int columna, int valor){ 
+        if (fila == 0){
+            for(int col = 0; col < 30; col++){
+                this.matrizCortoCircuito[0][col] = valor;
+            }
+        }
+        else if (fila == 1){
+            for(int col = 0; col < 30; col++){
+                this.matrizCortoCircuito[1][col] = valor;
             }
         }
     }

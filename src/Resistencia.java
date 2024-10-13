@@ -30,9 +30,11 @@ public class Resistencia {
     int columnaInicial;
     int filaFinal;
     int columnaFinal;
+    Timeline timeline;
 
     private List<Rectangle> resistenciaList = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
+    private List<Rectangle> rectangulosResistencias = new ArrayList<>();
 
     private boolean quemado = false;
 
@@ -76,6 +78,7 @@ public class Resistencia {
         } else {
             endX = x;
             endY = y;
+            
 
             if (Main.getMatrizCables()[fila][columna] == 1) {
                 mostrarAlerta("El cuadrado ya está ocupado.");
@@ -96,11 +99,16 @@ public class Resistencia {
                 mostrarAlerta("La distancia entre los puntos es demasiado pequeña.");
                 return;
             }
+            int valorInicial = matrizEnteros[filaInicial][columnaInicial];
+            int valorFinal = matrizEnteros[filaFinal][columnaFinal];
+            if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
+                Main.matrizCentralProtoboard.setMatrizCortoCircuito(fila, columna, 1);
+            }
 
             Main.setMatrizCables(fila, columna, 1);
             valorCelda2 = obtenerValorMatrizEnteros(event); // Obtener el valor de la segunda celda
             firstClick = true;
-            drawCable(startX, startY, endX, endY);
+            drawResistencia(startX, startY, endX, endY);
         }
     }
 
@@ -112,7 +120,7 @@ public class Resistencia {
         alert.showAndWait();
     }
 
-    private void drawCable(double startX, double startY, double endX, double endY) {
+    private void drawResistencia(double startX, double startY, double endX, double endY) {
         Line line = new Line(startX, startY, endX, endY);
         line.setStroke(Color.GRAY);
         line.setStrokeWidth(5);
@@ -175,13 +183,39 @@ public class Resistencia {
                 matrizPane.getChildren().removeAll(line, rectangulo, bandsGroup);
                 resistenciaList.remove(rectangulo);
                 lines.remove(line);
+
+                // Detener el monitoreo
+                if (timeline != null) {
+                    timeline.stop();
+                }
+
+                // Eliminar solo los valores de energía del segundo clic
+                eliminarValoresEnergia(filaFinal, columnaFinal);
+
+                Main.actualizarMatriz();
             }
         });
     
         // Agregar la línea, el rectángulo y las bandas de colores al Pane
         matrizPane.getChildren().addAll(line, rectangulo, bandsGroup);
         resistenciaList.add(rectangulo);
+        rectangulosResistencias.add(rectangulo);
         lines.add(line);
+    }
+    
+    private void eliminarValoresEnergia(int fila, int columna){
+        timeline.stop();
+        if (fila >= 0 && fila <= 4) {
+            for (int i = 0; i < 5; i++) {
+                matrizEnteros[i][columna] = 0;
+                matriz[i][columna].setStyle("-fx-background-color: black;");
+            }
+        } else if (fila >= 5 && fila <= 9) {
+            for (int i = 5; i < 10; i++) {
+                matrizEnteros[i][columna] = 0;
+                matriz[i][columna].setStyle("-fx-background-color: black;");
+            }
+        }
     }
 
     // Método para ajustar la fila según las reglas específicas
@@ -221,7 +255,10 @@ public class Resistencia {
     }
 
     private void startMonitoring() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> actualizarMatrizCentral()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+            actualizarMatrizCentral();
+            Cables.revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
+        }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
@@ -267,6 +304,7 @@ public class Resistencia {
                 else if(valorCelda2 == 1 || valorCelda2 == -1){
                     quemado = true;
                     generarHumo((startX + endX) / 2, (startY + endY) / 2);
+                    rectangulosResistencias.get(i).setFill(Color.BLACK);
                 }
             }
         }   
