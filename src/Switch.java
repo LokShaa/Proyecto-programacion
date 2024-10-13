@@ -136,11 +136,11 @@ public class Switch extends Line {
             for(int i = 0; i < 5; i++){
                 if(matrizEnteros[filaInicial][columnaInicial] == -1) {
                     matrizEnteros[i][columnaFinal] = -1;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                 }
                 else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
                     matrizEnteros[i][columnaFinal] = 1; 
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                    cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                 }
                 else {
                     matrizEnteros[filaInicial][columnaInicial] = 0;
@@ -154,11 +154,11 @@ public class Switch extends Line {
             for(int i = 5; i < 10; i++){
                 if(matrizEnteros[filaInicial][columnaInicial] == -1) {
                     matrizEnteros[i][columnaFinal] = -1;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                 }
                 else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
                     matrizEnteros[i][columnaFinal] = 1; 
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                    cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                 }
                 else {
                     matrizEnteros[filaInicial][columnaInicial] = 0;
@@ -214,31 +214,47 @@ public class Switch extends Line {
     // Método auxiliar para cambiar el color de una celda en la matriz
     private void cambiarColorCelda(int fila, int columna, Color color) {
         Pane targetCell = (Pane) matrizPane.getChildren().get(fila * matrizEnteros[fila].length + columna);
-        
-        if (fila >=0 && fila <5){
-            for(int i = 0; i < 5; i++){
-                if (color == Color.YELLOW){
+        if(color == Color.RED){
+            if (fila >=0 && fila <5){
+                for(int i = 0; i < 5; i++){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
-                    
-                    targetCell.setStyle("-fx-background-color: yellow;");
+                    targetCell.setStyle("-fx-background-color: red;");
                 }
-                else if (color == Color.BLACK){
+            }
+            if(fila >=5 && fila <10){
+                for(int i = 5; i < 10; i++){
+                    targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
+                    targetCell.setStyle("-fx-background-color: red;");
+                }
+            }
+
+        }else if(color == Color.BLUE){
+            if (fila >=0 && fila <5){
+                for(int i = 0; i < 5; i++){
+                    targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
+                    targetCell.setStyle("-fx-background-color: blue;");
+                }
+            }
+            if(fila >=5 && fila <10){
+                for(int i = 5; i < 10; i++){
+                    targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
+                    targetCell.setStyle("-fx-background-color: blue;");
+                }
+            }
+        }else if(color == Color.BLACK){
+            if (fila >=0 && fila <5){
+                for(int i = 0; i < 5; i++){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: black;");
                 }
             }
-        }
-        if(fila >=5 && fila <10){
-            for(int i = 5; i < 10; i++){
-                if (color == Color.YELLOW){
-                    targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
-                    targetCell.setStyle("-fx-background-color: yellow;");
-                }
-                else if (color == Color.BLACK){
+            if(fila >=5 && fila <10){
+                for(int i = 5; i < 10; i++){
                     targetCell = (Pane) matrizPane.getChildren().get(i * matrizEnteros[fila].length + columna);
                     targetCell.setStyle("-fx-background-color: black;");
                 }
             }
+
         }
         
     }
