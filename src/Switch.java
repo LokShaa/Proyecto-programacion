@@ -207,6 +207,8 @@ public class Switch extends Line {
                 }
             }
         }
+        Main.BotonBateria2();
+        Main.BotonBateria3();
     }
     
     // Método auxiliar para cambiar el color de una celda en la matriz

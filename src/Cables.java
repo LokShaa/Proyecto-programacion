@@ -1,15 +1,12 @@
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.geometry.Bounds;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
+import javafx.scene.image.ImageView;
+
 
 public class Cables extends Line {
     private Pane pane;
@@ -35,7 +32,6 @@ public class Cables extends Line {
     
     private int caso; //se usa para ver que paso en el paso de corriente, si es 1 se paso de click inicial al final , si es dos se paso del final al inicial
     
-
     public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros, int[][] matriSup, Pane[][] matrizPaneSup, int[][] matriInf, Pane[][] matrizPaneInf) {
         this.pane = pane;
         this.matrizPane = matrizPane;
@@ -75,6 +71,7 @@ public class Cables extends Line {
                 Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
 
+
                 pane.getChildren().remove(this); // Eliminar el cable del pane
 
                 // Detener el monitoreo
@@ -84,11 +81,15 @@ public class Cables extends Line {
 
                 if(caso == 1){
                     eliminarValoresEnergia(filaFinal, columnaFinal);
+                    Main.BotonBateria2();
+                    Main.BotonBateria3();
+                   
                 }else if(caso == 2){
                     eliminarValoresEnergia(filaInicial, columnaInicial);
+                    Main.BotonBateria2();
+                    Main.BotonBateria3();
+                    
                 }
-                //eliminarValoresEnergia(filaFinal, columnaFinal,caso);
-
                 
                 Main.actualizarMatriz();
             }
@@ -142,6 +143,8 @@ public class Cables extends Line {
             columnaInicial = ajustarColumna(columnaInicial);
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
+        
+    
             actualizarMatrizCentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
       
@@ -425,7 +428,7 @@ public class Cables extends Line {
                     }
                 }
 
-            } else {
+            } else if(fila >= 5 && fila < 10){
                 if(valor == 1){
                     for (int i = 5; i < 10; i++) {
                         matriz[i][columna] = valor;
@@ -437,7 +440,13 @@ public class Cables extends Line {
                         matrizPane[i][columna].setStyle("-fx-background-color: blue;");
                     }
                 }
-
+            } else {
+                if(valor == 0){
+                    for (int i = 0; i < matriz.length; i++) {
+                        matriz[i][columna] = 0;
+                        matrizPane[i][columna].setStyle("-fx-background-color: black;");
+                    }
+                }
             }
         }
     }
@@ -591,8 +600,12 @@ public class Cables extends Line {
                 }
                 if(caso == 1){
                     eliminarValoresEnergia(filaFinal, columnaFinal);
+                    Main.BotonBateria2();
+                    Main.BotonBateria3();
                 }else if(caso == 2){
                     eliminarValoresEnergia(filaInicial, columnaInicial);
+                    Main.BotonBateria2();
+                    Main.BotonBateria3();
                 }
                 //if (segundaCeldaY >= 0 && segundaCeldaY < matrizEnteros.length && segundaCeldaX >= 0 && segundaCeldaX < matrizEnteros[0].length) {
                    // matrizEnteros[segundaCeldaY][segundaCeldaX] = 0;
@@ -681,5 +694,6 @@ public class Cables extends Line {
                 matrizPane[i][columna].setStyle("-fx-background-color: black;");
             }
         }
+        
     }
 }

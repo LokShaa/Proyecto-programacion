@@ -5,7 +5,7 @@ public class Bateria{
     private int voltaje = 5; //Atributo para saber el voltaje de la bateria
     public static boolean banderaBateria = false;
 
-    @FXML
+    
     public void botonConectadoDesconectado(ImageView luzRoja,ImageView luzVerde, ImageView bateriaCortada,ImageView bateriaCompleta,ImageView portaBaterias) { //Metodo para hacer aparecer y desaparecer la bateria completa y la bateria cortada, ademas las luces roja y verde
         luzRoja.setVisible(!luzRoja.isVisible()); //Se hace invisible la luz roja
         luzVerde.setVisible(luzVerde.isVisible()); //Se hace visible la luz verde

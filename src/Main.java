@@ -183,7 +183,7 @@ public class Main extends Application{
         instance.matrizInferior.actualizarEstadoLuz(Bateria.banderaBateria);
         instance.matrizCentralProtoboard.actualizarEstadoLuzCentral(Bateria.banderaBateria);
     }
-
+    
     @FXML
     void botonConDesc(ActionEvent event) {
         Bateria bateria = new Bateria();
@@ -191,7 +191,15 @@ public class Main extends Application{
         actualizarEstadoLuz();
         imprimirMatrices();
     }
+   
+    public static void BotonBateria2(){
+        instance.botonConDesc(null);
+    }
 
+    public static void BotonBateria3(){
+        instance.botonConDesc(new ActionEvent());
+    }
+    
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
