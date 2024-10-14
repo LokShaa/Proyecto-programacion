@@ -32,7 +32,11 @@ public class Led{
     private List<Circle> leds = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
      
-   private boolean quemado = false;
+    private boolean quemado = false;
+
+    private int casoEnergia = 0;//variable que se usara para ver que caso de energia se esta usando y se usara para cuando se elimine el eld y ver si este esta pasando energia
+    //cuando es 1 es porque esta pasando energia positiva
+    //cuando es -1 es pporque esta pasando energia negativa
 
     public Led(Pane matrizPane, Pane[][] matriz, int[][] matrizEnteros) {
         this.matrizPane = matrizPane;
@@ -149,6 +153,31 @@ public class Led{
                 leds.remove(circle);
                 lines.remove(line1);
                 lines.remove(line2);
+                if(casoEnergia == 1){
+                    if(filaFinal < 5){
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaFinal] = 0;
+                            matriz[i][columnaFinal].setStyle("-fx-background-color: black;");
+                        }
+                    }else if(filaFinal >= 5){
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaFinal] = 0;
+                            matriz[i][columnaFinal].setStyle("-fx-background-color:  black;");
+                        }
+                    }
+                }else if(casoEnergia == -1){
+                    if(filaInicial < 5){
+                        for (int i = 0; i < 5; i++) {
+                            matrizEnteros[i][columnaInicial] = 0;
+                            matriz[i][columnaInicial].setStyle("-fx-background-color:  black;");
+                        }
+                    }else if(filaInicial >= 5){
+                        for (int i = 5; i < 10; i++) {
+                            matrizEnteros[i][columnaInicial] = 0;
+                            matriz[i][columnaInicial].setStyle("-fx-background-color:  black;");
+                        }
+                    }
+                }
             }
         });
 
@@ -211,18 +240,18 @@ public class Led{
             double endX = line2.getEndX();
             double endY = line2.getEndY();
 
-            double midX = (startX + endX) / 2;
-            double midY = (startY + endY) / 2;
-
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
             if(quemado == false){
                 if(valorCelda1 == 1 ){
                     led.setFill(Color.web("#00FF00")); // Verde fluorescente
                     transferirEnergia(startX, startY, endX, endY, valorCelda1);
+                    casoEnergia = 1;
+
                 } else if(valorCelda2 == -1){
                     led.setFill(Color.web("#00FF00")); // Verde fluorescente
                     transferirEnergia(endX, endY, startX, startY, valorCelda2);
+                    casoEnergia = -1;   
     
                 }else if(valorCelda2 == 1 || valorCelda1 == -1){
                     led.setFill(Color.web("#FFA500")); // Naranja fosforescente
