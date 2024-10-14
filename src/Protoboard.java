@@ -366,6 +366,9 @@ public class Protoboard{
     public void setMatrizCables(int fila ,int columna, int valor){ 
         this.matrizCables[fila][columna] = valor;
     }
+    public void setMatrizEnteros(int fila ,int columna, int valor){ 
+        this.matrizEnteros[fila][columna] = valor;
+    }
 
     public void desactivarEventosDeDibujo(){
         for (int i = 0; i < matriz.length; i++) {
