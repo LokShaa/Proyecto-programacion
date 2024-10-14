@@ -308,6 +308,8 @@ public class Cables extends Line {
     public void revisarMatrizCorto(int[][] matriz,int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
         if(matriz[filaInicial][columnaInicial] == 1 || matriz[filaFinal][columnaFinal] == 1){
             timeline.stop();
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         }
     }
     /*public void revisarMatrizCortoSupInf(int[][] matriz1,int[][] matriz2, int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){

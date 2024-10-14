@@ -188,9 +188,8 @@ public class Resistencia {
                 if (timeline != null) {
                     timeline.stop();
                 }
-
-                // Eliminar solo los valores de energía del segundo clic
-                eliminarValoresEnergia(filaFinal, columnaFinal);
+                Main.BotonBateria2();
+                Main.BotonBateria3();
 
                 Main.actualizarMatriz();
             }
@@ -201,21 +200,6 @@ public class Resistencia {
         resistenciaList.add(rectangulo);
         rectangulosResistencias.add(rectangulo);
         lines.add(line);
-    }
-    
-    private void eliminarValoresEnergia(int fila, int columna){
-        timeline.stop();
-        if (fila >= 0 && fila <= 4) {
-            for (int i = 0; i < 5; i++) {
-                matrizEnteros[i][columna] = 0;
-                matriz[i][columna].setStyle("-fx-background-color: black;");
-            }
-        } else if (fila >= 5 && fila <= 9) {
-            for (int i = 5; i < 10; i++) {
-                matrizEnteros[i][columna] = 0;
-                matriz[i][columna].setStyle("-fx-background-color: black;");
-            }
-        }
     }
 
     // Método para ajustar la fila según las reglas específicas
