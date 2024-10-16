@@ -83,8 +83,8 @@ public class Main extends Application{
     private Color colorActual;
 
     static Protoboard matrizCentralProtoboard = new Protoboard();
-    Protoboard matrizSuperior = new Protoboard();
-    Protoboard matrizInferior = new Protoboard();
+    static Protoboard matrizSuperior = new Protoboard();
+    static Protoboard matrizInferior = new Protoboard();
     Protoboard matrizCableSuperiorAzul = new Protoboard();
     Protoboard matrizCableInferiorAzul = new Protoboard();
     Protoboard matrizCableSuperiorRojo = new Protoboard();
@@ -364,7 +364,7 @@ public class Main extends Application{
         return matrizCentralProtoboard.getMatrizCables();
     }
 
-    public void crearParticulaDeHumo(double x, double y) {
+    public void crearParticulaDeHumoCentral(double x, double y) {
         Circle particula = new Circle(3, Color.GRAY);
         particula.setOpacity(0.5);
         particula.setCenterX(x);
@@ -377,7 +377,7 @@ public class Main extends Application{
                 new KeyValue(particula.translateYProperty(), 0),
                 new KeyValue(particula.opacityProperty(), 0.5)
             ),
-            new KeyFrame(new Duration(5000),
+            new KeyFrame(new Duration(3000),
                 new KeyValue(particula.translateXProperty(), Math.random() * 200 - 100),
                 new KeyValue(particula.translateYProperty(), Math.random() * -200 - 100),
                 new KeyValue(particula.opacityProperty(), 0)
@@ -390,10 +390,71 @@ public class Main extends Application{
         });
         timeline.play();
     }
-  
-    public static void crearParticulaDeHumoEstatico(double x, double y) {
-        instance.crearParticulaDeHumo(x, y);
+
+    public void crearParticulaDeHumoSup(double x, double y) {
+        Circle particula = new Circle(3, Color.GRAY);
+        particula.setOpacity(0.5);
+        particula.setCenterX(x);
+        particula.setCenterY(y);
+        matrizPane2.getChildren().add(particula);
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.ZERO,
+                new KeyValue(particula.translateXProperty(), 0),
+                new KeyValue(particula.translateYProperty(), 0),
+                new KeyValue(particula.opacityProperty(), 0.5)
+            ),
+            new KeyFrame(new Duration(3000),
+                new KeyValue(particula.translateXProperty(), Math.random() * 200 - 100),
+                new KeyValue(particula.translateYProperty(), Math.random() * -200 - 100),
+                new KeyValue(particula.opacityProperty(), 0)
+            )
+        );
+
+        timeline.setCycleCount(1);
+        timeline.setOnFinished(event -> {
+            matrizPane2.getChildren().remove(particula);
+        });
+        timeline.play();
     }
+    
+    public void crearParticulaDeHumoInf(double x, double y) {
+        Circle particula = new Circle(3, Color.GRAY);
+        particula.setOpacity(0.5);
+        particula.setCenterX(x);
+        particula.setCenterY(y);
+        matrizPane21.getChildren().add(particula);
+
+        Timeline timeline = new Timeline(
+            new KeyFrame(Duration.ZERO,
+                new KeyValue(particula.translateXProperty(), 0),
+                new KeyValue(particula.translateYProperty(), 0),
+                new KeyValue(particula.opacityProperty(), 0.5)
+            ),
+            new KeyFrame(new Duration(3000),
+                new KeyValue(particula.translateXProperty(), Math.random() * 200 - 100),
+                new KeyValue(particula.translateYProperty(), Math.random() * -200 - 100),
+                new KeyValue(particula.opacityProperty(), 0)
+            )
+        );
+
+        timeline.setCycleCount(1);
+        timeline.setOnFinished(event -> {
+            matrizPane21.getChildren().remove(particula);
+        });
+        timeline.play();
+    }
+
+    public static void crearParticulaDeHumoEstatico(double x, double y) {
+        instance.crearParticulaDeHumoCentral(x, y);
+    }
+    public static void crearParticulaDeHumoEstaticoSup(double x, double y) {
+        instance.crearParticulaDeHumoSup(x, y);
+    }
+    public static void crearParticulaDeHumoEstaticoInf(double x, double y) {
+        instance.crearParticulaDeHumoInf(x, y);
+    }
+    
 
     private void configurarEventosDeDibujoCablesProtoboardBateria(List<Pane> matrices,Pane matrizInicial,Runnable onComplete) {
         matrizInicial.setOnMouseClicked(mouseClickedEvent ->{
