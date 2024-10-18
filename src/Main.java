@@ -17,9 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -183,15 +181,23 @@ public class Main extends Application{
         instance.matrizInferior.actualizarEstadoLuz(Bateria.banderaBateria);
         instance.matrizCentralProtoboard.actualizarEstadoLuzCentral(Bateria.banderaBateria);
     }
-
+    
     @FXML
     void botonConDesc(ActionEvent event) {
         Bateria bateria = new Bateria();
         bateria.botonConectadoDesconectado(luzRoja,luzVerde,bateriaCortada,bateriaCompleta,portaBaterias);
         actualizarEstadoLuz();
-        imprimirMatrices();
+        //imprimirMatrices();
+    }
+   
+    public static void BotonBateria2(){
+        instance.botonConDesc(null);
     }
 
+    public static void BotonBateria3(){
+        instance.botonConDesc(new ActionEvent());
+    }
+    
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -384,6 +390,7 @@ public class Main extends Application{
         });
         timeline.play();
     }
+
     public void crearParticulaDeHumoSup(double x, double y) {
         Circle particula = new Circle(3, Color.GRAY);
         particula.setOpacity(0.5);
@@ -410,6 +417,7 @@ public class Main extends Application{
         });
         timeline.play();
     }
+    
     public void crearParticulaDeHumoInf(double x, double y) {
         Circle particula = new Circle(3, Color.GRAY);
         particula.setOpacity(0.5);
