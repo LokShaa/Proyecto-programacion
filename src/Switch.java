@@ -86,26 +86,36 @@ public class Switch extends Line {
         return columna;
     }
 
-    private void crearImagenSwitch(ImageView imagenSwitch) {
+    private void crearImagenSwitch(ImageView imagenSwitch, double width, double height) {
         // Calcular el punto medio del cable
         double midX = (this.getStartX() + this.getEndX()) / 2;
         double midY = (this.getStartY() + this.getEndY()) / 2;
-
+    
         // Crear la imagen
         this.imagenSwitch = new ImageView(imagenSwitch.getImage());
-        this.imagenSwitch.setFitWidth(50); // Ancho
-        this.imagenSwitch.setFitHeight(60); // Alto
-        this.imagenSwitch.setX(midX - 25);
-        this.imagenSwitch.setY(midY - 28);
-
+        this.imagenSwitch.setFitWidth(width + 5); // Ancho
+        this.imagenSwitch.setFitHeight(height + 2); // Alto
+        this.imagenSwitch.setX(midX - width / 2);
+        this.imagenSwitch.setY((midY - 5) - height / 2);
+    
         // Crear el círculo clickeable
-        circle = new Circle(midX, midY, 14, Color.RED);
+        circle = new Circle(midX, midY, 23, Color.RED);
         circle.setOnMouseClicked(this::manejarClickCirculo);
-
+    
+        // Añadir EventHandler para eliminar el switch al hacer clic en la imagen
+        this.imagenSwitch.setOnMouseClicked(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) { // Verificar si es clic izquierdo
+                pane.getChildren().remove(this); // Eliminar el cable del pane
+                pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
+                pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
+                timeline.stop(); // Detener el monitoreo constante
+            }
+        });
+    
         // Añadir la imagen y el círculo al pane
         pane.getChildren().addAll(this.imagenSwitch, circle);
     }
-
+   
     private void manejarClickCirculo(MouseEvent event) {
         double xLocalInicial = this.getStartX();
         double yLocalInicial = this.getStartY();
@@ -260,7 +270,7 @@ public class Switch extends Line {
     }
 
     private void iniciarMonitoreo() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.01), event -> monitorearEstado()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.009), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
@@ -273,11 +283,11 @@ public class Switch extends Line {
                     for(int i = 0; i < 5; i++){
                         if(matrizEnteros[filaInicial][columnaInicial] == -1) {
                             matrizEnteros[i][columnaFinal] = -1;
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
                         else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
                             matrizEnteros[i][columnaFinal] = 1; 
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
                         else {
                             matrizEnteros[filaInicial][columnaInicial] = 0;
@@ -291,11 +301,11 @@ public class Switch extends Line {
                     for(int i = 5; i < 10; i++){
                         if(matrizEnteros[filaInicial][columnaInicial] == -1) {
                             matrizEnteros[i][columnaFinal] = -1;
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
                         else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
                             matrizEnteros[i][columnaFinal] = 1; 
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.YELLOW);
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
                         else {
                             matrizEnteros[filaInicial][columnaInicial] = 0;
@@ -334,22 +344,32 @@ public class Switch extends Line {
     public void finalizarDibujoCable(double endX, double endY, ImageView imagenSwitch) {
         this.setEndX(endX);
         this.setEndY(endY);
-        crearImagenSwitch(imagenSwitch); // Actualizar la imagen y el círculo cuando se finaliza el dibujo del cable
+    
+        // Calculate filaInicial and filaFinal
+        filaInicial = (int) (this.getStartY() / 20);
+        filaFinal = (int) (endY / 20);
+        System.out.println(filaInicial);
+        System.out.println(filaFinal);
+        // Determine the size of the image based on filaInicial and filaFinal
+        double imageWidth, imageHeight;
+        if (filaInicial == 8 && filaFinal == 14 || filaFinal == 8 && filaInicial == 14) {
+            imageWidth = 90; // Set width to 120
+            imageHeight = 125; // Set height to 130
+        } else {
+            imageWidth = 90; // Default width
+            imageHeight = 90; // Default height
+        }
+    
+        crearImagenSwitch(imagenSwitch, imageWidth, imageHeight); // Update the image and circle when the cable drawing is finished
     }
-
+    
     public void actualizarPane(Pane nuevoPane, ImageView imagenSwitch) {
-        
-
         // Remover el cable del pane actual
         this.pane.getChildren().remove(this);
-
         // Actualizar el pane
         this.pane = nuevoPane;
-
         // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
-
-
         // Volver a asignar el EventHandler de clic derecho para eliminar el cable
         this.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
@@ -362,7 +382,7 @@ public class Switch extends Line {
                 }
             }
         });
-        crearImagenSwitch(imagenSwitch); // Actualizar la imagen y el círculo cuando se actualiza el pane
+        crearImagenSwitch(imagenSwitch, 90, 100); // Update the image and circle when the cable drawing is finished
     }
 
     public Pane getPane() {
