@@ -198,18 +198,17 @@ public class Cables extends Line {
             actualizarMatrizCentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
       
         } else if (matrizInicial.equals("superior") && matrizFinal.equals("central")){
-            //funciona
+            //FALTA AJUSTAR LAS COLUMNAS YA QUE DESPUES DE CIERTA COLUMNA FALLA
            //ajustamos fila y columna para que se ajuste a la matriz central
            filaFinal = ajustarFila(filaFinal);
            columnaFinal = ajustarColumna(columnaFinal);
-
            //ajustamos fila y columna para que se ajuste a la matriz superior
            filaInicial = ajustarFilaMatrizSup(filaInicial);
            columnaInicial = ajustarColumna(columnaInicial);
            revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
            actualizarMatrizSuperiorACentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
-        } else if (matrizInicial.equals("central") && matrizFinal.equals("superior")){
+        }else if (matrizInicial.equals("central") && matrizFinal.equals("superior")){
             //funciona
             filaInicial = ajustarFilaCentralSuperior(filaInicial);
             columnaInicial = ajustarColumna(columnaInicial);
@@ -305,25 +304,28 @@ public class Cables extends Line {
             revisarMatrizCorto(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
+  
     public void revisarMatrizCorto(int[][] matriz,int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
-        if(matriz[filaInicial][columnaInicial] == 1 || matriz[filaFinal][columnaFinal] == 1){
+        if(matriz[filaFinal][columnaFinal] == 1){
             timeline.stop();
             Main.BotonBateria2();
             Main.BotonBateria3();
         }
     }
-    /*public void revisarMatrizCortoSupInf(int[][] matriz1,int[][] matriz2, int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
-        if(matriz1[filaInicial][columnaInicial] == 1 || matriz1[filaFinal][columnaFinal] == 1 || matriz2[filaInicial][columnaInicial] == 1 || matriz2[filaFinal][columnaFinal] == 1){
+    public void revisarMatrizCortoSupInf(int[][] matriz,int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
+        if(matriz[filaFinal][columnaFinal] == 1){
             timeline.stop();
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         }
-    }*/
-
+    }
+    
     //metodo para actualizar matriz superior a central
     private void actualizarMatrizSuperiorACentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-       // System.out.println("Fila inicial: " + filaInicial);
-       // System.out.println("Columna inicial: " + columnaInicial);
-       // System.out.println("Fila final: " + filaFinal);
-       // System.out.println("Columna final: " + columnaFinal);
+        //System.out.println("Fila inicial: " + filaInicial);
+        //System.out.println("Columna inicial: " + columnaInicial);
+        //System.out.println("Fila final: " + filaFinal);
+        //System.out.println("Columna final: " + columnaFinal);
     
         if (filaInicial >= 0 && filaInicial < matriSup.length && columnaInicial >= 0 && columnaInicial < matriSup[0].length &&
             filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
@@ -342,6 +344,7 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup, matrizPaneSup);
                 caso = 2;
             }
+            revisarMatrizCortoSupInf(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
     
@@ -369,42 +372,42 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf);
                 caso = 2;
             }
+            revisarMatrizCortoSupInf(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
     
     //metodo para actualizar matriz central a superior
     private void actualizarMatrizCentralASuperior(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-        //System.out.println("Fila inicial: " + filaInicial);
-        //System.out.println("Columna inicial: " + columnaInicial);
-        //System.out.println("Fila final: " + filaFinal);
-        //System.out.println("Columna final: " + columnaFinal);
+       // System.out.println("Fila inicial: " + filaInicial);
+       // System.out.println("Columna inicial: " + columnaInicial);
+       // System.out.println("Fila final: " + filaFinal);
+       // System.out.println("Columna final: " + columnaFinal);
         if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
             filaFinal >= 0 && filaFinal < matriSup.length && columnaFinal >= 0 && columnaFinal < matriSup[0].length) {
             int valorInicial = matrizEnteros[filaInicial][columnaInicial];
             int valorFinal = matriSup[filaFinal][columnaFinal];
-            //System.out.println("Valor inicial en matriz central: " + valorInicial);
-            //System.out.println("Valor final en matriz superior: " + valorFinal);
+            System.out.println("Valor inicial en matriz central: " + valorInicial);
+            System.out.println("Valor final en matriz superior: " + valorFinal);
             if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
                 Main.matrizSuperior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
             }
-            else if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
+            else if (valorInicial == 1 || valorInicial == -1) {
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriSup, matrizPaneSup);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
                 caso = 2;   
             }
-        } else {
-            //System.out.println("No se cumple la condición del if para actualizar matriz central a superior.");
-        }
+            revisarMatrizCortoSupInf(Main.matrizSuperior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
+        } 
     }
    
     //metodo para actualizar matriz central a inferior
     private void actualizarMatrizCentralAInferior(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-       // System.out.println("Fila inicial: " + filaInicial);
-       // System.out.println("Columna inicial: " + columnaInicial);
-       // System.out.println("Fila final: " + filaFinal);
-       // System.out.println("Columna final: " + columnaFinal);
+         // System.out.println("Fila inicial: " + filaInicial);
+         // System.out.println("Columna inicial: " + columnaInicial);
+         // System.out.println("Fila final: " + filaFinal);
+         // System.out.println("Columna final: " + columnaFinal);
         if (filaInicial >= 0 && filaInicial < matrizEnteros.length && columnaInicial >= 0 && columnaInicial < matrizEnteros[0].length &&
             filaFinal >= 0 && filaFinal < matriInf.length && columnaFinal >= 0 && columnaFinal < matriInf[0].length) {
             int valorInicial = matrizEnteros[filaInicial][columnaInicial];
@@ -422,18 +425,17 @@ public class Cables extends Line {
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
                 caso = 2;
             }
-        } else {
-           // System.out.println("No se cumple la condición del if para actualizar matriz central a inferior.");
-        }
+            revisarMatrizCortoSupInf(Main.matrizInferior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
+        } 
         
     }
     
     //metodo para actualizar matriz superior a inferior
     private void actualizarMatrizSuperiorAInferior(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-       // System.out.println("Fila inicial: " + filaInicial);
-        //System.out.println("Columna inicial: " + columnaInicial);
-        //System.out.println("Fila final: " + filaFinal);
-        //System.out.println("Columna final: " + columnaFinal);
+        System.out.println("Fila inicial: " + filaInicial);
+        System.out.println("Columna inicial: " + columnaInicial);
+        System.out.println("Fila final: " + filaFinal);
+        System.out.println("Columna final: " + columnaFinal);
        
 
         if(filaInicial >= 0 && filaInicial < matriSup.length && columnaInicial >= 0 && columnaInicial < matriSup[0].length &&
@@ -449,9 +451,10 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
-                actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup, matrizPaneSup);
+                actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup,  matrizPaneSup);
                 caso = 2;   
             }
+            revisarMatrizCortoSupInf(Main.matrizInferior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
     
@@ -477,20 +480,17 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf);
                 caso = 2;
             }
+            revisarMatrizCortoSupInf(Main.matrizSuperior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
    
     private void actualizarceldasSUPEINF(int fila, int columna, int valor, int[][] matriz, Pane[][] matrizPane) {
         if (fila >= 0 && fila < matriz.length) {
-            if (matriz[0][columna] == -1 || matriz[1][columna] == -1) {
-                // No hacer nada si hay un corto circuito
-                return;
-            }
             for (int i = 0; i < matriz[0].length; i++) {
                 matriz[fila][i] = valor;
                 if (valor == 1) {
                     matrizPane[fila][i].setStyle("-fx-background-color: red;");
-                } else {
+                } else if(valor == -1){
                     matrizPane[fila][i].setStyle("-fx-background-color: blue;");
                 }
             }
@@ -499,11 +499,6 @@ public class Cables extends Line {
    
     private void actualizarCeldas(int fila, int columna, int valor, int[][] matriz, Pane[][] matrizPane) {
         if (fila >= 0 && fila < matriz.length && columna >= 0 && columna < matriz[0].length) {
-            if ((fila < 5 && (matriz[0][columna] == -1 || matriz[4][columna] == -1)) ||
-            (fila >= 5 && (matriz[5][columna] == -1 || matriz[9][columna] == -1))) {
-                // No hacer nada si hay un corto circuito
-                return;
-            }
             if (fila < 5) {
                 if(valor == 1){
                     for (int i = 0; i < 5; i++) {
@@ -565,8 +560,10 @@ public class Cables extends Line {
     }
     
     //metodo solo para central a superior
-    private int ajustarFilaCentralSuperior(int fila) {
+    private int ajustarFilaCentralSuperior(int fila){
         if(fila == 8){
+            fila = 0;
+        }else if(fila == 7){
             fila = 0;
         }else if(fila == 10){
             fila = 1;
@@ -574,15 +571,25 @@ public class Cables extends Line {
             fila = 2;
         }else if(fila == 13){
             fila = 3;
+        }else if(fila == 14){
+            fila = 3;
+        }else if(fila == 15){
+            fila = 4;
         }else if(fila == 16){
             fila = 4;
         }else if(fila == 21){
             fila = 5;
+        }else if(fila == 22){
+            fila = 6;
         }else if(fila == 23){
+            fila = 6;
+        }else if(fila == 24){
             fila = 6;
         }else if(fila == 25){
             fila = 7;
         }else if(fila == 26){
+            fila = 8;
+        }else if(fila == 27){
             fila = 8;
         }else if(fila == 29){
             fila = 9;
@@ -607,6 +614,10 @@ public class Cables extends Line {
             fila = 5;
         }else if(fila == -11){
             fila = 6;
+        } else if (fila == -10) {
+            fila = 6;
+        } else if (fila == -9) {
+
         }else if(fila == -8){
             fila = 7;
         }else if(fila == -6){
@@ -622,7 +633,13 @@ public class Cables extends Line {
         if(fila == -7){
             fila = 0;
         }  
+        if(fila == -6){
+            fila = 0;
+        }
         else if(fila == -5){
+            fila = 1;
+        }
+        else if(fila == -4){
             fila = 1;
         }
         return fila; // Ajusta según sea necesario
