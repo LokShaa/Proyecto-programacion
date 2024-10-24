@@ -545,13 +545,14 @@ public class Main extends Application{
                 // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
+                System.out.println(xEscena + " " + yEscena);
                 if (switch1 == null) {
                     for (Pane matrizActual : matrices1) {
-                        double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
-                        double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        int fila = (int)(yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
-                        int columna = (int)(xLocal / cellAncho); // Calcular la columna basada en la coordenada X
-                        if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
+                        double xinicial = matrizActual.sceneToLocal(xEscena, yEscena).getX();
+                        double yinicial = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        int fila = (int)(yinicial / cellAlt); // Calcular la fila basada en la coordenada Y
+                        int columna = (int)(xinicial / cellAncho); // Calcular la columna basada en la coordenada X
+                        if (comprobarCuadradoEnMatrices(matrizActual, xinicial, yinicial)) {
                             fila -= fila/2;
                             if (fila >= 7){
                                 fila -=2;
@@ -571,8 +572,8 @@ public class Main extends Application{
                                     return;
                                 }
 
-                                switch1 = new Switch(matrizActual, colorActual, xLocal, yLocal, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane);
-                                switch1.iniciarDibujoCable(xLocal, yLocal);
+                                switch1 = new Switch(matrizActual, colorActual, xinicial, yinicial, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane);
+                                switch1.iniciarDibujoCable(xinicial, yinicial);
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
                                 }
@@ -584,11 +585,12 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices1) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
+                        System.out.println(xLocal + " " + yLocal);
                         int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
                         int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
                         double distancia = Math.sqrt(Math.pow(xLocal - switch1.getXInicial(), 2) + Math.pow(yLocal - switch1.getYInicial(), 2));
                         if (comprobarCuadradoEnMatrices(matrizActual, xLocal, yLocal)) {
-                            if (distancia < 120) {
+                            if (distancia < 150) {
                                 fila -= fila/2;
                                 if (fila >= 7){
                                     fila -=2;
@@ -612,9 +614,21 @@ public class Main extends Application{
                                         switch1.actualizarPane(matrizActual, imagenSwitch);
                                     }
                                     switch1.finalizarDibujoCable(xLocal, yLocal, imagenSwitch);
-                                    if (matrizActual == matrizPane) {
-                                        matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
-                                    }
+                                    if (matrizActual == matrizPane){
+                                        if(fila == 5){
+                                            matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                            matrizCentralProtoboard.setMatrizCables(fila-1, columna, 1);
+                                            matrizCentralProtoboard.setMatrizCables(fila, columna-2, 1);
+                                        }
+                                        else{
+                                            matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                            matrizCentralProtoboard.setMatrizCables(fila-2, columna, 1);
+                                            matrizCentralProtoboard.setMatrizCables(fila, columna-2, 1);
+                                        }
+
+                                        
+                                        
+                                     }
                                     switch1 = null; // Finalizamos el dibujo del cable haciendo que sea null otra vez
                                     onComplete.run();
                                     break;

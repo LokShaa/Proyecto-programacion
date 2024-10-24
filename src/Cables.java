@@ -124,6 +124,7 @@ public class Cables extends Line {
             }
         }
     }
+  
     private void revisarYMantenerMatrizSup(int[][] matriz, Pane[][] matrizPane) {
         long currentTime = System.currentTimeMillis();
         for (int i = 0; i < 2; i++) {
@@ -145,6 +146,7 @@ public class Cables extends Line {
             }
         }
     }
+    
     private void revisarYMantenerMatrizInf(int[][] matriz, Pane[][] matrizPane) {
         long currentTime = System.currentTimeMillis();
         for (int i = 0; i < 2; i++) {
@@ -312,6 +314,7 @@ public class Cables extends Line {
             Main.BotonBateria3();
         }
     }
+
     public void revisarMatrizCortoSupInf(int[][] matriz,int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
         if(matriz[filaFinal][columnaFinal] == 1){
             timeline.stop();
@@ -319,7 +322,7 @@ public class Cables extends Line {
             Main.BotonBateria3();
         }
     }
-    
+
     //metodo para actualizar matriz superior a central
     private void actualizarMatrizSuperiorACentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
         //System.out.println("Fila inicial: " + filaInicial);
@@ -432,12 +435,10 @@ public class Cables extends Line {
     
     //metodo para actualizar matriz superior a inferior
     private void actualizarMatrizSuperiorAInferior(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
-        System.out.println("Fila inicial: " + filaInicial);
-        System.out.println("Columna inicial: " + columnaInicial);
-        System.out.println("Fila final: " + filaFinal);
-        System.out.println("Columna final: " + columnaFinal);
-       
-
+        //System.out.println("Fila inicial: " + filaInicial);
+        //System.out.println("Columna inicial: " + columnaInicial);
+        //System.out.println("Fila final: " + filaFinal);
+        //System.out.println("Columna final: " + columnaFinal);
         if(filaInicial >= 0 && filaInicial < matriSup.length && columnaInicial >= 0 && columnaInicial < matriSup[0].length &&
             filaFinal >= 0 && filaFinal < matriInf.length && columnaFinal >= 0 && columnaFinal < matriInf[0].length){
             int valorInicial = matriSup[filaInicial][columnaInicial];
@@ -451,7 +452,7 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
-                actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup,  matrizPaneSup);
+                actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf,  matrizPaneInf);
                 caso = 2;   
             }
             revisarMatrizCortoSupInf(Main.matrizInferior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
