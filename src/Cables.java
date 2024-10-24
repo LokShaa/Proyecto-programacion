@@ -308,13 +308,21 @@ public class Cables extends Line {
     }
   
     public void revisarMatrizCorto(int[][] matriz,int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
-        if(matriz[filaInicial][columnaInicial] == 1 || matriz[filaFinal][columnaFinal] == 1){
+        if(matriz[filaFinal][columnaFinal] == 1){
             timeline.stop();
             Main.BotonBateria2();
             Main.BotonBateria3();
         }
     }
-    
+
+    public void revisarMatrizCortoSupInf(int[][] matriz,int filaInicial,int columnaInicial,int filaFinal,int columnaFinal){
+        if(matriz[filaFinal][columnaFinal] == 1){
+            timeline.stop();
+            Main.BotonBateria2();
+            Main.BotonBateria3();
+        }
+    }
+
     //metodo para actualizar matriz superior a central
     private void actualizarMatrizSuperiorACentral(int filaInicial, int columnaInicial, int filaFinal, int columnaFinal) {
         //System.out.println("Fila inicial: " + filaInicial);
@@ -339,6 +347,7 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup, matrizPaneSup);
                 caso = 2;
             }
+            revisarMatrizCortoSupInf(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
     
@@ -366,6 +375,7 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf);
                 caso = 2;
             }
+            revisarMatrizCortoSupInf(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
     
@@ -391,9 +401,8 @@ public class Cables extends Line {
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
                 caso = 2;   
             }
-        } else {
-            //System.out.println("No se cumple la condición del if para actualizar matriz central a superior.");
-        }
+            revisarMatrizCortoSupInf(Main.matrizSuperior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
+        } 
     }
    
     //metodo para actualizar matriz central a inferior
@@ -419,9 +428,8 @@ public class Cables extends Line {
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane);
                 caso = 2;
             }
-        } else {
-           // System.out.println("No se cumple la condición del if para actualizar matriz central a inferior.");
-        }
+            revisarMatrizCortoSupInf(Main.matrizInferior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
+        } 
         
     }
     
@@ -431,8 +439,6 @@ public class Cables extends Line {
         //System.out.println("Columna inicial: " + columnaInicial);
         //System.out.println("Fila final: " + filaFinal);
         //System.out.println("Columna final: " + columnaFinal);
-       
-
         if(filaInicial >= 0 && filaInicial < matriSup.length && columnaInicial >= 0 && columnaInicial < matriSup[0].length &&
             filaFinal >= 0 && filaFinal < matriInf.length && columnaFinal >= 0 && columnaFinal < matriInf[0].length){
             int valorInicial = matriSup[filaInicial][columnaInicial];
@@ -449,6 +455,7 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf,  matrizPaneInf);
                 caso = 2;   
             }
+            revisarMatrizCortoSupInf(Main.matrizInferior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
     
@@ -474,6 +481,7 @@ public class Cables extends Line {
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf);
                 caso = 2;
             }
+            revisarMatrizCortoSupInf(Main.matrizSuperior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         }
     }
    
