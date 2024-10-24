@@ -31,7 +31,7 @@ public class Led{
 
     private List<Circle> leds = new ArrayList<>();
     private List<Line> lines = new ArrayList<>();
-     
+
     private boolean quemado = false;
 
     private int casoEnergia = 0;//variable que se usara para ver que caso de energia se esta usando y se usara para cuando se elimine el eld y ver si este esta pasando energia
@@ -125,7 +125,7 @@ public class Led{
 
         if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
             circle.setFill(Color.web("#00FF00")); // Verde fluorescente
-            
+
         } else {
             circle.setFill(Color.DARKGREEN); // Verde oscuro
         }
@@ -153,31 +153,7 @@ public class Led{
                 leds.remove(circle);
                 lines.remove(line1);
                 lines.remove(line2);
-                if(casoEnergia == 1){
-                    if(filaFinal < 5){
-                        for (int i = 0; i < 5; i++) {
-                            matrizEnteros[i][columnaFinal] = 0;
-                            matriz[i][columnaFinal].setStyle("-fx-background-color: black;");
-                        }
-                    }else if(filaFinal >= 5){
-                        for (int i = 5; i < 10; i++) {
-                            matrizEnteros[i][columnaFinal] = 0;
-                            matriz[i][columnaFinal].setStyle("-fx-background-color:  black;");
-                        }
-                    }
-                }else if(casoEnergia == -1){
-                    if(filaInicial < 5){
-                        for (int i = 0; i < 5; i++) {
-                            matrizEnteros[i][columnaInicial] = 0;
-                            matriz[i][columnaInicial].setStyle("-fx-background-color:  black;");
-                        }
-                    }else if(filaInicial >= 5){
-                        for (int i = 5; i < 10; i++) {
-                            matrizEnteros[i][columnaInicial] = 0;
-                            matriz[i][columnaInicial].setStyle("-fx-background-color:  black;");
-                        }
-                    }
-                }
+                
             }
         });
 
@@ -187,6 +163,7 @@ public class Led{
         lines.add(line1);
         lines.add(line2);
     }
+    
     // Método para ajustar la fila según las reglas específicas
     private int ajustarFila(int fila) {
         fila -= (fila / 2);
@@ -244,19 +221,16 @@ public class Led{
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
             if(quemado == false){
                 if(valorCelda1 == 1 ){
+                if(valorCelda1 == 1 && valorCelda2 == -1){
                     led.setFill(Color.web("#00FF00")); // Verde fluorescente
-                    transferirEnergia(startX, startY, endX, endY, valorCelda1);
+                    //transferirEnergia(startX, startY, endX, endY, valorCelda1);
                     casoEnergia = 1;
+                    //transferirEnergia(startX, startY, endX, endY, valorCelda1);
 
-                } else if(valorCelda2 == -1){
-                    led.setFill(Color.web("#00FF00")); // Verde fluorescente
-                    transferirEnergia(endX, endY, startX, startY, valorCelda2);
-                    casoEnergia = -1;   
-    
                 }else if(valorCelda2 == 1 || valorCelda1 == -1){
                     led.setFill(Color.web("#FFA500")); // Naranja fosforescente
                     quemado = true;
-        
+
                 } else {
                     led.setFill(Color.DARKGREEN); // Verde oscuro
                 }
@@ -264,48 +238,11 @@ public class Led{
             }else{
                 led.setFill(Color.web("#FFA500")); // Naranja fosforescente
             }
-           
-        }   
+  
+    }
+    }
     }
 
-    private void transferirEnergia(double fromX, double fromY, double toX, double toY, int valor) {
-        int filaFrom = (int) (fromY / 20);
-        int columnaFrom = (int) (fromX / 20);
-        int filaTo = (int) (toY / 20);
-        int columnaTo = (int) (toX / 20);
-    
-        filaFrom = ajustarFila(filaFrom);
-        columnaFrom = ajustarColumna(columnaFrom);
-        filaTo = ajustarFila(filaTo);
-        columnaTo = ajustarColumna(columnaTo);
-    
-        if (filaTo < 5) {
-            if (valor == 1) {
-                for (int i = 0; i < 5; i++) {
-                    matrizEnteros[i][columnaTo] = valor;
-                    matriz[i][columnaTo].setStyle("-fx-background-color: red;");
-                }
-            } else {
-                for (int i = 0; i < 5; i++) {
-                    matrizEnteros[i][columnaTo] = valor;
-                    matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
-                }
-            }
-        } else {
-            if (valor == 1) {
-                for (int i = 5; i < 10; i++) {
-                    matrizEnteros[i][columnaTo] = valor;
-                    matriz[i][columnaTo].setStyle("-fx-background-color: red;");
-                }
-            } else {
-                for (int i = 5; i < 10; i++) {
-                    matrizEnteros[i][columnaTo] = valor;
-                    matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
-                }
-            }
-        }
-    }
-    
     private int obtenerValorMatrizEnteros(double x, double y) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
