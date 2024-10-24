@@ -109,6 +109,8 @@ public class Switch extends Line {
                 pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
                 timeline.stop(); // Detener el monitoreo constante
+                Main.BotonBateria2();
+                Main.BotonBateria3();
             }
         });
     
@@ -376,6 +378,8 @@ public class Switch extends Line {
                 nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
                 nuevoPane.getChildren().remove(this.imagenSwitch);
                 nuevoPane.getChildren().remove(circle);
+                Main.BotonBateria2();
+                Main.BotonBateria3();
                 if (estadoSwitch) {
                     matrizEnteros[filaFinal][columnaFinal] = 0;
                     cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
