@@ -220,13 +220,9 @@ public class Led{
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
             if(quemado == false){
-                if(valorCelda1 == 1 ){
                 if(valorCelda1 == 1 && valorCelda2 == -1){
                     led.setFill(Color.web("#00FF00")); // Verde fluorescente
-                    //transferirEnergia(startX, startY, endX, endY, valorCelda1);
                     casoEnergia = 1;
-                    //transferirEnergia(startX, startY, endX, endY, valorCelda1);
-
                 }else if(valorCelda2 == 1 || valorCelda1 == -1){
                     led.setFill(Color.web("#FFA500")); // Naranja fosforescente
                     quemado = true;
@@ -239,10 +235,9 @@ public class Led{
                 led.setFill(Color.web("#FFA500")); // Naranja fosforescente
             }
   
+       }
     }
-    }
-    }
-
+    
     private int obtenerValorMatrizEnteros(double x, double y) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {
