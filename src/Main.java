@@ -19,6 +19,8 @@ import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,11 +140,6 @@ public class Main extends Application{
         matricesProto.add(matrizPaneCableSuperiorAzul);
         matricesProto.add(matrizPaneCableInferiorRojo);
         matricesProto.add(matrizPaneCableSuperiorRojo);
-
-        matrices2.add(matrizPaneCableInferiorAzul);
-        matrices2.add(matrizPaneCableSuperiorAzul);
-        matrices2.add(matrizPaneCableInferiorRojo);
-        matrices2.add(matrizPaneCableSuperiorRojo);
     }
     
     public static void actualizarMatriz() {
@@ -270,14 +267,47 @@ public class Main extends Application{
     }
 
     @FXML
-    void botonChip(MouseEvent event) { 
-        imagenChip.setOnMouseEntered(enteredEvent -> { 
+    void botonChip(MouseEvent event) {
+        // Variables para almacenar las coordenadas del primer y segundo clic
+        final double[] firstClickCoords = new double[2];
+        final boolean[] firstClickDone = {false};
+
+        imagenChip.setOnMouseEntered(enteredEvent -> {
             Glow glowRojo = new Glow(1);
             imagenChip.setEffect(glowRojo);
         });
-    
-        imagenChip.setOnMouseExited(exitEvent -> { 
+
+        imagenChip.setOnMouseExited(exitEvent -> {
             imagenChip.setEffect(null);
+        });
+
+        imagenChip.setOnMouseClicked(clickEvent -> {
+            if (!firstClickDone[0]) {
+                // Almacenar las coordenadas del primer clic
+                firstClickCoords[0] = clickEvent.getX();
+                firstClickCoords[1] = clickEvent.getY();
+                firstClickDone[0] = true;
+            } else {
+                // Obtener las coordenadas del segundo clic
+                double secondClickX = clickEvent.getX();
+                double secondClickY = clickEvent.getY();
+
+                // Dibujar el rectángulo
+                Rectangle rect = new Rectangle(
+                    firstClickCoords[0], 
+                    firstClickCoords[1], 
+                    secondClickX - firstClickCoords[0], 
+                    secondClickY - firstClickCoords[1]
+                );
+                rect.setStroke(Color.BLACK);
+                rect.setFill(Color.TRANSPARENT);
+
+                // Añadir el rectángulo al contenedor (por ejemplo, un Pane)
+                ((Pane) imagenChip.getParent()).getChildren().add(rect);
+
+                // Resetear para el próximo par de clics
+                firstClickDone[0] = false;
+            }
         });
     }
 
@@ -484,9 +514,11 @@ public class Main extends Application{
     public static void crearParticulaDeHumoEstatico(double x, double y) {
         instance.crearParticulaDeHumoCentral(x, y);
     }
+    
     public static void crearParticulaDeHumoEstaticoSup(double x, double y) {
         instance.crearParticulaDeHumoSup(x, y);
     }
+    
     public static void crearParticulaDeHumoEstaticoInf(double x, double y) {
         instance.crearParticulaDeHumoInf(x, y);
     }
