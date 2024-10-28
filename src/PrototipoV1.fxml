@@ -4,11 +4,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
-   <children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Main">
+    <children>
       <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="613.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/Protoboard%20Sin%20Cuadrados.png" />
@@ -123,4 +124,4 @@
       <Text layoutX="573.0" layoutY="953.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Cable Azul" wrappingWidth="95.53759765625" />
       <Text layoutX="573.0" layoutY="897.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Cable Rojo" wrappingWidth="95.53759765625" /> 
    </children>
-</Pane>
+</AnchorPane>

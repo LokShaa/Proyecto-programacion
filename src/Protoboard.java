@@ -248,10 +248,11 @@ public class Protoboard{
     
     public void inicializarMatrizCablesBateriaRojo(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
-        
+        matrizCables = new int[filas][columnas];
             for (int i = 0; i < filas; i++) {
                 for (int j = 0; j < columnas; j++) {
                     Pane cell = new Pane();
+                    matrizCables[i][j] = 1;
                     cell.setPrefSize(cellAncho, cellAlt);
                     cell.setStyle("-fx-border-color: red; -fx-border-width: 1; -fx-background-color: red;");
             
@@ -271,10 +272,12 @@ public class Protoboard{
     
     public void inicializarMatrizCablesBateriaAzul(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane){
         matriz = new Pane[filas][columnas];
+        matrizCables = new int[filas][columnas];
         
             for (int i = 0; i < filas; i++) {
                 for (int j = 0; j < columnas; j++) {
                     Pane cell = new Pane();
+                    matrizCables[i][j] = -1;
                     cell.setPrefSize(cellAncho, cellAlt);
                     cell.setStyle("-fx-border-color: blue; -fx-border-width: 1; -fx-background-color: blue;");
                     // Calcular la posición de la celda
@@ -380,4 +383,3 @@ public class Protoboard{
         }
     }
 }
-
