@@ -70,7 +70,10 @@ public class Cables extends Line {
         
                 Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
-                Main.banderaCableAzulInferiorBateria = false;
+                Main.banderaCableAzulInferiorBateria = 0;
+                Main.banderaCableRojoInferiorBateria = false;
+                Main.banderaCableAzulSuperiorBateria = false;
+                Main.banderaCableRojoSuperiorBateria = false;
 
                 pane.getChildren().remove(this); // Eliminar el cable del pane
 

@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -97,7 +98,7 @@ public class Main extends Application{
     private Led led;
     private Resistencia resistencia;
 
-    public static boolean banderaCableAzulInferiorBateria = false;
+    public static int banderaCableAzulInferiorBateria = 0;
     public static boolean banderaCableAzulSuperiorBateria = false;
     public static boolean banderaCableRojoInferiorBateria = false;
     public static boolean banderaCableRojoSuperiorBateria = false;
@@ -285,6 +286,18 @@ public class Main extends Application{
         final int cellAncho = 20; 
     
         for (Pane matriz : matrices) {
+            if (matriz == matrizPaneCableInferiorAzul && banderaCableAzulInferiorBateria == 1) {
+                continue;
+            }
+            if (matriz == matrizPaneCableSuperiorAzul && banderaCableAzulSuperiorBateria == true) {
+                continue;
+            }
+            if (matriz == matrizPaneCableInferiorRojo && banderaCableRojoInferiorBateria == true) {
+                continue;
+            }
+            if (matriz == matrizPaneCableSuperiorRojo && banderaCableRojoSuperiorBateria == true) {
+                continue;
+            }
             matriz.setOnMouseClicked(mouseClickedEvent -> {
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
@@ -322,6 +335,18 @@ public class Main extends Application{
                                 break;
                             }
                         }
+                    }
+                    if (matriz == matrizPaneCableInferiorAzul ) {
+                        banderaCableAzulInferiorBateria = 1;
+                    }
+                    if (matriz == matrizPaneCableSuperiorAzul) {
+                        banderaCableAzulSuperiorBateria = true;
+                    }
+                    if (matriz == matrizPaneCableInferiorRojo) {
+                        banderaCableRojoInferiorBateria = true;
+                    }
+                    if (matriz == matrizPaneCableSuperiorRojo) {
+                        banderaCableRojoSuperiorBateria = true;
                     }
                 } else {
                     for (Pane matrizActual : matrices) {
@@ -695,8 +720,17 @@ public class Main extends Application{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(root);
+        scrollPane.setFitToWidth(true); // Ajusta el ancho del contenido al ancho del ScrollPane
+        scrollPane.setFitToHeight(true); // Ajusta la altura del contenido a la altura del ScrollPane
+
+        // Configurar las políticas de las barras de desplazamiento
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
         primaryStage.setTitle("Protoboard");
-        primaryStage.setScene(new Scene(root, 800, 500));
+        primaryStage.setScene(new Scene(scrollPane, 800, 500));
         primaryStage.show();
     }
 
