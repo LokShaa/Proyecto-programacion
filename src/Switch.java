@@ -142,43 +142,45 @@ public class Switch extends Line {
     }
 
     private void actualizarEncendido() {
-        if(filaFinal>=0 && filaFinal<5){
-            for(int i = 0; i < 5; i++){
-                if(matrizEnteros[filaInicial][columnaInicial] == -1) {
-                    matrizEnteros[i][columnaFinal] = -1;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
-                }
-                else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
-                    matrizEnteros[i][columnaFinal] = 1; 
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
-                }
-                else {
-                    matrizEnteros[filaInicial][columnaInicial] = 0;
-                    matrizEnteros[filaFinal][columnaFinal] = 0; 
-                    cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                }
-            }
+        // Identificar las cuatro esquinas
+        int esquina1Fila = filaInicial;
+        int esquina1Columna = columnaInicial;
+        int esquina2Fila = filaInicial;
+        int esquina2Columna = columnaFinal;
+        int esquina3Fila = filaFinal;
+        int esquina3Columna = columnaInicial;
+        int esquina4Fila = filaFinal;
+        int esquina4Columna = columnaFinal;
+    
+        // Verificar si alguna esquina tiene un valor de 1 o -1
+        int valor = 0;
+        if (matrizEnteros[esquina1Fila][esquina1Columna] == 1 || matrizEnteros[esquina1Fila][esquina1Columna] == -1) {
+            valor = matrizEnteros[esquina1Fila][esquina1Columna];
+        } else if (matrizEnteros[esquina2Fila][esquina2Columna] == 1 || matrizEnteros[esquina2Fila][esquina2Columna] == -1) {
+            valor = matrizEnteros[esquina2Fila][esquina2Columna];
+        } else if (matrizEnteros[esquina3Fila][esquina3Columna] == 1 || matrizEnteros[esquina3Fila][esquina3Columna] == -1) {
+            valor = matrizEnteros[esquina3Fila][esquina3Columna];
+        } else if (matrizEnteros[esquina4Fila][esquina4Columna] == 1 || matrizEnteros[esquina4Fila][esquina4Columna] == -1) {
+            valor = matrizEnteros[esquina4Fila][esquina4Columna];
         }
-        if(filaFinal>=5 && filaFinal<10){
-            for(int i = 5; i < 10; i++){
-                if(matrizEnteros[filaInicial][columnaInicial] == -1) {
-                    matrizEnteros[i][columnaFinal] = -1;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
-                }
-                else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
-                    matrizEnteros[i][columnaFinal] = 1; 
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
-                }
-                else {
-                    matrizEnteros[filaInicial][columnaInicial] = 0;
-                    matrizEnteros[filaFinal][columnaFinal] = 0; 
-                    cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                }
+    
+        // Si se encontró un valor, propagarlo a las otras esquinas
+        if (valor != 0){
+            if(valor == 1){
+                cambiarColorCelda(esquina1Fila, esquina1Columna,Color.RED);
+                cambiarColorCelda(esquina2Fila, esquina2Columna,Color.RED);
+                cambiarColorCelda(esquina3Fila, esquina3Columna,Color.RED);
+                cambiarColorCelda(esquina4Fila, esquina4Columna,Color.RED);
+            }else{
+                cambiarColorCelda(esquina1Fila, esquina1Columna,Color.BLUE);
+                cambiarColorCelda(esquina2Fila, esquina2Columna,Color.BLUE);
+                cambiarColorCelda(esquina3Fila, esquina3Columna,Color.BLUE);
+                cambiarColorCelda(esquina4Fila, esquina4Columna,Color.BLUE);
             }
+            
+
         }
-    }     
+    }
     
     private void actualizarApagado(){
         if(filaFinal>=0 && filaFinal<5){
@@ -277,7 +279,7 @@ public class Switch extends Line {
 
     private void monitorearEstado() {
         if (estadoSwitch == true){
-            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1){
+            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1 ){
 
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
