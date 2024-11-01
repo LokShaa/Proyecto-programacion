@@ -32,14 +32,6 @@ public class Main extends Application{
     @FXML
     private Button botonBateria;
     @FXML
-    private Pane botonCableAzul1;
-    @FXML
-    private Pane botonCableAzul2;
-    @FXML
-    private Pane botonCableRojo1;
-    @FXML
-    private Pane botonCableRojo2;
-    @FXML
     private ImageView cableAzulBateriaProto1;
     @FXML
     private ImageView cableAzulBateriaProto2;
@@ -693,57 +685,6 @@ public class Main extends Application{
 
             // Reactivar el evento de dibujo de LED en la matriz principal
             matrizPane.setOnMouseClicked(led::handleMouseClick);
-        });
-    }
-
-    @FXML
-    void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
-
-        botonCableAzul2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul inferior
-            Glow glowSwitch = new Glow(1);
-            botonCableAzul2.setEffect(glowSwitch);
-        });
-
-        botonCableAzul2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul inferior
-            botonCableAzul2.setEffect(null);
-        });
-    }
-    
-    @FXML
-    void cableAzulSuperior(MouseEvent event){ //Metodo para el cable azul superior
-
-        botonCableAzul1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul superior
-            Glow glowSwitch = new Glow(1);
-            botonCableAzul1.setEffect(glowSwitch);
-        });
-
-        botonCableAzul1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul superior
-            botonCableAzul1.setEffect(null);
-        });
-    }
-   
-    @FXML
-    void cableRojoInferior(MouseEvent event){ //Metodo para el cable rojo inferior
-
-        botonCableRojo2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo inferior
-            Glow glowSwitch = new Glow(1);
-            botonCableRojo2.setEffect(glowSwitch);
-        });
-
-        botonCableRojo2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo inferior
-            botonCableRojo2.setEffect(null);
-        });
-    }
-   
-    @FXML
-    void cableRojoSuperior(MouseEvent event){ //Metodo para el cable rojo superior
-        botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior
-            Glow glowSwitch = new Glow(1);
-            botonCableRojo1.setEffect(glowSwitch);
-        });
-
-        botonCableRojo1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo superior
-            botonCableRojo1.setEffect(null);
         });
     }
 
