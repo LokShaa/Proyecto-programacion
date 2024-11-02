@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -196,6 +197,14 @@ public class Main extends Application{
     }
 
     public static void BotonBateria3(){
+        instance.botonConDesc(new ActionEvent());
+    }
+
+    public static void BotonBateria4(){
+        instance.botonConDesc(null);
+    }
+
+    public static void BotonBateria5(){
         instance.botonConDesc(new ActionEvent());
     }
     
@@ -664,6 +673,9 @@ public class Main extends Application{
     }
     
     @FXML
+    private ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
+
+    @FXML
     void botonLed(MouseEvent event) { 
         imagenLed.setOnMouseEntered(enteredEvent -> { 
             Glow glowRojo = new Glow(1);
@@ -675,16 +687,27 @@ public class Main extends Application{
         });
 
         imagenLed.setOnMouseClicked(clickedEvent -> {
-            // Inicializar la instancia de Led
-            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-            led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+            // Mostrar el ColorPicker para que el usuario elija un color
+            colorPicker.setVisible(true);
+            colorPicker.setOnAction(colorEvent -> {
+                Color colorSeleccionado = colorPicker.getValue();
+                // Aplicar el color seleccionado al LED
+                imagenLed.setEffect(new Glow(1)); // Puedes ajustar el efecto según el color
 
-            // Desactivar eventos de dibujo de LED en todas las matrices
-            desactivarEventosDeDibujo(matrizPane);
+                // Inicializar la instancia de Led con el color seleccionado
+                Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+                int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado);
 
-            // Reactivar el evento de dibujo de LED en la matriz principal
-            matrizPane.setOnMouseClicked(led::handleMouseClick);
+                // Desactivar eventos de dibujo de LED en todas las matrices
+                desactivarEventosDeDibujo(matrizPane);
+
+                // Reactivar el evento de dibujo de LED en la matriz principal
+                matrizPane.setOnMouseClicked(led::handleMouseClick);
+
+                // Ocultar el ColorPicker después de seleccionar el color
+                colorPicker.setVisible(false);
+            });
         });
     }
 

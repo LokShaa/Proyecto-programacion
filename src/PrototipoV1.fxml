@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.control.ColorPicker?>
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="Main">
     <children>
@@ -113,5 +114,6 @@
       <Pane fx:id="matrizPaneCableInferiorAzul" layoutX="681.0" layoutY="929.0" prefHeight="10.0" prefWidth="10.0" />
       <Pane fx:id="matrizPaneCableInferiorRojo" layoutX="681.0" layoutY="902.0" prefHeight="10.0" prefWidth="10.0" />
       <Pane fx:id="matrizPaneCableSuperiorAzul" layoutX="583.0" layoutY="49.0" prefHeight="10.0" prefWidth="10.0" /> 
+      <ColorPicker fx:id="colorPicker" layoutX="800.0" layoutY="400.0" visible="false" />
    </children>
 </AnchorPane>

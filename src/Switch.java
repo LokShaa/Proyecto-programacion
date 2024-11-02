@@ -51,26 +51,22 @@ public class Switch extends Line {
                 columnaInicial = (int) (xLocalInicial / 20);
                 filaFinal = (int) (yLocalFinal / 20);
                 columnaFinal = (int) (xLocalFinal / 20);
-
                 filaInicial = ajustarFila(filaInicial);
                 columnaInicial = ajustarColumna(columnaInicial);
                 filaFinal = ajustarFila(filaFinal);
                 columnaFinal = ajustarColumna(columnaFinal);
-
                 Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
                 pane.getChildren().remove(this); // Eliminar el cable del pane
                 pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
                 estadoSwitch  = false;
-                timeline.stop(); // Detener el monitoreo constante
                 Main.BotonBateria2();
-                Main.BotonBateria3();
-
+                Main.BotonBateria3();timeline.stop(); // Detener el monitoreo constante
             }
         });
-        // Iniciar el monitoreo constante
-        iniciarMonitoreo();
     }
 
     // Método para ajustar la fila según las reglas específicas
@@ -581,12 +577,30 @@ public class Switch extends Line {
                 nuevoPane.getChildren().remove(circle);
                 estadoSwitch = false;
                 timeline.stop();
+                double xLocalInicial = this.getStartX();
+                double yLocalInicial = this.getStartY();
+                double xLocalFinal = this.getEndX();
+                double yLocalFinal = this.getEndY();
+                filaInicial = (int) (yLocalInicial / 20);
+                columnaInicial = (int) (xLocalInicial / 20);
+                filaFinal = (int) (yLocalFinal / 20);
+                columnaFinal = (int) (xLocalFinal / 20);
+
+                filaInicial = ajustarFila(filaInicial);
+                columnaInicial = ajustarColumna(columnaInicial);
+                filaFinal = ajustarFila(filaFinal);
+                columnaFinal = ajustarColumna(columnaFinal);
+               
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
                 Main.BotonBateria2();
                 Main.BotonBateria3();
             }
         });
         crearImagenSwitch(imagenSwitch, 90, 100); // Update the image and circle when the cable drawing is finished
-        iniciarMonitoreo();
+        
     }
 
     public Pane getPane() {

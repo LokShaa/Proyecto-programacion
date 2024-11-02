@@ -8,7 +8,7 @@ public class Protoboard{
     private int energiaRoja=0,energiaAzul=0;
     private int filaRoja=-1,filaAzul=-1;
     private int columnaRoja=-1,columnaAzul=-1;
-    private int[][] matrizCables;
+    public int[][] matrizCables;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -257,13 +257,13 @@ public class Protoboard{
             }
         }
     }
+   
     public void setMatrizCortoCircuitoSupInf(int fila ,int columna, int valor){ 
         if (fila == 0){
             for(int col = 0; col < 30; col++){
                 this.matrizCortoCircuito[0][col] = valor;
             }
-        }
-        else if (fila == 1){
+        }else if (fila == 1){
             for(int col = 0; col < 30; col++){
                 this.matrizCortoCircuito[1][col] = valor;
             }
@@ -273,6 +273,7 @@ public class Protoboard{
     public void setMatrizCables(int fila ,int columna, int valor){ 
         this.matrizCables[fila][columna] = valor;
     }
+
     public void setMatrizEnteros(int fila ,int columna, int valor){ 
         this.matrizEnteros[fila][columna] = valor;
     }
