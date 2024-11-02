@@ -3,12 +3,11 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="Main">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="Main">
     <children>
       <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="613.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -110,18 +109,9 @@
             <Image url="@../Imagenes/cableRojo2.png" />
          </image>
       </ImageView>
-      
-      <Pane fx:id="botonCableRojo2" layoutX="666.0" layoutY="888.0" onMouseClicked="#cableRojoInferior" onMouseEntered="#cableRojoInferior" onMouseExited="#cableRojoInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
-      <Pane fx:id="botonCableAzul2" layoutX="666.0" layoutY="943.0" onMouseClicked="#cableAzulInferior" onMouseEntered="#cableAzulInferior" onMouseExited="#cableAzulInferior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
-      <Pane fx:id="botonCableAzul1" layoutX="596.0" layoutY="63.0" onMouseClicked="#cableAzulSuperior" onMouseEntered="#cableAzulSuperior" onMouseExited="#cableAzulSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #0075fa;" />
-      <Pane fx:id="botonCableRojo1" layoutX="523.0" layoutY="63.0" onMouseClicked="#cableRojoSuperior" onMouseEntered="#cableRojoSuperior" onMouseExited="#cableRojoSuperior" prefHeight="10.0" prefWidth="10.0" style="-fx-background-color: #ee331a;" />
       <Pane fx:id="matrizPaneCableSuperiorRojo" layoutX="536.0" layoutY="48.0" prefHeight="10.0" prefWidth="10.0" />
       <Pane fx:id="matrizPaneCableInferiorAzul" layoutX="681.0" layoutY="929.0" prefHeight="10.0" prefWidth="10.0" />
       <Pane fx:id="matrizPaneCableInferiorRojo" layoutX="681.0" layoutY="902.0" prefHeight="10.0" prefWidth="10.0" />
       <Pane fx:id="matrizPaneCableSuperiorAzul" layoutX="583.0" layoutY="49.0" prefHeight="10.0" prefWidth="10.0" /> 
-      <Text layoutX="554.0" layoutY="129.0" rotate="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Cable Azul" wrappingWidth="95.53759765625" />
-      <Text layoutX="480.0" layoutY="127.0" rotate="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Cable Rojo" wrappingWidth="95.53759765625" />
-      <Text layoutX="573.0" layoutY="953.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Cable Azul" wrappingWidth="95.53759765625" />
-      <Text layoutX="573.0" layoutY="897.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Cable Rojo" wrappingWidth="95.53759765625" /> 
    </children>
 </AnchorPane>
