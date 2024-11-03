@@ -2,7 +2,7 @@ import javafx.scene.layout.Pane;
 
 public class Protoboard{
     //Declara matriz como atributo de la clase
-    private Pane[][] matriz;
+    public Pane[][] matriz;
     private int [][] matrizEnteros;
     private int [][] matrizCortoCircuito;
     private int energiaRoja=0,energiaAzul=0;

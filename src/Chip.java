@@ -19,7 +19,7 @@ public class Chip {
             Pane pataSuperior = new Pane();
             pataSuperior.setPrefSize(15, 15);
             pataSuperior.setStyle("-fx-background-color: gray;");
-            pataSuperior.setLayoutX(5 + i * 38);
+            pataSuperior.setLayoutX( 2+ i * 38.5);
             pataSuperior.setLayoutY(-10);
             chipGroup.getChildren().add(pataSuperior);
         }
@@ -29,7 +29,7 @@ public class Chip {
             Pane pataInferior = new Pane();
             pataInferior.setPrefSize(15, 15);
             pataInferior.setStyle("-fx-background-color: gray;");
-            pataInferior.setLayoutX(5 + i * 38);
+            pataInferior.setLayoutX(2 + i * 38.5);
             pataInferior.setLayoutY(110); // rectangulo.getHeight() es 110
             chipGroup.getChildren().add(pataInferior);
         }

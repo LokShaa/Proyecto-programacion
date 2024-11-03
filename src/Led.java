@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.paint.Color;
+import javafx.scene.effect.Glow;
 
 
 public class Led{
@@ -120,13 +121,14 @@ public class Led{
         line2.setStroke(Color.BLUE);
         line2.setStrokeWidth(5);
 
-        Circle circle = new Circle(midX, midY, 10, Color.DARKGREEN); // Inicializar con verde oscuro
-
+        Circle circle = new Circle(midX, midY, 10, Color.WHITE); // Inicializar con blanco // Inicializar con verde oscuro
+        circle.setOpacity(0.8);
         if ((valorCelda1 == 1 && valorCelda2 == -1) || (valorCelda1 == -1 && valorCelda2 == 1)) {
             circle.setFill(color); 
-
+            circle.setEffect(new Glow(0.8));
+            circle.setOpacity(1.0);
         } else {
-            circle.setFill(Color.DARKGREEN); // Verde oscuro
+            circle.setFill(Color.WHITE); // Verde oscuro
         }
 
         // Agregar manejador de eventos para borrar el LED y la línea
@@ -215,18 +217,22 @@ public class Led{
             double startY = line1.getStartY();
             double endX = line2.getEndX();
             double endY = line2.getEndY();
+             
 
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
             if(quemado == false){
                 if(valorCelda1 == 1 && valorCelda2 == -1){
                     led.setFill(color); 
+                    led.setOpacity(1.0);
+                    led.setEffect(new Glow(1.0));
                 }else if(valorCelda2 == 1 || valorCelda1 == -1){
                     led.setFill(Color.web("#FFA500")); // Naranja fosforescente
                     quemado = true;
 
                 } else {
-                    led.setFill(Color.DARKGREEN); // Verde oscuro
+                    led.setFill(Color.WHITE); // Verde oscuro
+                    led.setOpacity(0.8);
                 }
 
             }else{

@@ -265,6 +265,14 @@ public class Main extends Application{
         imagenSwitchOctogonal.setOnMouseExited(exitEvent -> { 
             imagenSwitchOctogonal.setEffect(null);
         });
+    
+        imagenSwitchOctogonal.setOnMouseClicked(clickedEvent -> {
+            // Crear una instancia de SwitchOctogonal
+            SwitchOctogonal switchOctogonal = new SwitchOctogonal();
+    
+            // Llamar al método drawSwitch y pasarle el Pane donde se dibujará el switch
+            switchOctogonal.drawSwitch(matrizPane);
+        });
     }
 
     @FXML
