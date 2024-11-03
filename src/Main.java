@@ -269,10 +269,6 @@ public class Main extends Application{
 
     @FXML
     void botonChip(MouseEvent event) {
-        // Variables para almacenar las coordenadas del primer y segundo clic
-        final double[] firstClickCoords = new double[2];
-        final boolean[] firstClickDone = {false};
-
         imagenChip.setOnMouseEntered(enteredEvent -> {
             Glow glowRojo = new Glow(1);
             imagenChip.setEffect(glowRojo);
@@ -283,32 +279,9 @@ public class Main extends Application{
         });
 
         imagenChip.setOnMouseClicked(clickEvent -> {
-            if (!firstClickDone[0]) {
-                // Almacenar las coordenadas del primer clic
-                firstClickCoords[0] = clickEvent.getX();
-                firstClickCoords[1] = clickEvent.getY();
-                firstClickDone[0] = true;
-            } else {
-                // Obtener las coordenadas del segundo clic
-                double secondClickX = clickEvent.getX();
-                double secondClickY = clickEvent.getY();
-
-                // Dibujar el rectángulo
-                Rectangle rect = new Rectangle(
-                    firstClickCoords[0], 
-                    firstClickCoords[1], 
-                    secondClickX - firstClickCoords[0], 
-                    secondClickY - firstClickCoords[1]
-                );
-                rect.setStroke(Color.BLACK);
-                rect.setFill(Color.TRANSPARENT);
-
-                // Añadir el rectángulo al contenedor (por ejemplo, un Pane)
-                ((Pane) imagenChip.getParent()).getChildren().add(rect);
-
-                // Resetear para el próximo par de clics
-                firstClickDone[0] = false;
-            }
+            // Crear una instancia de Chip y dibujar el rectángulo movible
+            Chip chip = new Chip();
+            chip.dibujarRectanguloMovible(matrizPane, 100, 200);
         });
     }
 
