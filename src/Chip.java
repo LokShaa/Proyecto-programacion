@@ -8,12 +8,7 @@ import javafx.scene.Group;
 public class Chip {
 
     public void dibujarRectanguloMovible(Pane pane, double x, double y) {
-        Rectangle rectangulo = new Rectangle(250, 110);
-        rectangulo.setFill(Color.BLACK);
-
         Group chipGroup = new Group();
-        chipGroup.getChildren().add(rectangulo);
-
         // Crear y posicionar los 7 cuadrados en el borde superior
         for (int i = 0; i < 7; i++) {
             Pane pataSuperior = new Pane();
@@ -30,9 +25,13 @@ public class Chip {
             pataInferior.setPrefSize(15, 15);
             pataInferior.setStyle("-fx-background-color: gray;");
             pataInferior.setLayoutX(2 + i * 38.5);
-            pataInferior.setLayoutY(110); // rectangulo.getHeight() es 110
+            pataInferior.setLayoutY(105); 
             chipGroup.getChildren().add(pataInferior);
         }
+
+        Rectangle rectangulo = new Rectangle(250, 110);
+        rectangulo.setFill(Color.BLACK);
+        chipGroup.getChildren().add(rectangulo);
 
         // Posicionar el grupo en las coordenadas especificadas
         chipGroup.setLayoutX(x);

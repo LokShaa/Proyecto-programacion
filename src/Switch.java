@@ -360,7 +360,7 @@ public class Switch extends Line {
                         cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                     }
                     for(int i = 0; i < 5; i++){
-                        matrizEnteros[i][columnaFinal] = 1;
+                        matrizEnteros[i][columnaInicial] = 1;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                     }
                 }else if(filaFinal>=5 && filaFinal<10){
@@ -369,7 +369,7 @@ public class Switch extends Line {
                         cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                     }
                     for(int i = 5; i < 10; i++){
-                        matrizEnteros[i][columnaFinal] = 1;
+                        matrizEnteros[i][columnaInicial] = 1;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                     }
                 }
@@ -390,7 +390,7 @@ public class Switch extends Line {
                         cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                     }
                     for(int i = 5; i < 10; i++){
-                        matrizEnteros[i][columnaFinal] = -1;
+                        matrizEnteros[i][columnaInicial] = -1;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                     }
                 }
