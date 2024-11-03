@@ -1,18 +1,31 @@
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.Group;
 import javafx.scene.text.Text;
+import javafx.scene.Group;
+import javafx.util.Duration;
 
 public class SwitchOctogonal {
+
+    private int[][] matrizEnteros;
+    public Pane[][] matriz;
+    private Pane[] topPanes;
+    private Pane[] bottomPanes;
+
+    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz) {
+        this.matrizEnteros = matrizEnteros;
+        this.matriz = matriz;
+    }
 
     public void drawSwitch(Pane root) {
         Group switchGroup = new Group();
 
         // Crear 8 panes superiores
-        Pane[] topPanes = new Pane[8];
+        topPanes = new Pane[8];
         for (int i = 0; i < 8; i++) {
             Pane topPane = new Pane();
             topPane.setPrefSize(20, 20);
@@ -24,7 +37,7 @@ public class SwitchOctogonal {
         }
 
         // Crear 8 panes inferiores
-        Pane[] bottomPanes = new Pane[8];
+        bottomPanes = new Pane[8];
         for (int i = 0; i < 8; i++) {
             Pane bottomPane = new Pane();
             bottomPane.setPrefSize(20, 20);
@@ -83,6 +96,32 @@ public class SwitchOctogonal {
 
         root.getChildren().add(switchGroup);
     }
+
+    public void iniciarMonitoreo() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            //obtenerYActualizarValores();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
+
+    /*private void obtenerYActualizarValores() {
+        for (int i = 0; i < 8; i++) {
+            // Obtener el valor del pane inferior
+            int valorInferior = matrizEnteros[5][i];
+
+            // Actualizar el pane superior con el valor del pane inferior
+            if (valorInferior == 1 || valorInferior == -1) {
+                topPanes[i].setStyle("-fx-background-color: " + (valorInferior == 1 ? "green;" : "red;"));
+
+                // Pasar el valor del pane inferior al pane superior en la matriz de enteros
+                matrizEnteros[4][i] = valorInferior;
+
+                // Actualizar el color del pane superior en la matriz de panes
+                matriz[4][i].setStyle("-fx-background-color: " + (valorInferior == 1 ? "green;" : "red;"));
+            }
+        }
+    }*/
 
     private void handleRectangleClick(MouseEvent event) {
         Rectangle rect = (Rectangle) event.getSource();

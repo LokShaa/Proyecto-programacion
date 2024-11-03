@@ -268,7 +268,7 @@ public class Main extends Application{
     
         imagenSwitchOctogonal.setOnMouseClicked(clickedEvent -> {
             // Crear una instancia de SwitchOctogonal
-            SwitchOctogonal switchOctogonal = new SwitchOctogonal();
+            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz());
     
             // Llamar al método drawSwitch y pasarle el Pane donde se dibujará el switch
             switchOctogonal.drawSwitch(matrizPane);
