@@ -56,6 +56,8 @@ public class Main extends Application{
     @FXML
     private ImageView luzVerde;
     @FXML
+    private ImageView imagenDisplay;
+    @FXML
     private Pane matrizPane;
     @FXML
     private Pane matrizPane2;
@@ -300,6 +302,18 @@ public class Main extends Application{
                 // Resetear para el próximo par de clics
                 firstClickDone[0] = false;
             }
+        });
+    }
+
+    @FXML
+    void botonDisplay(MouseEvent event) {
+        imagenDisplay.setOnMouseEntered(enteredEvent -> {
+            Glow glowRojo = new Glow(1);
+            imagenDisplay.setEffect(glowRojo);
+        });
+
+        imagenDisplay.setOnMouseExited(exitEvent -> {
+            imagenDisplay.setEffect(null);
         });
     }
 
