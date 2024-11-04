@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -31,14 +32,6 @@ public class Main extends Application{
     private ImageView bateriaCortada;
     @FXML
     private Button botonBateria;
-    @FXML
-    private Pane botonCableAzul1;
-    @FXML
-    private Pane botonCableAzul2;
-    @FXML
-    private Pane botonCableRojo1;
-    @FXML
-    private Pane botonCableRojo2;
     @FXML
     private ImageView cableAzulBateriaProto1;
     @FXML
@@ -63,6 +56,8 @@ public class Main extends Application{
     private ImageView luzRoja;
     @FXML
     private ImageView luzVerde;
+    @FXML
+    private ImageView imagenDisplay;
     @FXML
     private Pane matrizPane;
     @FXML
@@ -100,7 +95,7 @@ public class Main extends Application{
     private Led led;
     private Resistencia resistencia;
 
-    public static int banderaCableAzulInferiorBateria = 0;
+    public static boolean banderaCableAzulInferiorBateria = false;
     public static boolean banderaCableAzulSuperiorBateria = false;
     public static boolean banderaCableRojoInferiorBateria = false;
     public static boolean banderaCableRojoSuperiorBateria = false;
@@ -206,6 +201,14 @@ public class Main extends Application{
     public static void BotonBateria3(){
         instance.botonConDesc(new ActionEvent());
     }
+
+    public static void BotonBateria4(){
+        instance.botonConDesc(null);
+    }
+
+    public static void BotonBateria5(){
+        instance.botonConDesc(new ActionEvent());
+    }
     
     @FXML
     void botonCableGris(MouseEvent event) { 
@@ -264,14 +267,18 @@ public class Main extends Application{
         imagenSwitchOctogonal.setOnMouseExited(exitEvent -> { 
             imagenSwitchOctogonal.setEffect(null);
         });
+    
+        imagenSwitchOctogonal.setOnMouseClicked(clickedEvent -> {
+            // Crear una instancia de SwitchOctogonal
+            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz());
+    
+            // Llamar al método drawSwitch y pasarle el Pane donde se dibujará el switch
+            switchOctogonal.drawSwitch(matrizPane);
+        });
     }
 
     @FXML
     void botonChip(MouseEvent event) {
-        // Variables para almacenar las coordenadas del primer y segundo clic
-        final double[] firstClickCoords = new double[2];
-        final boolean[] firstClickDone = {false};
-
         imagenChip.setOnMouseEntered(enteredEvent -> {
             Glow glowRojo = new Glow(1);
             imagenChip.setEffect(glowRojo);
@@ -282,32 +289,21 @@ public class Main extends Application{
         });
 
         imagenChip.setOnMouseClicked(clickEvent -> {
-            if (!firstClickDone[0]) {
-                // Almacenar las coordenadas del primer clic
-                firstClickCoords[0] = clickEvent.getX();
-                firstClickCoords[1] = clickEvent.getY();
-                firstClickDone[0] = true;
-            } else {
-                // Obtener las coordenadas del segundo clic
-                double secondClickX = clickEvent.getX();
-                double secondClickY = clickEvent.getY();
+            // Crear una instancia de Chip y dibujar el rectángulo movible
+            Chip chip = new Chip();
+            chip.dibujarRectanguloMovible(matrizPane, 100, 200);
+        });
+    }
 
-                // Dibujar el rectángulo
-                Rectangle rect = new Rectangle(
-                    firstClickCoords[0], 
-                    firstClickCoords[1], 
-                    secondClickX - firstClickCoords[0], 
-                    secondClickY - firstClickCoords[1]
-                );
-                rect.setStroke(Color.BLACK);
-                rect.setFill(Color.TRANSPARENT);
+    @FXML
+    void botonDisplay(MouseEvent event) {
+        imagenDisplay.setOnMouseEntered(enteredEvent -> {
+            Glow glowRojo = new Glow(1);
+            imagenDisplay.setEffect(glowRojo);
+        });
 
-                // Añadir el rectángulo al contenedor (por ejemplo, un Pane)
-                ((Pane) imagenChip.getParent()).getChildren().add(rect);
-
-                // Resetear para el próximo par de clics
-                firstClickDone[0] = false;
-            }
+        imagenDisplay.setOnMouseExited(exitEvent -> {
+            imagenDisplay.setEffect(null);
         });
     }
 
@@ -316,7 +312,7 @@ public class Main extends Application{
         final int cellAncho = 20; 
     
         for (Pane matriz : matrices) {
-            if (matriz == matrizPaneCableInferiorAzul && banderaCableAzulInferiorBateria == 1) {
+            if (matriz == matrizPaneCableInferiorAzul && banderaCableAzulInferiorBateria == true) {
                 continue;
             }
             if (matriz == matrizPaneCableSuperiorAzul && banderaCableAzulSuperiorBateria == true) {
@@ -347,27 +343,50 @@ public class Main extends Application{
                                 columna += 1;
                             }
                             if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
-                                int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
-                                if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
-                                    mostrarAlerta("El cuadrado ya está ocupado.");
-                                    return;
-                                }
-                                if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
-                                    mostrarAlerta("El cuadrado tiene un corto circuito.");
-                                    return;
+                                int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();
+                                int [][] matrizActual2 = matrizSuperior.getMatrizCables();
+                                int [][] matrizActual3 = matrizInferior.getMatrizCables(); 
+                                if(fila>1 && matrizActual == matrizPane){
+                                    if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }
+                                    if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1 && matrizActual == matrizPane){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
+                                        return;
+                                    }
+                                }else{
+                                    if (matrizActual2[fila][columna] == 1 && matrizActual == matrizPane2) {
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }else if (matrizActual3[fila][columna] == 1 && matrizActual == matrizPane21) {
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }
+                                    if(matrizSuperior.getMatrizCortoCircuito()[fila][columna] == 1 && matrizActual == matrizPane2){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
+                                        return;
+                                    }else if(matrizInferior.getMatrizCortoCircuito()[fila][columna] == 1 && matrizActual == matrizPane21){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
+                                        return;
+                                    }
                                 }
                                 cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 matrizPane.toFront();
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                }else if (matrizActual == matrizPane2) {
+                                    matrizSuperior.setMatrizCables(fila, columna, 1);
+                                }else if (matrizActual == matrizPane21) {
+                                    matrizInferior.setMatrizCables(fila, columna, 1);
                                 }
                                 break;
                             }
                         }
                     }
                     if (matriz == matrizPaneCableInferiorAzul ) {
-                        banderaCableAzulInferiorBateria = 1;
+                        banderaCableAzulInferiorBateria = true;
                     }
                     if (matriz == matrizPaneCableSuperiorAzul) {
                         banderaCableAzulSuperiorBateria = true;
@@ -394,14 +413,33 @@ public class Main extends Application{
                                 columna += 1;
                             }
                             if (fila >= 0 && fila < 10 && columna >= 0 && columna < 30) {
-                            int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();    
-                                if (matrizActual1[fila][columna] == 1) {
-                                    mostrarAlerta("El cuadrado ya está ocupado.");
-                                    return;
-                                }
-                                if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1){
-                                    mostrarAlerta("El cuadrado tiene un corto circuito.");
-                                    return;
+                                int [][] matrizActual1 = matrizCentralProtoboard.getMatrizCables();  
+                                int [][] matrizActual2 = matrizSuperior.getMatrizCables();
+                                int [][] matrizActual3 = matrizInferior.getMatrizCables();  
+                                if(fila>1){
+                                    if (matrizActual1[fila][columna] == 1 && matrizActual == matrizPane) {
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }
+                                    if(matrizCentralProtoboard.getMatrizCortoCircuito()[fila][columna] == 1 && matrizActual == matrizPane){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
+                                        return;
+                                    }
+                                }else{
+                                    if (matrizActual2[fila][columna] == 1 && matrizActual == matrizPane2) {
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }else if (matrizActual3[fila][columna] == 1 && matrizActual == matrizPane21) {
+                                        mostrarAlerta("El cuadrado ya está ocupado.");
+                                        return;
+                                    }
+                                    if(matrizSuperior.getMatrizCortoCircuito()[fila][columna] == 1 && matrizActual == matrizPane2){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
+                                        return;
+                                    }else if(matrizInferior.getMatrizCortoCircuito()[fila][columna] == 1 && matrizActual == matrizPane21){
+                                        mostrarAlerta("El cuadrado tiene un corto circuito.");
+                                        return;
+                                    }
                                 }
     
                                 if (cableActual.getPane() != matrizActual) {
@@ -410,6 +448,10 @@ public class Main extends Application{
                                 cableActual.finalizarDibujoCable(xLocal, yLocal);
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
+                                }else if (matrizActual == matrizPane2) {
+                                    matrizSuperior.setMatrizCables(fila, columna, 1);
+                                }else if (matrizActual == matrizPane21) {
+                                    matrizInferior.setMatrizCables(fila, columna, 1);
                                 }
                                 cableActual = null;
                                 onComplete.run();
@@ -672,6 +714,9 @@ public class Main extends Application{
     }
     
     @FXML
+    private ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
+
+    @FXML
     void botonLed(MouseEvent event) { 
         imagenLed.setOnMouseEntered(enteredEvent -> { 
             Glow glowRojo = new Glow(1);
@@ -683,67 +728,27 @@ public class Main extends Application{
         });
 
         imagenLed.setOnMouseClicked(clickedEvent -> {
-            // Inicializar la instancia de Led
-            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-            led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+            // Mostrar el ColorPicker para que el usuario elija un color
+            colorPicker.setVisible(true);
+            colorPicker.setOnAction(colorEvent -> {
+                Color colorSeleccionado = colorPicker.getValue();
+                // Aplicar el color seleccionado al LED
+                imagenLed.setEffect(new Glow(1)); // Puedes ajustar el efecto según el color
 
-            // Desactivar eventos de dibujo de LED en todas las matrices
-            desactivarEventosDeDibujo(matrizPane);
+                // Inicializar la instancia de Led con el color seleccionado
+                Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+                int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado);
 
-            // Reactivar el evento de dibujo de LED en la matriz principal
-            matrizPane.setOnMouseClicked(led::handleMouseClick);
-        });
-    }
+                // Desactivar eventos de dibujo de LED en todas las matrices
+                desactivarEventosDeDibujo(matrizPane);
 
-    @FXML
-    void cableAzulInferior(MouseEvent event){ //Metodo para el cable azul inferior
+                // Reactivar el evento de dibujo de LED en la matriz principal
+                matrizPane.setOnMouseClicked(led::handleMouseClick);
 
-        botonCableAzul2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul inferior
-            Glow glowSwitch = new Glow(1);
-            botonCableAzul2.setEffect(glowSwitch);
-        });
-
-        botonCableAzul2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul inferior
-            botonCableAzul2.setEffect(null);
-        });
-    }
-    
-    @FXML
-    void cableAzulSuperior(MouseEvent event){ //Metodo para el cable azul superior
-
-        botonCableAzul1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable azul superior
-            Glow glowSwitch = new Glow(1);
-            botonCableAzul1.setEffect(glowSwitch);
-        });
-
-        botonCableAzul1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable azul superior
-            botonCableAzul1.setEffect(null);
-        });
-    }
-   
-    @FXML
-    void cableRojoInferior(MouseEvent event){ //Metodo para el cable rojo inferior
-
-        botonCableRojo2.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo inferior
-            Glow glowSwitch = new Glow(1);
-            botonCableRojo2.setEffect(glowSwitch);
-        });
-
-        botonCableRojo2.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo inferior
-            botonCableRojo2.setEffect(null);
-        });
-    }
-   
-    @FXML
-    void cableRojoSuperior(MouseEvent event){ //Metodo para el cable rojo superior
-        botonCableRojo1.setOnMouseEntered(enteredEvent -> { //Brillo para el boton del cable rojo superior
-            Glow glowSwitch = new Glow(1);
-            botonCableRojo1.setEffect(glowSwitch);
-        });
-
-        botonCableRojo1.setOnMouseExited(exitEvent -> { //Se quita el brillo del boton del cable rojo superior
-            botonCableRojo1.setEffect(null);
+                // Ocultar el ColorPicker después de seleccionar el color
+                colorPicker.setVisible(false);
+            });
         });
     }
 
