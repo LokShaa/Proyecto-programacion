@@ -76,66 +76,119 @@ public class Cables extends Line {
                 String matrizFinal = identificarMatriz(xGlobalFinal, yGlobalFinal);
 
                 if (matrizInicial.equals("central") && matrizFinal.equals("central")){
+                    System.out.println("fila inicial: " + filaInicial);
+                    System.out.println("columna inicial: " + columnaInicial);
+                    System.out.println("fila final: " + filaFinal);
+                    System.out.println("columna final: " + columnaFinal);
                     Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
-                }/*else if(matrizInicial.equals("superior") && matrizFinal.equals("central")){
-                    //Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
+                }else if(matrizInicial.equals("superior") && matrizFinal.equals("central")){
+                    //FUNCIONA
+                    if(filaInicial==-3 || filaInicial==-2){
+                        filaInicial = 1;
+                    }else if(filaInicial==-4 ){
+                        filaInicial = 0;
+                    }
+                    Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("central") && matrizFinal.equals("superior")){
+                    //FUNCIONA
                     Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("central") && matrizFinal.equals("inferior")){
-                    filaInicial = ajustarFila(filaInicial);
-                    columnaInicial = ajustarColumna(columnaInicial);
-                    filaFinal = ajustarFila(filaFinal);
-                    columnaFinal = ajustarColumna(columnaFinal);
+                    //FUNCIONA con bugs en la matriz central
+                    if(filaInicial==-13){
+                        filaInicial = 0;
+                    }else if(filaInicial==-12){
+                        filaInicial = 1;
+                    }else if(filaInicial==-11){
+                        filaInicial = 2;
+                    }else if(filaInicial==-10){
+                        filaInicial = 3;
+                    }else if(filaInicial==-9){
+                        filaInicial = 4;
+                    }else if(filaInicial==-7 || filaInicial == -6){
+                        filaInicial = 5;
+                    }else if(filaInicial==-5){
+                        filaInicial = 6;
+                        filaInicial = 7;
+                    }else if(filaInicial==-4 || filaInicial==-3){
+                        filaInicial = 8;
+                    }else if(filaInicial==-2){
+                        filaInicial = 9;
+                    }
                     Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("inferior") && matrizFinal.equals("central")){
-                    //Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
+                    //funciona
+                    if(filaInicial==13){
+                        filaInicial = 1;
+                    }else if(filaInicial==12){
+                        filaInicial = 0;
+                    }
+                    Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("superior") && matrizFinal.equals("inferior")){
-                    //Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
-                }*/else if(matrizInicial.equals("inferior") && matrizFinal.equals("superior")){
-                    //Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    //FUNCIONA
+                    if(filaInicial == -17){
+                        filaInicial = 0;
+                    }else if(filaInicial == -16){
+                        filaInicial = 1;
+                    }
+                    Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                }else if(matrizInicial.equals("inferior") && matrizFinal.equals("superior")){
+                    //FUNCIONA
+                    if(filaInicial == 16 || filaInicial == 15){
+                        filaInicial = 0;
+                    }else if(filaInicial == 17){
+                        filaInicial = 1;
+                    }
+                    Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulInf") && matrizFinal.equals("central")){
+                    //FUNCIONA
                     Main.banderaCableAzulInferiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulInf") && matrizFinal.equals("inferior")){
+                    //FUNCIONA
                     Main.banderaCableAzulInferiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulInf") && matrizFinal.equals("superior")){
+                    //FUNCIONA
                     Main.banderaCableAzulInferiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoInf") && matrizFinal.equals("central")){
+                    //FUNCIONA
                     Main.banderaCableRojoInferiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoInf") && matrizFinal.equals("inferior")){
+                    //FUNCIONA
                     Main.banderaCableRojoInferiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoInf") && matrizFinal.equals("superior")){
+                    //FUNCIONA
                     Main.banderaCableRojoInferiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulSup") && matrizFinal.equals("central")){
+                    //FUNCIONA
                     Main.banderaCableAzulSuperiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulSup") && matrizFinal.equals("inferior")){
                     Main.banderaCableAzulSuperiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulSup") && matrizFinal.equals("superior")){
                     Main.banderaCableAzulSuperiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoSup") && matrizFinal.equals("central")){
                     Main.banderaCableRojoSuperiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoSup") && matrizFinal.equals("inferior")){
                     Main.banderaCableRojoSuperiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoSup") && matrizFinal.equals("superior")){
                     Main.banderaCableRojoSuperiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }
 
                 pane.getChildren().remove(this); // Eliminar el cable del pane
@@ -260,26 +313,30 @@ public class Cables extends Line {
         revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
         revisarYMantenerMatrizSup(Main.matrizSuperior.getMatrizCortoCircuito(), Main.matrizSuperior.getMatriz());
         revisarYMantenerMatrizInf(Main.matrizInferior.getMatrizCortoCircuito(), Main.matrizInferior.getMatriz());
-
+        
         if (matrizInicial.equals("central") && matrizFinal.equals("central")){
             //funciona
             filaInicial = ajustarFila(filaInicial);
             columnaInicial = ajustarColumna(columnaInicial);
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
-            
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizCentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
       
         } else if (matrizInicial.equals("superior") && matrizFinal.equals("central")){
             //FALTA AJUSTAR LAS COLUMNAS YA QUE DESPUES DE CIERTA COLUMNA FALLA
-           //ajustamos fila y columna para que se ajuste a la matriz central
-           filaFinal = ajustarFila(filaFinal);
-           columnaFinal = ajustarColumna(columnaFinal);
-           //ajustamos fila y columna para que se ajuste a la matriz superior
-           filaInicial = ajustarFilaMatrizSup(filaInicial);
-           columnaInicial = ajustarColumna(columnaInicial);
-           //revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
-           actualizarMatrizSuperiorACentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
+            //ajustamos fila y columna para que se ajuste a la matriz central
+            filaFinal = ajustarFila(filaFinal);
+            columnaFinal = ajustarColumna(columnaFinal);
+            //ajustamos fila y columna para que se ajuste a la matriz superior
+            filaInicial = ajustarFilaMatrizSup(filaInicial);
+            columnaInicial = ajustarColumna(columnaInicial);
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
+            actualizarMatrizSuperiorACentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
         }else if (matrizInicial.equals("central") && matrizFinal.equals("superior")){
             //funciona
@@ -290,6 +347,9 @@ public class Cables extends Line {
                 filaFinal = 1;
             }
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizSuperior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             //revisarYMantenerMatrizSup(Main.matrizSuperior.getMatrizCortoCircuito(), Main.matrizSuperior.getMatriz());
             actualizarMatrizCentralASuperior(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
@@ -301,6 +361,9 @@ public class Cables extends Line {
                 filaFinal = 1;
             }
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizInferior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             //revisarYMantenerMatrizInf(Main.matrizInferior.getMatrizCortoCircuito(), Main.matrizInferior.getMatriz());
             actualizarMatrizCentralAInferior(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
@@ -310,6 +373,9 @@ public class Cables extends Line {
             columnaInicial = ajustarColumna(columnaInicial);
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             //revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
             actualizarMatrizInferiorACentral(filaInicial, columnaInicial, filaFinal, columnaFinal);
             
@@ -326,6 +392,9 @@ public class Cables extends Line {
             }if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizInferior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             //revisarYMantenerMatrizInf(Main.matrizInferior.getMatrizCortoCircuito(), Main.matrizInferior.getMatriz());
             actualizarMatrizSuperiorAInferior(filaInicial, columnaInicial, filaFinal, columnaFinal);
 
@@ -341,6 +410,9 @@ public class Cables extends Line {
             if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizSuperior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             //Lógica para primer clic en matriz inferior y segundo en matriz superior
             //revisarYMantenerMatrizSup(Main.matrizSuperior.getMatrizCortoCircuito(), Main.matrizSuperior.getMatriz());
             actualizarMatrizInferiorASuperior(filaInicial, columnaInicial, filaFinal, columnaFinal);
@@ -348,21 +420,33 @@ public class Cables extends Line {
         else if (matrizInicial.equals("azulInf") && matrizFinal.equals("central")){
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizCentralBateria(filaFinal, columnaFinal,-1);
         }
         else if (matrizInicial.equals("rojoInf") && matrizFinal.equals("central")){
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizCentralBateria(filaFinal, columnaFinal,1);
         }
         else if (matrizInicial.equals("azulSup") && matrizFinal.equals("central")){
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizCentralBateria(filaFinal, columnaFinal,-1);
         }
         else if (matrizInicial.equals("rojoSup") && matrizFinal.equals("central")){
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
+            if(Main.matrizCentralProtoboard.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizCentralBateria(filaFinal, columnaFinal,1);
         }
         else if (matrizInicial.equals("rojoSup") && matrizFinal.equals("superior")){
@@ -370,6 +454,9 @@ public class Cables extends Line {
             columnaFinal = ajustarColumna(columnaFinal);
             if(filaFinal == 2){
                 filaFinal = 1;
+            }
+            if(Main.matrizSuperior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
             }
             actualizarMatrizBateriaASuperior(filaFinal, columnaFinal,1);
         }
@@ -379,6 +466,9 @@ public class Cables extends Line {
             if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizSuperior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizBateriaASuperior(filaFinal, columnaFinal,-1);
         }
         else if (matrizInicial.equals("rojoInf") && matrizFinal.equals("inferior")){
@@ -386,6 +476,9 @@ public class Cables extends Line {
             columnaFinal = ajustarColumna(columnaFinal);
             if(filaFinal == 2){
                 filaFinal = 1;
+            }
+            if(Main.matrizInferior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
             }
             actualizarMatrizBateriaAInferior(filaFinal, columnaFinal,1);
         }
@@ -395,6 +488,9 @@ public class Cables extends Line {
             if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizInferior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizBateriaAInferior(filaFinal, columnaFinal,-1);
         }
         else if (matrizInicial.equals("azulInf") && matrizFinal.equals("superior")){
@@ -403,6 +499,9 @@ public class Cables extends Line {
             if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizSuperior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizBateriaASuperior(filaFinal, columnaFinal,-1);
         }else if (matrizInicial.equals("rojoInf") && matrizFinal.equals("superior")){
             filaFinal = ajustarFila(filaFinal);
@@ -410,12 +509,18 @@ public class Cables extends Line {
             if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizSuperior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizBateriaASuperior(filaFinal, columnaFinal,1);
         }else if (matrizInicial.equals("rojoSup") && matrizFinal.equals("inferior")){
             filaFinal = ajustarFila(filaFinal);
             columnaFinal = ajustarColumna(columnaFinal);
             if(filaFinal == 2){
                 filaFinal = 1;
+            }
+            if(Main.matrizInferior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
             }
             actualizarMatrizBateriaAInferior(filaFinal, columnaFinal,1);
         }
@@ -425,8 +530,17 @@ public class Cables extends Line {
             if(filaFinal == 2){
                 filaFinal = 1;
             }
+            if(Main.matrizInferior.getMatrizCortoCircuito()[filaFinal][columnaFinal] == 1){
+                terminarMonitoreo();
+            }
             actualizarMatrizBateriaAInferior(filaFinal, columnaFinal,-1);
         }
+    }
+    
+    private void terminarMonitoreo() {
+        timeline.stop(); 
+        Main.BotonBateria2();
+        Main.BotonBateria3();
     }
 
     private void actualizarMatrizCentralBateria(int filaFinal, int columnaFinal, int valorInicial){
@@ -464,13 +578,13 @@ public class Cables extends Line {
             int valorFinal = matriInf[filaFinal][columnaFinal];
 
             if ((valorInicial == 1 && valorFinal == -1) || (valorInicial == -1 && valorFinal == 1)) {
-                Main.matrizSuperior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
+                Main.matrizInferior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
             }
             else if ((valorInicial == 1 || valorInicial == -1) && Bateria.banderaBateria == true) {
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf);
                 caso = 1;
             }
-            revisarMatrizCortoSupInf(Main.matrizSuperior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
+            revisarMatrizCortoSupInf(Main.matrizInferior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         } 
     }
     
@@ -957,66 +1071,119 @@ public class Cables extends Line {
                 String matrizFinal = identificarMatriz(xGlobalFinal, yGlobalFinal);
 
                 if (matrizInicial.equals("central") && matrizFinal.equals("central")){
+                    System.out.println("fila inicial: " + filaInicial);
+                    System.out.println("columna inicial: " + columnaInicial);
+                    System.out.println("fila final: " + filaFinal);
+                    System.out.println("columna final: " + columnaFinal);
                     Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
-                }/*else if(matrizInicial.equals("superior") && matrizFinal.equals("central")){
-                    //Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
+                }else if(matrizInicial.equals("superior") && matrizFinal.equals("central")){
+                    //FUNCIONA
+                    if(filaInicial==-3 || filaInicial==-2){
+                        filaInicial = 1;
+                    }else if(filaInicial==-4 ){
+                        filaInicial = 0;
+                    }
+                    Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("central") && matrizFinal.equals("superior")){
+                    //FUNCIONA
                     Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("central") && matrizFinal.equals("inferior")){
-                    filaInicial = ajustarFila(filaInicial);
-                    columnaInicial = ajustarColumna(columnaInicial);
-                    filaFinal = ajustarFila(filaFinal);
-                    columnaFinal = ajustarColumna(columnaFinal);
+                    //FUNCIONA con bugs en la matriz central
+                    if(filaInicial==-13){
+                        filaInicial = 0;
+                    }else if(filaInicial==-12){
+                        filaInicial = 1;
+                    }else if(filaInicial==-11){
+                        filaInicial = 2;
+                    }else if(filaInicial==-10){
+                        filaInicial = 3;
+                    }else if(filaInicial==-9){
+                        filaInicial = 4;
+                    }else if(filaInicial==-7 || filaInicial == -6){
+                        filaInicial = 5;
+                    }else if(filaInicial==-5){
+                        filaInicial = 6;
+                        filaInicial = 7;
+                    }else if(filaInicial==-4 || filaInicial==-3){
+                        filaInicial = 8;
+                    }else if(filaInicial==-2){
+                        filaInicial = 9;
+                    }
                     Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("inferior") && matrizFinal.equals("central")){
-                    //Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
+                    //funciona
+                    if(filaInicial==13){
+                        filaInicial = 1;
+                    }else if(filaInicial==12){
+                        filaInicial = 0;
+                    }
+                    Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("superior") && matrizFinal.equals("inferior")){
-                    //Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
-                }*/else if(matrizInicial.equals("inferior") && matrizFinal.equals("superior")){
-                    //Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    //FUNCIONA
+                    if(filaInicial == -17){
+                        filaInicial = 0;
+                    }else if(filaInicial == -16){
+                        filaInicial = 1;
+                    }
+                    Main.matrizSuperior.setMatrizCables(filaInicial, columnaInicial, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                }else if(matrizInicial.equals("inferior") && matrizFinal.equals("superior")){
+                    //FUNCIONA
+                    if(filaInicial == 16 || filaInicial == 15){
+                        filaInicial = 0;
+                    }else if(filaInicial == 17){
+                        filaInicial = 1;
+                    }
+                    Main.matrizInferior.setMatrizCables(filaInicial, columnaInicial, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulInf") && matrizFinal.equals("central")){
+                    //FUNCIONA
                     Main.banderaCableAzulInferiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulInf") && matrizFinal.equals("inferior")){
+                    //FUNCIONA
                     Main.banderaCableAzulInferiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulInf") && matrizFinal.equals("superior")){
+                    //FUNCIONA
                     Main.banderaCableAzulInferiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoInf") && matrizFinal.equals("central")){
+                    //FUNCIONA
                     Main.banderaCableRojoInferiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoInf") && matrizFinal.equals("inferior")){
+                    //FUNCIONA
                     Main.banderaCableRojoInferiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoInf") && matrizFinal.equals("superior")){
+                    //FUNCIONA
                     Main.banderaCableRojoInferiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulSup") && matrizFinal.equals("central")){
+                    //FUNCIONA
                     Main.banderaCableAzulSuperiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulSup") && matrizFinal.equals("inferior")){
                     Main.banderaCableAzulSuperiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("azulSup") && matrizFinal.equals("superior")){
                     Main.banderaCableAzulSuperiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoSup") && matrizFinal.equals("central")){
                     Main.banderaCableRojoSuperiorBateria = false;
                     Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoSup") && matrizFinal.equals("inferior")){
                     Main.banderaCableRojoSuperiorBateria = false;
-                    //Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizInferior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }else if(matrizInicial.equals("rojoSup") && matrizFinal.equals("superior")){
                     Main.banderaCableRojoSuperiorBateria = false;
-                    //Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
+                    Main.matrizSuperior.setMatrizCables(filaFinal, columnaFinal, 0);
                 }
 
                 pane.getChildren().remove(this);
@@ -1073,12 +1240,12 @@ public class Cables extends Line {
         return -1;
     }
 
-    private String identificarMatriz(double x, double y) {
-        if (estaEnMatrizGlobal(x, y, matrizPane)) {
+    public static String identificarMatriz(double x, double y) {
+        if (estaEnMatrizGlobal(x, y, Main.matrizCentralProtoboard.getMatriz())) {
             return "central";
-        } else if (estaEnMatrizGlobal(x, y, matrizPaneSup)) {
+        } else if (estaEnMatrizGlobal(x, y, Main.matrizSuperior.getMatriz())) {
             return "superior";
-        } else if (estaEnMatrizGlobal(x, y, matrizPaneInf)) {
+        } else if (estaEnMatrizGlobal(x, y, Main.matrizInferior.getMatriz())) {
             return "inferior";
         }else if (estaEnMatrizGlobal(x, y, Main.matrizCableInferiorAzul.getMatriz())) {
             return "azulInf";
@@ -1092,7 +1259,7 @@ public class Cables extends Line {
         return "desconocida";
     }
     
-    private boolean estaEnMatrizGlobal(double x, double y, Pane[][] matriz) {
+    private static boolean estaEnMatrizGlobal(double x, double y, Pane[][] matriz) {
         for (Pane[] fila : matriz) {
             for (Pane celda : fila) {
                 double celdaX = celda.localToScene(celda.getBoundsInLocal()).getMinX();

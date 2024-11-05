@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.control.ColorPicker?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="Main">
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main">
     <children>
       <ImageView fitHeight="1360.0" fitWidth="1300.0" layoutX="613.0" layoutY="41.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -61,45 +61,49 @@
             <Image url="@../Imagenes/IMG_0466-Photoroom.png" />
          </image>
       </ImageView>
-      <Pane layoutX="56.0" layoutY="21.0" prefHeight="417.0" prefWidth="458.0" style="-fx-background-color: #c0c0c0;">
+      <Pane layoutX="56.0" layoutY="21.0" prefHeight="468.0" prefWidth="458.0" style="-fx-background-color: #c0c0c0;">
          <children>
             <Pane prefHeight="20.0" prefWidth="457.0" style="-fx-background-color: #000000;" />
-            <Pane layoutX="2.0" layoutY="397.0" prefHeight="20.0" prefWidth="455.0" style="-fx-background-color: #000000;" />
-            <Pane layoutY="6.0" prefHeight="411.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
-            <ImageView fx:id="imagenLed" fitHeight="162.0" fitWidth="76.0" layoutX="349.0" layoutY="42.0" onMouseClicked="#botonLed" onMouseEntered="#botonLed" onMouseExited="#botonLed" pickOnBounds="true" preserveRatio="true">
+            <Pane layoutY="447.0" prefHeight="20.0" prefWidth="458.0" style="-fx-background-color: #000000;" />
+            <Pane layoutY="6.0" prefHeight="459.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
+            <ImageView fx:id="imagenLed" fitHeight="127.0" fitWidth="56.0" layoutX="349.0" layoutY="307.0" onMouseClicked="#botonLed" onMouseEntered="#botonLed" onMouseExited="#botonLed" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Imagen%20Led.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenSwitch" fitHeight="127.0" fitWidth="96.0" layoutX="214.0" layoutY="60.0" onMouseClicked="#botonSwitch" onMouseEntered="#botonSwitch" onMouseExited="#botonSwitch" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenSwitch" fitHeight="106.0" fitWidth="100.0" layoutX="53.0" layoutY="181.0" onMouseClicked="#botonSwitch" onMouseEntered="#botonSwitch" onMouseExited="#botonSwitch" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Imagen%20Switch-Photoroom.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenCableGris" fitHeight="119.0" fitWidth="147.0" layoutX="40.0" layoutY="65.0" onMouseClicked="#botonCableGris" onMouseEntered="#botonCableGris" onMouseExited="#botonCableGris" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenCableGris" fitHeight="134.0" fitWidth="152.0" layoutX="158.0" layoutY="37.0" onMouseClicked="#botonCableGris" onMouseEntered="#botonCableGris" onMouseExited="#botonCableGris" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Cable%20Gris.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenResistencia" fitHeight="181.0" fitWidth="112.0" layoutX="359.0" layoutY="206.0" onMouseClicked="#botonResistencia" onMouseEntered="#botonResistencia" onMouseExited="#botonResistencia" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenResistencia" fitHeight="133.0" fitWidth="46.0" layoutX="350.0" layoutY="164.0" onMouseClicked="#botonResistencia" onMouseEntered="#botonResistencia" onMouseExited="#botonResistencia" pickOnBounds="true" preserveRatio="true" rotate="-33.7">
                <image>
                   <Image url="@../Imagenes/Resistencia.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenSwitchOctogonal" fitHeight="150.0" fitWidth="142.0" layoutX="40.0" layoutY="227.0" onMouseClicked="#botonSwitchOctogonal" onMouseEntered="#botonSwitchOctogonal" onMouseExited="#botonSwitchOctogonal" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenSwitchOctogonal" fitHeight="115.0" fitWidth="118.0" layoutX="35.0" layoutY="307.0" onMouseClicked="#botonSwitchOctogonal" onMouseEntered="#botonSwitchOctogonal" onMouseExited="#botonSwitchOctogonal" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Switch%20Octogonal.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="imagenChip" fitHeight="150.0" fitWidth="142.0" layoutX="191.0" layoutY="227.0" onMouseClicked="#botonChip" onMouseEntered="#botonChip" onMouseExited="#botonSwitchOctogonal" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="imagenChip" fitHeight="127.0" fitWidth="130.0" layoutX="181.0" layoutY="301.0" onMouseClicked="#botonChip" onMouseEntered="#botonChip" onMouseExited="#botonChip" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Imagenes/Chip.png" />
                </image>
             </ImageView>
-            <Pane layoutX="437.0" layoutY="1.0" prefHeight="396.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
+            <Pane layoutX="438.0" layoutY="1.0" prefHeight="459.0" prefWidth="20.0" style="-fx-background-color: #000000;" />
+            <ImageView fx:id="imagenDisplay" fitHeight="106.0" fitWidth="98.0" layoutX="195.0" layoutY="186.0" onMouseClicked="#botonDisplay" onMouseEntered="#botonDisplay" onMouseExited="#botonDisplay" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Imagenes/Display.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
-      <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="cableAzulBateriaProto2" fitHeight="178.0" fitWidth="291.0" layoutX="400.0" layoutY="783.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/cableAzul2.png" />
