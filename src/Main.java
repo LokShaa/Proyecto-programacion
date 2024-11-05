@@ -10,6 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -289,9 +291,38 @@ public class Main extends Application{
         });
 
         imagenChip.setOnMouseClicked(clickEvent -> {
-            // Crear una instancia de Chip y dibujar el rectángulo movible
-            Chip chip = new Chip();
-            chip.dibujarRectanguloMovible(matrizPane, 100, 200);
+            // Create a ContextMenu
+            ContextMenu contextMenu = new ContextMenu();
+
+            // Create MenuItems
+            MenuItem andOption = new MenuItem("AND");
+            MenuItem orOption = new MenuItem("OR");
+            MenuItem notOption = new MenuItem("NOT");
+
+            // Add MenuItems to ContextMenu
+            contextMenu.getItems().addAll(andOption, orOption, notOption);
+
+            // Variable to store the selected option
+            final String[] selectedOption = new String[1];
+
+            // Set actions for each MenuItem
+            andOption.setOnAction(e -> {
+                selectedOption[0] = "AND";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            orOption.setOnAction(e -> {
+                selectedOption[0] = "OR";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            notOption.setOnAction(e -> {
+                selectedOption[0] = "NOT";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            // Show the ContextMenu at the location of the click
+            contextMenu.show(imagenChip, clickEvent.getScreenX(), clickEvent.getScreenY());
         });
     }
 

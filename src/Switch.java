@@ -102,7 +102,7 @@ public class Switch extends Line {
         this.imagenSwitch.setY((midY - 5) - height / 2);
     
         // Crear el círculo clickeable
-        circle = new Circle(midX, midY, 23, Color.RED);
+        circle = new Circle(midX+3, midY-5, 28, Color.RED);
         circle.setOnMouseClicked(this::manejarClickCirculo);
     
         // Añadir EventHandler para eliminar el switch al hacer clic en la imagen

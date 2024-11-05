@@ -1,5 +1,7 @@
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -15,14 +17,22 @@ public class SwitchOctogonal {
     public Pane[][] matriz;
     private Pane[] topPanes;
     private Pane[] bottomPanes;
+    private Group switchGroup;
+    private Pane root;
+    private boolean acoplado = false;
+    private int colInicio; // Nuevo atributo para almacenar la columna de inicio
+    private Timeline timeline;
+    private boolean[] rectanguloEstado; // Array para almacenar el estado de los rectángulos clickeables
 
     public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz) {
         this.matrizEnteros = matrizEnteros;
         this.matriz = matriz;
+        this.rectanguloEstado = new boolean[8]; // Inicializar el array de estados
     }
 
     public void drawSwitch(Pane root) {
-        Group switchGroup = new Group();
+        this.root = root;
+        switchGroup = new Group();
 
         // Crear 8 panes superiores
         topPanes = new Pane[8];
@@ -58,7 +68,8 @@ public class SwitchOctogonal {
             Rectangle clickableRectangle = new Rectangle(20, 40, Color.WHITE);
             clickableRectangle.setLayoutX(2 + i * 38.5);
             clickableRectangle.setY(30);
-            clickableRectangle.setOnMouseClicked(this::handleRectangleClick);
+            final int index = i; // Necesario para usar en el EventHandler
+            clickableRectangle.setOnMouseClicked(event -> handleRectangleClick(event, index));
             clickableRectangles[i] = clickableRectangle;
             switchGroup.getChildren().add(clickableRectangle);
 
@@ -76,55 +87,170 @@ public class SwitchOctogonal {
 
         // Añadir manejadores de eventos para hacer el grupo movible
         switchGroup.setOnMousePressed(event -> {
-            switchGroup.setUserData(new double[]{event.getSceneX(), event.getSceneY(), switchGroup.getTranslateX(), switchGroup.getTranslateY()});
+            if (!acoplado) {
+                switchGroup.setUserData(new double[]{event.getSceneX(), event.getSceneY(), switchGroup.getTranslateX(), switchGroup.getTranslateY()});
+            }
         });
 
         switchGroup.setOnMouseDragged(event -> {
-            double[] data = (double[]) switchGroup.getUserData();
-            double deltaX = event.getSceneX() - data[0];
-            double deltaY = event.getSceneY() - data[1];
-            switchGroup.setTranslateX(data[2] + deltaX);
-            switchGroup.setTranslateY(data[3] + deltaY);
+            if (!acoplado) {
+                double[] data = (double[]) switchGroup.getUserData();
+                double deltaX = event.getSceneX() - data[0];
+                double deltaY = event.getSceneY() - data[1];
+                switchGroup.setTranslateX(data[2] + deltaX);
+                switchGroup.setTranslateY(data[3] + deltaY);
+                verificarPatas(4, 0, getColInicio());
+                verificarPatas(5, 8, getColInicio());
+            }
         });
 
-        // Añadir manejador de eventos para eliminar el grupo con clic derecho
+        switchGroup.setOnMouseReleased(event -> {
+            if (!acoplado) {
+                acoplarSwitchSiEsPosible();
+            }
+        });
+
         switchGroup.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                root.getChildren().remove(switchGroup);
+                mostrarMenuContextual(event);
             }
         });
 
         root.getChildren().add(switchGroup);
     }
 
-    public void iniciarMonitoreo() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            //obtenerYActualizarValores();
-        }));
+    private void mostrarMenuContextual(MouseEvent event) {
+        ContextMenu contextMenu = new ContextMenu();
+
+        MenuItem eliminarItem = new MenuItem("Eliminar");
+        eliminarItem.setOnAction(e -> {
+            restaurarColorPanes();
+            root.getChildren().remove(switchGroup);
+            if (timeline != null) {
+                timeline.stop();
+            }
+        });
+
+        MenuItem editarItem = new MenuItem("Editar");
+        editarItem.setOnAction(e -> {
+            acoplado = false;
+            timeline.stop(); // Detener el monitoreo constante
+        });
+
+        contextMenu.getItems().addAll(eliminarItem, editarItem);
+        contextMenu.show(switchGroup, event.getScreenX(), event.getScreenY());
+    }
+
+    private void acoplarSwitchSiEsPosible() {
+        for (int col = 0; col <= matriz[0].length - 8; col++) {
+            boolean patasSuperioresAcopladas = verificarPatas(4, 0, col);
+            boolean patasInferioresAcopladas = verificarPatas(5, 8, col);
+
+            if (patasSuperioresAcopladas && patasInferioresAcopladas) {
+                acoplado = true;
+                switchGroup.setTranslateX(0);
+                switchGroup.setTranslateY(0);
+                posicionarGrupo(matriz[4][col].getLayoutX(), matriz[4][col].getLayoutY() + 15);
+                colInicio = col; // Actualizar el atributo colInicio
+                iniciarMonitoreo(); // Iniciar el monitoreo constante
+                break;
+            }
+        }
+    }
+
+    private boolean verificarPatas(int fila, int offset, int colInicio) {
+        boolean todasPatasAcopladas = true;
+        for (int i = 0; i < 8; i++) {
+            Pane pata = (Pane) switchGroup.getChildren().get(i + offset);
+            double pataX = switchGroup.getLayoutX() + switchGroup.getTranslateX() + pata.getLayoutX();
+            double pataY = switchGroup.getLayoutY() + switchGroup.getTranslateY() + pata.getLayoutY();
+
+            Pane celda = matriz[fila][colInicio + i];
+            double celdaX = celda.getLayoutX();
+            double celdaY = celda.getLayoutY();
+
+            if (Math.abs(pataX - celdaX) <= 10 && Math.abs(pataY - celdaY) <= 10) {
+                celda.setStyle("-fx-background-color: green;");
+            } else {
+                celda.setStyle("-fx-background-color: black;");
+                todasPatasAcopladas = false;
+            }
+        }
+        return todasPatasAcopladas;
+    }
+
+    private int getColInicio() {
+        double switchX = switchGroup.getLayoutX() + switchGroup.getTranslateX();
+        for (int col = 0; col <= matriz[0].length - 8; col++) {
+            double celdaX = matriz[4][col].getLayoutX();
+            if (Math.abs(switchX - celdaX) <= 10) {
+                return col;
+            }
+        }
+        return 0; // Default to 0 if no match found
+    }
+
+    private void posicionarGrupo(double x, double y) {
+        switchGroup.setLayoutX(x);
+        switchGroup.setLayoutY(y);
+    }
+
+    private void restaurarColorPanes() {
+        for (int fila = 4; fila <= 5; fila++) {
+            for (int col = 0; col < matriz[0].length; col++) {
+                matriz[fila][col].setStyle("-fx-background-color: black;");
+            }
+        }
+    }
+
+    private void handleRectangleClick(MouseEvent event, int index) {
+        rectanguloEstado[index] = !rectanguloEstado[index]; // Cambiar el estado del rectángulo
+        Rectangle rect = (Rectangle) event.getSource();
+        if (rectanguloEstado[index]) {
+            rect.setFill(Color.LIGHTGRAY);
+            rect.setY(20); // Mover el rectángulo hacia arriba
+        } else {
+            rect.setFill(Color.WHITE);
+            rect.setY(30); // Mover el rectángulo hacia abajo
+        }
+    }
+
+    private void iniciarMonitoreo() {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
-    /*private void obtenerYActualizarValores() {
+    private void monitorearEstado() {
         for (int i = 0; i < 8; i++) {
-            // Obtener el valor del pane inferior
-            int valorInferior = matrizEnteros[5][i];
-
-            // Actualizar el pane superior con el valor del pane inferior
-            if (valorInferior == 1 || valorInferior == -1) {
-                topPanes[i].setStyle("-fx-background-color: " + (valorInferior == 1 ? "green;" : "red;"));
-
-                // Pasar el valor del pane inferior al pane superior en la matriz de enteros
-                matrizEnteros[4][i] = valorInferior;
-
-                // Actualizar el color del pane superior en la matriz de panes
-                matriz[4][i].setStyle("-fx-background-color: " + (valorInferior == 1 ? "green;" : "red;"));
+            int col = colInicio + i;
+            if (rectanguloEstado[i]) { // Solo monitorear si el rectángulo está activado
+                if (matrizEnteros[5][col] != 0) {
+                    int valor = matrizEnteros[5][col];
+                    for (int fila = 0; fila <= 4; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
+                    }
+                }
+            } else {
+                for (int fila = 0; fila <= 4; fila++) {
+                    if (matrizEnteros[fila][col] != 0) {
+                        matrizEnteros[fila][col] = 0;
+                        cambiarColorCelda(fila, col, 0);
+                    }
+                }
             }
         }
-    }*/
+    }
 
-    private void handleRectangleClick(MouseEvent event) {
-        Rectangle rect = (Rectangle) event.getSource();
-        rect.setFill(rect.getFill() == Color.WHITE ? Color.GREEN : Color.WHITE);
+    private void cambiarColorCelda(int fila, int col, int valor) {
+        Pane targetCell = matriz[fila][col];
+        if (valor == 1) {
+            targetCell.setStyle("-fx-background-color: red;");
+        } else if (valor == -1) {
+            targetCell.setStyle("-fx-background-color: blue;");
+        } else {
+            targetCell.setStyle("-fx-background-color: black;");
+        }
     }
 }
