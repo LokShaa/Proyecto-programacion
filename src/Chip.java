@@ -11,6 +11,9 @@ import javafx.scene.Group;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 public class Chip {
     private Group chipGroup;
@@ -30,6 +33,7 @@ public class Chip {
         dibujarRectanguloMovible(x, y);
         addEventHandlers();
         pane.getChildren().add(chipGroup);
+        startMonitoring(); // Iniciar el monitoreo
     }
 
     private void dibujarRectanguloMovible(double x, double y) {
@@ -168,7 +172,104 @@ public class Chip {
         }
         return todasPatasAcopladas;
     }
+    
+    private void startMonitoring() {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> monitorChip()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    }
 
+    private void monitorChip() {
+        int fila4 = 4;
+        int fila5 = 5;
+        int colFin = colInicio + 6;
+
+        if(tipoString.equals("NOT")){
+            if (matrizEnteros[fila4][colInicio] == 1 && matrizEnteros[fila5][colFin] == -1) {
+                //revisamos fila 4
+                if(matrizEnteros[fila4][colInicio + 1] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 2] = -1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
+                    }
+                }
+                if(matrizEnteros[fila4][colInicio + 1] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 2] = 1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
+                    }
+                }
+    
+                if (matrizEnteros[fila4][colInicio + 3] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 4] = -1;
+                        matriz[i][colInicio + 4].setStyle("-fx-background-color: blue;");
+                    }
+                }
+                if (matrizEnteros[fila4][colInicio + 3] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 4] = 1;
+                        matriz[i][colInicio + 4].setStyle("-fx-background-color: red;");
+                    }
+                }
+
+                if (matrizEnteros[fila4][colInicio + 5] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = 1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
+                    }
+                }
+                if (matrizEnteros[fila4][colInicio + 5] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = -1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
+                    }
+                    
+                }
+    
+                //revisamos fila 5
+                if(matrizEnteros[fila5][colInicio] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 1] = -1;
+                        matriz[i][colInicio + 1].setStyle("-fx-background-color: blue;");
+                    }
+                }
+                if(matrizEnteros[fila5][colInicio ] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 1] = 1;
+                        matriz[i][colInicio + 1].setStyle("-fx-background-color: red;");
+                    }
+                }
+
+                if(matrizEnteros[fila5][colInicio + 2] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 3] = -1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
+                    }
+                    
+                }
+                if(matrizEnteros[fila5][colInicio + 2] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 3] = 1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
+                    }
+                }
+                if(matrizEnteros[fila5][colInicio + 4] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = 1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
+                    }
+                }
+                if(matrizEnteros[fila5][colInicio + 4] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = -1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
+                    }
+                }
+            }
+        }
+    }
+    
     private int getColInicio() {
         double chipX = chipGroup.getLayoutX() + chipGroup.getTranslateX();
         for (int col = 0; col <= matriz[0].length - 7; col++) {
