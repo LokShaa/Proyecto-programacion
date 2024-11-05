@@ -3,9 +3,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.Group;
+import javafx.scene.text.Text;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class Chip {
     private Group chipGroup;
@@ -31,6 +36,7 @@ public class Chip {
         crearPatasSuperiores();
         crearPatasInferiores();
         crearRectangulo();
+        crearTextoTipo();
         posicionarGrupo(x, y);
     }
 
@@ -60,6 +66,15 @@ public class Chip {
         Rectangle rectangulo = new Rectangle(250, 110);
         rectangulo.setFill(Color.BLACK);
         chipGroup.getChildren().add(rectangulo);
+    }
+    
+    private void crearTextoTipo() {
+        Text textoTipo = new Text(tipoString);
+        textoTipo.setFill(Color.WHITE);
+        textoTipo.setFont(Font.font("Arial", FontWeight.BOLD, 50));
+        textoTipo.setX(100); // Ajusta la posición X del texto
+        textoTipo.setY(55);  // Ajusta la posición Y del texto
+        chipGroup.getChildren().add(textoTipo);
     }
 
     private void posicionarGrupo(double x, double y) {
