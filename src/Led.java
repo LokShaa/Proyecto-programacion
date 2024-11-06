@@ -2,6 +2,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -11,9 +13,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.paint.Color;
 import javafx.scene.effect.Glow;
-
 
 public class Led{
     private static final double MAX_DISTANCE = 130.0; // Distancia máxima permitida en píxeles
@@ -206,42 +206,71 @@ public class Led{
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-
+    
     private void actualizar() {
         for (int i = 0; i < leds.size(); i++) {
             Circle led = leds.get(i);
             Line line1 = lines.get(i * 2);
             Line line2 = lines.get(i * 2 + 1);
-
+    
             double startX = line1.getStartX();
             double startY = line1.getStartY();
             double endX = line2.getEndX();
             double endY = line2.getEndY();
-             
-
+    
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
-            if(quemado == false){
-                if(valorCelda1 == 1 && valorCelda2 == -1){
-                    led.setFill(color); 
+            if (quemado == false) {
+                if (valorCelda1 == 1 && valorCelda2 == -1) {
+                    led.setFill(color);
                     led.setOpacity(1.0);
                     led.setEffect(new Glow(1.0));
-                }else if(valorCelda2 == 1 || valorCelda1 == -1){
-                    led.setFill(Color.web("#FFA500")); // Naranja fosforescente
+                } else if (valorCelda2 == 1 || valorCelda1 == -1) {
+                    led.setFill(Color.BLACK); // Naranja fosforescente
                     quemado = true;
-
                 } else {
                     led.setFill(Color.WHITE); // Verde oscuro
                     led.setOpacity(0.8);
                 }
-
-            }else{
-                led.setFill(Color.web("#FFA500")); // Naranja fosforescente
             }
-  
-       }
-    }
     
+            led.setOnMouseClicked(event -> {
+                if (event.getButton() == MouseButton.SECONDARY) {
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem deleteItem = new MenuItem("Eliminar");
+                    deleteItem.setOnAction(e -> {
+                        leds.remove(led);
+                        lines.remove(line1);
+                        lines.remove(line2);
+                        matrizPane.getChildren().removeAll(led, line1, line2);
+
+                    });
+            
+                    MenuItem editColorItem = new MenuItem("Editar color");
+                    if(quemado == false){
+                        editColorItem.setOnAction(e -> {
+                            // Mostrar el ColorPicker del Main
+                            Main.colorPicker.setVisible(true);
+                            Main.colorPicker.setOnAction(colorEvent -> {
+                                Color colorSeleccionado = Main.colorPicker.getValue();
+                                setColor(led, colorSeleccionado); // Actualizar el color del LED específico
+                                Main.colorPicker.setVisible(false);
+                            });
+                        });
+
+                    }
+                    contextMenu.getItems().addAll(deleteItem, editColorItem);
+                    contextMenu.show(led, event.getScreenX(), event.getScreenY());
+                }
+            });
+        }
+    }
+   
+    public void setColor(Circle led, Color newColor) {
+        this.color = newColor;
+        led.setFill(newColor);
+    }
+
     private int obtenerValorMatrizEnteros(double x, double y) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[i].length; j++) {

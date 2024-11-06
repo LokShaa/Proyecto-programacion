@@ -745,7 +745,7 @@ public class Main extends Application{
     }
     
     @FXML
-    private ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
+    public static ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
 
     @FXML
     void botonLed(MouseEvent event) { 
@@ -800,6 +800,7 @@ public class Main extends Application{
         primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(scrollPane, 800, 500));
         primaryStage.show();
+        Main.colorPicker = (ColorPicker) loader.getNamespace().get("colorPicker");
     }
 
     public static void main(String[] args){
