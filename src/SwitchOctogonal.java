@@ -124,19 +124,21 @@ public class SwitchOctogonal {
 
         MenuItem eliminarItem = new MenuItem("Eliminar");
         eliminarItem.setOnAction(e -> {
-            restaurarColorPanes();
             root.getChildren().remove(switchGroup);
             if (timeline != null) {
                 timeline.stop();
             }
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         });
 
         MenuItem editarItem = new MenuItem("Editar");
         editarItem.setOnAction(e -> {
             acoplado = false;
             timeline.stop(); // Detener el monitoreo constante
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         });
-
         contextMenu.getItems().addAll(eliminarItem, editarItem);
         contextMenu.show(switchGroup, event.getScreenX(), event.getScreenY());
     }
@@ -153,6 +155,8 @@ public class SwitchOctogonal {
                 posicionarGrupo(matriz[4][col].getLayoutX(), matriz[4][col].getLayoutY() + 15);
                 colInicio = col; // Actualizar el atributo colInicio
                 iniciarMonitoreo(); // Iniciar el monitoreo constante
+                Main.BotonBateria2();
+                Main.BotonBateria3();
                 break;
             }
         }
@@ -193,14 +197,6 @@ public class SwitchOctogonal {
     private void posicionarGrupo(double x, double y) {
         switchGroup.setLayoutX(x);
         switchGroup.setLayoutY(y);
-    }
-
-    private void restaurarColorPanes() {
-        for (int fila = 4; fila <= 5; fila++) {
-            for (int col = 0; col < matriz[0].length; col++) {
-                matriz[fila][col].setStyle("-fx-background-color: black;");
-            }
-        }
     }
 
     private void handleRectangleClick(MouseEvent event, int index) {
