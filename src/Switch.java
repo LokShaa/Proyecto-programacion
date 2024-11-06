@@ -16,6 +16,7 @@ public class Switch extends Line {
     private int[][] matrizEnteros; // Matriz de enteros
     private Pane matrizPane; //Pane que contiene la matriz
     private boolean estadoSwitch = false; // Estado del switch (false = rojo, true = verde)
+    private boolean SwitchQuemado = false; 
     int filaInicial;
     int columnaInicial;
     int filaFinal;
@@ -32,15 +33,16 @@ public class Switch extends Line {
         // Inicializamos las coordenadas del cable
         this.setStartX(startX);
         this.setStartY(startY);
-        this.setEndX(startX); // Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea
+        this.setEndX(startX); //Inicialmente el final es el mismo que el inicio para solucionar el bug de la linea
         this.setEndY(startY);
 
         this.setMouseTransparent(false);
         pane.getChildren().add(this); // Añadimos el cable al pane
-
+       
+        iniciarMonitoreo(); // Iniciar el monitoreo constante
         // Agregar EventHandler para detectar clic derecho
         this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) { // Verificar si es clic derecho
+            if (event.getButton() == MouseButton.SECONDARY) { //Verificar si es clic derecho
                 double xLocalInicial = this.getStartX();
                 double yLocalInicial = this.getStartY();
                 double xLocalFinal = this.getEndX();
@@ -49,23 +51,22 @@ public class Switch extends Line {
                 columnaInicial = (int) (xLocalInicial / 20);
                 filaFinal = (int) (yLocalFinal / 20);
                 columnaFinal = (int) (xLocalFinal / 20);
-
                 filaInicial = ajustarFila(filaInicial);
                 columnaInicial = ajustarColumna(columnaInicial);
                 filaFinal = ajustarFila(filaFinal);
                 columnaFinal = ajustarColumna(columnaFinal);
-
                 Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
                 Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
                 pane.getChildren().remove(this); // Eliminar el cable del pane
                 pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
-                timeline.stop(); // Detener el monitoreo constante
+                estadoSwitch  = false;
+                Main.BotonBateria2();
+                Main.BotonBateria3();timeline.stop(); // Detener el monitoreo constante
             }
         });
-
-        // Iniciar el monitoreo constante
-        iniciarMonitoreo();
     }
 
     // Método para ajustar la fila según las reglas específicas
@@ -99,7 +100,7 @@ public class Switch extends Line {
         this.imagenSwitch.setY((midY - 5) - height / 2);
     
         // Crear el círculo clickeable
-        circle = new Circle(midX, midY, 23, Color.RED);
+        circle = new Circle(midX+3, midY-5, 28, Color.RED);
         circle.setOnMouseClicked(this::manejarClickCirculo);
     
         // Añadir EventHandler para eliminar el switch al hacer clic en la imagen
@@ -133,7 +134,6 @@ public class Switch extends Line {
         if (!estadoSwitch) {
             circle.setFill(Color.GREEN);
             estadoSwitch = true;
-            actualizarEncendido();
         } else if (estadoSwitch) {
             circle.setFill(Color.RED);
             estadoSwitch = false;
@@ -141,45 +141,6 @@ public class Switch extends Line {
         }
     }
 
-    private void actualizarEncendido() {
-        if(filaFinal>=0 && filaFinal<5){
-            for(int i = 0; i < 5; i++){
-                if(matrizEnteros[filaInicial][columnaInicial] == -1) {
-                    matrizEnteros[i][columnaFinal] = -1;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
-                }
-                else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
-                    matrizEnteros[i][columnaFinal] = 1; 
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
-                }
-                else {
-                    matrizEnteros[filaInicial][columnaInicial] = 0;
-                    matrizEnteros[filaFinal][columnaFinal] = 0; 
-                    cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                }
-            }
-        }
-        if(filaFinal>=5 && filaFinal<10){
-            for(int i = 5; i < 10; i++){
-                if(matrizEnteros[filaInicial][columnaInicial] == -1) {
-                    matrizEnteros[i][columnaFinal] = -1;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
-                }
-                else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
-                    matrizEnteros[i][columnaFinal] = 1; 
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
-                }
-                else {
-                    matrizEnteros[filaInicial][columnaInicial] = 0;
-                    matrizEnteros[filaFinal][columnaFinal] = 0; 
-                    cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                }
-            }
-        }
-    }     
-    
     private void actualizarApagado(){
         if(filaFinal>=0 && filaFinal<5){
             for(int i = 0; i < 5; i++){
@@ -274,65 +235,304 @@ public class Switch extends Line {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-
-    private void monitorearEstado() {
-        if (estadoSwitch == true){
-            if (matrizEnteros[filaInicial][columnaInicial] == 1 || matrizEnteros[filaInicial][columnaInicial] == -1){
-
+    
+    private void monitorearEstado(){
+        double xLocalInicial = this.getStartX();
+        double yLocalInicial = this.getStartY();
+        double xLocalFinal = this.getEndX();
+        double yLocalFinal = this.getEndY();
+        filaInicial = (int) (yLocalInicial / 20);
+        columnaInicial = (int) (xLocalInicial / 20);
+        filaFinal = (int) (yLocalFinal / 20);
+        columnaFinal = (int) (xLocalFinal / 20);
+        filaInicial = ajustarFila(filaInicial);
+        columnaInicial = ajustarColumna(columnaInicial);
+        filaFinal = ajustarFila(filaFinal);
+        columnaFinal = ajustarColumna(columnaFinal);
+        if(SwitchQuemado == false){
+            //esquina superior izquierda con valor
+            if(matrizEnteros[filaInicial][columnaInicial] == 1){
+                if(filaInicial>=0 && filaInicial<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaFinal] = 1;
+                        cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
+                    }
+                }else if(filaInicial>=5 && filaInicial<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaFinal] = 1;
+                        cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
+                    }
+                }
+            }else if(matrizEnteros[filaInicial][columnaInicial] == -1){
+                if(filaInicial>=0 && filaInicial<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaFinal] = -1;
+                        cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
+                    }
+                }else if(filaInicial>=5 && filaInicial<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaFinal] = -1;
+                        cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
+                    }
+                }
+            //esquina superior derecha con valor
+            }else if(matrizEnteros[filaInicial][columnaFinal] == 1){
+                if(filaInicial>=0 && filaInicial<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaInicial] = 1;
+                        cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
+                    }
+                }else if(filaInicial>=5 && filaInicial<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaInicial] = 1;
+                        cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
+                    }
+                }
+            }else if(matrizEnteros[filaInicial][columnaFinal] == -1){
+                if(filaInicial>=0 && filaInicial<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaInicial] = -1;
+                        cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
+                    }
+                }else if(filaInicial>=5 && filaInicial<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaInicial] = -1;
+                        cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
+                    }
+                }
+            //esquina inferior izquierda con valor
+            }else if(matrizEnteros[filaFinal][columnaInicial] == 1){
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
-                        if(matrizEnteros[filaInicial][columnaInicial] == -1) {
-                            matrizEnteros[i][columnaFinal] = -1;
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
-                        }
-                        else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
-                            matrizEnteros[i][columnaFinal] = 1; 
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
-                        }
-                        else {
-                            matrizEnteros[filaInicial][columnaInicial] = 0;
-                            matrizEnteros[filaFinal][columnaFinal] = 0; 
-                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                        }
+                        matrizEnteros[i][columnaFinal] = 1;
+                        cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                     }
-                }   
-                if(filaFinal>=5 && filaFinal<10){
+                }else if(filaFinal>=5 && filaFinal<10){
                     for(int i = 5; i < 10; i++){
-                        if(matrizEnteros[filaInicial][columnaInicial] == -1) {
+                        matrizEnteros[i][columnaFinal] = 1;
+                        cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
+                    }
+                }
+            }else if(matrizEnteros[filaFinal][columnaInicial] == -1){
+                if(filaFinal>=0 && filaFinal<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaFinal] = -1;
+                        cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
+                    }
+                }else if(filaFinal>=5 && filaFinal<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaFinal] = -1;
+                        cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
+                    }
+                }
+            //esquina inferior derecha con valor
+            }else if(matrizEnteros[filaFinal][columnaFinal] == 1){
+                if(filaFinal>=0 && filaFinal<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaInicial] = 1;
+                        cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
+                    }
+                }else if(filaFinal>=5 && filaFinal<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaInicial] = 1;
+                        cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
+                    }
+                }
+            }else if(matrizEnteros[filaFinal][columnaFinal] == -1){
+                if(filaFinal>=0 && filaFinal<5){
+                    for(int i = 0; i < 5; i++){
+                        matrizEnteros[i][columnaInicial] = -1;
+                        cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
+                    }
+                }else if(filaFinal>=5 && filaFinal<10){
+                    for(int i = 5; i < 10; i++){
+                        matrizEnteros[i][columnaInicial] = -1;
+                        cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
+                    }
+                }
+            }
+            if (estadoSwitch == true && SwitchQuemado == false){
+                //aun no es funcional
+                if((matrizEnteros[filaInicial][columnaInicial] == 1 && matrizEnteros[filaFinal][columnaInicial] == -1) || 
+                (matrizEnteros[filaInicial][columnaInicial] == -1 && matrizEnteros[filaFinal][columnaInicial] == 1) || 
+                (matrizEnteros[filaInicial][columnaFinal] == 1 && matrizEnteros[filaFinal][columnaFinal] == -1) ||
+                (matrizEnteros[filaInicial][columnaFinal] == -1 && matrizEnteros[filaFinal][columnaFinal] == 1) ){
+                    SwitchQuemado = true;
+                    circle.setFill(Color.BLACK);
+                    estadoSwitch = false;
+
+                }
+    
+                else if(matrizEnteros[filaInicial][columnaInicial] == 1){
+                    if(filaFinal>=0 && filaFinal<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
+                        }
+                    }else if(filaFinal>=5 && filaFinal<10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
+                        }
+                    }
+
+                }else if(matrizEnteros[filaInicial][columnaInicial] == -1){
+                    if(filaFinal>=0 && filaFinal<5){
+                        for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = -1;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
-                        else if (matrizEnteros[filaInicial][columnaInicial] == 1) {
-                            matrizEnteros[i][columnaFinal] = 1; 
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
+                        }
+                    }else if(filaFinal>=5 && filaFinal<10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
+                        }
+                    }
+                //esquina superior derecha con valor
+                }else if(matrizEnteros[filaInicial][columnaFinal] == 1){
+                    if(filaFinal>=0 && filaFinal<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
-                        else {
-                            matrizEnteros[filaInicial][columnaInicial] = 0;
-                            matrizEnteros[filaFinal][columnaFinal] = 0; 
-                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLACK);
-                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
+                    }else if(filaFinal>=5 && filaFinal<10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
+                        }
+                    }
+                }else if(matrizEnteros[filaInicial][columnaFinal] == -1){
+                    if(filaFinal>=0 && filaFinal<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
+                        }
+                    }else if(filaFinal>=5 && filaFinal<10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
+                        }
+                    }
+                //esquina inferior izquierda con valor
+                }else if(matrizEnteros[filaFinal][columnaInicial] == 1){
+                    if(filaInicial>=0 && filaInicial<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
+                        }
+                    }else if(filaInicial>=5 && filaInicial<10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
+                        }
+                        
+                    }
+                }else if(matrizEnteros[filaFinal][columnaInicial] == -1){
+                    if(filaInicial>=0 && filaInicial<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
+                        }
+                    }else if(filaInicial>=5 && filaInicial<10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
+                        }
+                    }
+                //esquina inferior derecha con valor
+                }else if(matrizEnteros[filaFinal][columnaFinal] == 1){
+                    if(filaInicial>=0 && filaInicial<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
+                        }
+                    }else if(filaInicial>=5 && filaInicial <10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = 1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = 1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
+                        }
+                    }
+                }else if(matrizEnteros[filaFinal][columnaFinal] == -1){
+                    if(filaInicial>=0 && filaInicial<5){
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
+                        }
+                        for(int i = 0; i < 5; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
+                        }
+                    }else if(filaInicial>=5 && filaInicial <10){
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaInicial] = -1;
+                            cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
+                        }
+                        for(int i = 5; i < 10; i++){
+                            matrizEnteros[i][columnaFinal] = -1;
+                            cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                         }
                     }
                 }
-            } else {
-                if(matrizEnteros[filaInicial][columnaInicial] == 0) {
-                   if(filaFinal >= 0 && filaFinal <5){
-                    for(int i = 0; i < 5; i++){
-                        matrizEnteros[i][columnaFinal] = 0;
-                        cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                    }
-                   }
-                }
-                if(matrizEnteros[filaInicial][columnaInicial] == 0) {
-                    if(filaFinal >= 5 && filaFinal <10){
-                     for(int i = 5; i < 10; i++){
-                         matrizEnteros[i][columnaFinal] = 0;
-                         cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                     }
-                    }
-                 }
             }
+        }else if(SwitchQuemado == true){
+            circle.setFill(Color.BLACK);
+            
         }
     }
 
@@ -361,6 +561,7 @@ public class Switch extends Line {
         }
     
         crearImagenSwitch(imagenSwitch, imageWidth, imageHeight); // Update the image and circle when the cable drawing is finished
+        
     }
     
     public void actualizarPane(Pane nuevoPane, ImageView imagenSwitch) {
@@ -376,13 +577,32 @@ public class Switch extends Line {
                 nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
                 nuevoPane.getChildren().remove(this.imagenSwitch);
                 nuevoPane.getChildren().remove(circle);
-                if (estadoSwitch) {
-                    matrizEnteros[filaFinal][columnaFinal] = 0;
-                    cambiarColorCelda(filaFinal, columnaFinal, Color.BLACK);
-                }
+                estadoSwitch = false;
+                timeline.stop();
+                double xLocalInicial = this.getStartX();
+                double yLocalInicial = this.getStartY();
+                double xLocalFinal = this.getEndX();
+                double yLocalFinal = this.getEndY();
+                filaInicial = (int) (yLocalInicial / 20);
+                columnaInicial = (int) (xLocalInicial / 20);
+                filaFinal = (int) (yLocalFinal / 20);
+                columnaFinal = (int) (xLocalFinal / 20);
+
+                filaInicial = ajustarFila(filaInicial);
+                columnaInicial = ajustarColumna(columnaInicial);
+                filaFinal = ajustarFila(filaFinal);
+                columnaFinal = ajustarColumna(columnaFinal);
+               
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
+                Main.BotonBateria2();
+                Main.BotonBateria3();
             }
         });
         crearImagenSwitch(imagenSwitch, 90, 100); // Update the image and circle when the cable drawing is finished
+        
     }
 
     public Pane getPane() {

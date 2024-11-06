@@ -573,6 +573,7 @@ public class Cables extends Line {
             revisarMatrizCortoSupInf(Main.matrizSuperior.getMatrizCortoCircuito(), filaInicial, columnaInicial, filaFinal, columnaFinal);
         } 
     }
+   
     private void actualizarMatrizBateriaAInferior(int filaFinal, int columnaFinal,int valorInicial) {
         if (filaFinal >= 0 && filaFinal < matriSup.length && columnaFinal >= 0 && columnaFinal < matriSup[0].length) {
             int valorFinal = matriInf[filaFinal][columnaFinal];

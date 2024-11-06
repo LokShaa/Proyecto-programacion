@@ -9,6 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -200,6 +203,14 @@ public class Main extends Application{
     public static void BotonBateria3(){
         instance.botonConDesc(new ActionEvent());
     }
+
+    public static void BotonBateria4(){
+        instance.botonConDesc(null);
+    }
+
+    public static void BotonBateria5(){
+        instance.botonConDesc(new ActionEvent());
+    }
     
     @FXML
     void botonCableGris(MouseEvent event) { 
@@ -258,14 +269,18 @@ public class Main extends Application{
         imagenSwitchOctogonal.setOnMouseExited(exitEvent -> { 
             imagenSwitchOctogonal.setEffect(null);
         });
+    
+        imagenSwitchOctogonal.setOnMouseClicked(clickedEvent -> {
+            // Crear una instancia de SwitchOctogonal
+            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz());
+    
+            // Llamar al método drawSwitch y pasarle el Pane donde se dibujará el switch
+            switchOctogonal.drawSwitch(matrizPane);
+        });
     }
 
     @FXML
     void botonChip(MouseEvent event) {
-        // Variables para almacenar las coordenadas del primer y segundo clic
-        final double[] firstClickCoords = new double[2];
-        final boolean[] firstClickDone = {false};
-
         imagenChip.setOnMouseEntered(enteredEvent -> {
             Glow glowRojo = new Glow(1);
             imagenChip.setEffect(glowRojo);
@@ -276,32 +291,38 @@ public class Main extends Application{
         });
 
         imagenChip.setOnMouseClicked(clickEvent -> {
-            if (!firstClickDone[0]) {
-                // Almacenar las coordenadas del primer clic
-                firstClickCoords[0] = clickEvent.getX();
-                firstClickCoords[1] = clickEvent.getY();
-                firstClickDone[0] = true;
-            } else {
-                // Obtener las coordenadas del segundo clic
-                double secondClickX = clickEvent.getX();
-                double secondClickY = clickEvent.getY();
+            // Create a ContextMenu
+            ContextMenu contextMenu = new ContextMenu();
 
-                // Dibujar el rectángulo
-                Rectangle rect = new Rectangle(
-                    firstClickCoords[0], 
-                    firstClickCoords[1], 
-                    secondClickX - firstClickCoords[0], 
-                    secondClickY - firstClickCoords[1]
-                );
-                rect.setStroke(Color.BLACK);
-                rect.setFill(Color.TRANSPARENT);
+            // Create MenuItems
+            MenuItem andOption = new MenuItem("AND");
+            MenuItem orOption = new MenuItem("OR");
+            MenuItem notOption = new MenuItem("NOT");
 
-                // Añadir el rectángulo al contenedor (por ejemplo, un Pane)
-                ((Pane) imagenChip.getParent()).getChildren().add(rect);
+            // Add MenuItems to ContextMenu
+            contextMenu.getItems().addAll(andOption, orOption, notOption);
 
-                // Resetear para el próximo par de clics
-                firstClickDone[0] = false;
-            }
+            // Variable to store the selected option
+            final String[] selectedOption = new String[1];
+
+            // Set actions for each MenuItem
+            andOption.setOnAction(e -> {
+                selectedOption[0] = "AND";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            orOption.setOnAction(e -> {
+                selectedOption[0] = "OR";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            notOption.setOnAction(e -> {
+                selectedOption[0] = "NOT";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            // Show the ContextMenu at the location of the click
+            contextMenu.show(imagenChip, clickEvent.getScreenX(), clickEvent.getScreenY());
         });
     }
 
@@ -724,6 +745,9 @@ public class Main extends Application{
     }
     
     @FXML
+    private ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
+
+    @FXML
     void botonLed(MouseEvent event) { 
         imagenLed.setOnMouseEntered(enteredEvent -> { 
             Glow glowRojo = new Glow(1);
@@ -735,16 +759,27 @@ public class Main extends Application{
         });
 
         imagenLed.setOnMouseClicked(clickedEvent -> {
-            // Inicializar la instancia de Led
-            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-            led = new Led(matrizPane, matrizCentral, matrizEnterosCentral);
+            // Mostrar el ColorPicker para que el usuario elija un color
+            colorPicker.setVisible(true);
+            colorPicker.setOnAction(colorEvent -> {
+                Color colorSeleccionado = colorPicker.getValue();
+                // Aplicar el color seleccionado al LED
+                imagenLed.setEffect(new Glow(1)); // Puedes ajustar el efecto según el color
 
-            // Desactivar eventos de dibujo de LED en todas las matrices
-            desactivarEventosDeDibujo(matrizPane);
+                // Inicializar la instancia de Led con el color seleccionado
+                Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+                int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado);
 
-            // Reactivar el evento de dibujo de LED en la matriz principal
-            matrizPane.setOnMouseClicked(led::handleMouseClick);
+                // Desactivar eventos de dibujo de LED en todas las matrices
+                desactivarEventosDeDibujo(matrizPane);
+
+                // Reactivar el evento de dibujo de LED en la matriz principal
+                matrizPane.setOnMouseClicked(led::handleMouseClick);
+
+                // Ocultar el ColorPicker después de seleccionar el color
+                colorPicker.setVisible(false);
+            });
         });
     }
 
