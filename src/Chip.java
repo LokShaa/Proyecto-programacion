@@ -322,6 +322,153 @@ public class Chip {
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 4] == 1) {
+
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = -1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
+                    }
+                }
+            }
+        }else if(tipoString.equals("AND")){
+            if (matrizEnteros[fila4][colInicio] == 1 && matrizEnteros[fila5][colFin] == -1) {
+                //revisamos fila 4
+                
+                if(matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 3] = 1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
+                    }
+                }else if(matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 3] = -1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
+                    }
+                }else if(matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 3] = -1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
+                    }
+                }else if (matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 3] = -1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
+                    }
+                }
+
+                if(matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = 1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
+                    }
+                }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = -1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
+                    }
+                }else if ((matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == -1) || (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1)){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = -1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
+                    }
+                }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = -1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
+                    }
+                }
+    
+                //revisamos fila 5
+                if(matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 2] = 1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
+                    }
+                }else if (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 2] = -1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
+                    }
+                }else if (matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 2] = -1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
+                    }
+                }else if(matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 2] = -1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
+                    }
+                }
+                
+                if(matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = 1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
+                    }
+                }else if (matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = -1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
+                    }
+                }else if (matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = -1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
+                    }
+                }else if(matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == 1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = -1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
+                    }
+                }
+            }
+        }else if(tipoString.equals("OR")){
+            if (matrizEnteros[fila4][colInicio] == 1 && matrizEnteros[fila5][colFin] == -1) {
+                //revisamos fila 4
+                if ((matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == -1) || (matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == 1) || (matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == 1)){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 3] = 1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
+                    }
+                }else if(matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 3] = -1;
+                        matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
+                    }
+                }
+
+                if ((matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == -1) || (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1) || (matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == 1)){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = 1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
+                    }
+                }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == -1){
+                    for (int i = 0; i < 5; i++) {
+                        matrizEnteros[i][colInicio + 6] = -1;
+                        matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
+                    }
+                }
+
+                //revisamos fila 5
+                if ((matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio+1] == -1) || (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio+1] == 1) || (matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == 1)){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio+2] = 1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
+                    }
+                }else if (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == -1){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 2] = -1;
+                        matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
+                    }
+                }
+
+                if ((matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == -1) || (matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == 1) || (matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == 1)){
+                    for (int i = 5; i < 10; i++) {
+                        matrizEnteros[i][colInicio + 5] = 1;
+                        matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
+                    }
+                }else if (matrizEnteros[fila5][colInicio + 3] == -1 || matrizEnteros[fila5][colInicio + 4] == -1){
+
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
