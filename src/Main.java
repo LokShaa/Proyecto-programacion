@@ -336,6 +336,10 @@ public class Main extends Application{
         imagenDisplay.setOnMouseExited(exitEvent -> {
             imagenDisplay.setEffect(null);
         });
+        
+        imagenDisplay.setOnMouseClicked(exitEvent -> {
+            Display display = new Display(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros());
+        });
     }
 
     private void configurarEventosDeDibujoCablesProtoboard(List<Pane> matrices, Runnable onComplete) {
