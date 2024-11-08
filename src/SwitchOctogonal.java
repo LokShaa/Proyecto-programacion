@@ -218,21 +218,58 @@ public class SwitchOctogonal {
     }
 
     private void monitorearEstado() {
+        boolean[] fila4Actualizada = new boolean[8];
+        boolean[] fila5Actualizada = new boolean[8];
+    
         for (int i = 0; i < 8; i++) {
             int col = colInicio + i;
-            if (rectanguloEstado[i]) { // Solo monitorear si el rectángulo está activado
-                if (matrizEnteros[5][col] != 0) {
+            if (rectanguloEstado[i]) {
+                if (matrizEnteros[5][col] == 1 || matrizEnteros[5][col] == -1){
                     int valor = matrizEnteros[5][col];
                     for (int fila = 0; fila <= 4; fila++) {
                         matrizEnteros[fila][col] = valor;
                         cambiarColorCelda(fila, col, valor);
                     }
+                    fila5Actualizada[i] = true;
+                }
+                if (matrizEnteros[4][col] == 1 || matrizEnteros[4][col] == -1){
+                    int valor = matrizEnteros[4][col];
+                    for (int fila = 5; fila <= 9; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
+                    }
+                    fila4Actualizada[i] = true;
                 }
             } else {
-                for (int fila = 0; fila <= 4; fila++) {
-                    if (matrizEnteros[fila][col] != 0) {
+                if (!fila5Actualizada[i]) {
+                    for (int fila = 0; fila <= 4; fila++) {
                         matrizEnteros[fila][col] = 0;
                         cambiarColorCelda(fila, col, 0);
+                    }
+                }
+                if (!fila4Actualizada[i]) {
+                    for (int fila = 5; fila <= 9; fila++) {
+                        matrizEnteros[fila][col] = 0;
+                        cambiarColorCelda(fila, col, 0);
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            int col = colInicio + i;
+            if (rectanguloEstado[i]) {
+                if (fila5Actualizada[i] && (matrizEnteros[4][col] == 1 || matrizEnteros[4][col] == -1)) {
+                    int valor = matrizEnteros[4][col];
+                    for (int fila = 5; fila <= 9; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
+                    }
+                }
+                if (fila4Actualizada[i] && (matrizEnteros[5][col] == 1 || matrizEnteros[5][col] == -1)) {
+                    int valor = matrizEnteros[5][col];
+                    for (int fila = 0; fila <= 4; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
                     }
                 }
             }

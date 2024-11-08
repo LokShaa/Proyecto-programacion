@@ -141,7 +141,7 @@ public class Main extends Application{
     
     public static void actualizarMatriz() {
         if (instance != null) {
-            instance.imprimirMatrices();
+            //instance.imprimirMatrices();
            //System.out.println("..............................................................");
         }
     }
@@ -204,14 +204,6 @@ public class Main extends Application{
         instance.botonConDesc(new ActionEvent());
     }
 
-    public static void BotonBateria4(){
-        instance.botonConDesc(null);
-    }
-
-    public static void BotonBateria5(){
-        instance.botonConDesc(new ActionEvent());
-    }
-    
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
