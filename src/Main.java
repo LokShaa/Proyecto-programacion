@@ -629,7 +629,6 @@ public class Main extends Application{
                 // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
-                System.out.println(xEscena + " " + yEscena);
                 if (switch1 == null) {
                     for (Pane matrizActual : matrices1) {
                         double xinicial = matrizActual.sceneToLocal(xEscena, yEscena).getX();
@@ -669,7 +668,6 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices1) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        System.out.println(xLocal + " " + yLocal);
                         int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
                         int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
                         double distancia = Math.sqrt(Math.pow(xLocal - switch1.getXInicial(), 2) + Math.pow(yLocal - switch1.getYInicial(), 2));

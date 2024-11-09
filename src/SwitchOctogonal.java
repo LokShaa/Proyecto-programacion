@@ -24,13 +24,13 @@ public class SwitchOctogonal {
     private Timeline timeline;
     private boolean[] rectanguloEstado; // Array para almacenar el estado de los rectángulos clickeables
 
-    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz) {
+    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz){
         this.matrizEnteros = matrizEnteros;
         this.matriz = matriz;
         this.rectanguloEstado = new boolean[8]; // Inicializar el array de estados
     }
 
-    public void drawSwitch(Pane root) {
+    public void drawSwitch(Pane root){
         this.root = root;
         switchGroup = new Group();
 
@@ -119,7 +119,7 @@ public class SwitchOctogonal {
         root.getChildren().add(switchGroup);
     }
 
-    private void mostrarMenuContextual(MouseEvent event) {
+    private void mostrarMenuContextual(MouseEvent event){
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem eliminarItem = new MenuItem("Eliminar");
@@ -143,7 +143,7 @@ public class SwitchOctogonal {
         contextMenu.show(switchGroup, event.getScreenX(), event.getScreenY());
     }
 
-    private void acoplarSwitchSiEsPosible() {
+    private void acoplarSwitchSiEsPosible(){
         for (int col = 0; col <= matriz[0].length - 8; col++) {
             boolean patasSuperioresAcopladas = verificarPatas(4, 0, col);
             boolean patasInferioresAcopladas = verificarPatas(5, 8, col);
@@ -162,7 +162,7 @@ public class SwitchOctogonal {
         }
     }
 
-    private boolean verificarPatas(int fila, int offset, int colInicio) {
+    private boolean verificarPatas(int fila, int offset, int colInicio){
         boolean todasPatasAcopladas = true;
         for (int i = 0; i < 8; i++) {
             Pane pata = (Pane) switchGroup.getChildren().get(i + offset);
@@ -183,7 +183,7 @@ public class SwitchOctogonal {
         return todasPatasAcopladas;
     }
 
-    private int getColInicio() {
+    private int getColInicio(){
         double switchX = switchGroup.getLayoutX() + switchGroup.getTranslateX();
         for (int col = 0; col <= matriz[0].length - 8; col++) {
             double celdaX = matriz[4][col].getLayoutX();
@@ -194,30 +194,33 @@ public class SwitchOctogonal {
         return 0; // Default to 0 if no match found
     }
 
-    private void posicionarGrupo(double x, double y) {
+    private void posicionarGrupo(double x, double y){
         switchGroup.setLayoutX(x);
         switchGroup.setLayoutY(y);
     }
 
-    private void handleRectangleClick(MouseEvent event, int index) {
+    private void handleRectangleClick(MouseEvent event, int index){
         rectanguloEstado[index] = !rectanguloEstado[index]; // Cambiar el estado del rectángulo
         Rectangle rect = (Rectangle) event.getSource();
         if (rectanguloEstado[index]) {
             rect.setFill(Color.LIGHTGRAY);
             rect.setY(20); // Mover el rectángulo hacia arriba
+            
         } else {
             rect.setFill(Color.WHITE);
             rect.setY(30); // Mover el rectángulo hacia abajo
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         }
     }
 
-    private void iniciarMonitoreo() {
+    private void iniciarMonitoreo(){
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
-    private void monitorearEstado() {
+    private void monitorearEstado(){
         boolean[] fila4Actualizada = new boolean[8];
         boolean[] fila5Actualizada = new boolean[8];
     
@@ -253,6 +256,7 @@ public class SwitchOctogonal {
                         cambiarColorCelda(fila, col, 0);
                     }
                 }
+                
             }
         }
         for (int i = 0; i < 8; i++) {
@@ -276,7 +280,7 @@ public class SwitchOctogonal {
         }
     }
 
-    private void cambiarColorCelda(int fila, int col, int valor) {
+    private void cambiarColorCelda(int fila, int col, int valor){
         Pane targetCell = matriz[fila][col];
         if (valor == 1) {
             targetCell.setStyle("-fx-background-color: red;");
