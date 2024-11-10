@@ -128,6 +128,10 @@ public class SwitchOctogonal {
             if (timeline != null) {
                 timeline.stop();
             }
+            for(int i = 0; i < 8; i++){
+                Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 0);
+            }
             Main.BotonBateria2();
             Main.BotonBateria3();
         });
@@ -136,6 +140,10 @@ public class SwitchOctogonal {
         editarItem.setOnAction(e -> {
             acoplado = false;
             timeline.stop(); // Detener el monitoreo constante
+            for(int i = 0; i < 8; i++){
+                Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 0);
+            }
             Main.BotonBateria2();
             Main.BotonBateria3();
         });
@@ -155,6 +163,10 @@ public class SwitchOctogonal {
                 posicionarGrupo(matriz[4][col].getLayoutX(), matriz[4][col].getLayoutY() + 15);
                 colInicio = col; // Actualizar el atributo colInicio
                 iniciarMonitoreo(); // Iniciar el monitoreo constante
+                for(int i = 0; i < 8; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 1);
+                    Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 1);
+                }
                 Main.BotonBateria2();
                 Main.BotonBateria3();
                 break;

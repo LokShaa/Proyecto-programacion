@@ -23,6 +23,7 @@ public class Display {
     private Pane pane;
     public Pane[][] matriz;
     private boolean acoplado = false;
+    private int filaInicio,filaFin;
     private int colInicio; // Nuevo atributo para almacenar la columna de inicio
     private int[][] matrizEnteros;
     private Timeline timeline; // Declarar el Timeline aquí
@@ -158,6 +159,22 @@ public class Display {
                 timeline.stop(); // Detener el monitoreo
             }
             pane.getChildren().remove(displayGroup);
+            if(filaInicio == 2 && filaFin == 5){
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(2, colInicio + i, 0);
+                    Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 0);
+                }
+            }else if(filaInicio == 3 && filaFin == 6){
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(3, colInicio + i, 0);
+                    Main.matrizCentralProtoboard.setMatrizCables(6, colInicio + i, 0);
+                }
+            }else if(filaInicio == 4 && filaFin == 7){
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 0);
+                    Main.matrizCentralProtoboard.setMatrizCables(7, colInicio + i, 0);
+                }
+            }
             Main.BotonBateria2();
             Main.BotonBateria3();
         });
@@ -166,6 +183,22 @@ public class Display {
         editarItem.setOnAction(e -> {
             if (timeline != null) {
                 timeline.stop(); // Detener el monitoreo
+            }
+            if(filaInicio == 2 && filaFin == 5){
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(2, colInicio + i, 0);
+                    Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 0);
+                }
+            }else if(filaInicio == 3 && filaFin == 6){
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(3, colInicio + i, 0);
+                    Main.matrizCentralProtoboard.setMatrizCables(6, colInicio + i, 0);
+                }
+            }else if(filaInicio == 4 && filaFin == 7){
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 0);
+                    Main.matrizCentralProtoboard.setMatrizCables(7, colInicio + i, 0);
+                }
             }
             acoplado = false;
         });
@@ -190,6 +223,12 @@ public class Display {
                 posicionarGrupo(matriz[2][col].getLayoutX(), matriz[2][col].getLayoutY()+2);
                 colInicio = col; // Actualizar el atributo colInicio
                 startMonitoring(); // Reiniciar el monitoreo
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(2, colInicio + i, 1);
+                    Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 1); 
+                }
+                filaInicio = 2;
+                filaFin = 5;
                 Main.BotonBateria2();
                 Main.BotonBateria3();
                 break;
@@ -200,6 +239,12 @@ public class Display {
                 posicionarGrupo(matriz[3][col].getLayoutX(), matriz[3][col].getLayoutY() + 2);
                 colInicio = col; // Actualizar el atributo colInicio
                 startMonitoring(); // Reiniciar el monitoreo
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(3, colInicio + i, 1);
+                    Main.matrizCentralProtoboard.setMatrizCables(6, colInicio + i, 1);
+                }
+                filaInicio = 3;
+                filaFin = 6;
                 Main.BotonBateria2();
                 Main.BotonBateria3();
                 break;
@@ -210,6 +255,12 @@ public class Display {
                 posicionarGrupo(matriz[4][col].getLayoutX(), matriz[4][col].getLayoutY() + 2);
                 colInicio = col; // Actualizar el atributo colInicio
                 startMonitoring(); // Reiniciar el monitoreo
+                for(int i = 0; i < 5; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 1);
+                    Main.matrizCentralProtoboard.setMatrizCables(7, colInicio + i, 1);
+                }
+                filaInicio = 4;
+                filaFin = 7;
                 Main.BotonBateria2();
                 Main.BotonBateria3();
                 break;
