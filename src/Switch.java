@@ -41,32 +41,7 @@ public class Switch extends Line {
        
         iniciarMonitoreo(); // Iniciar el monitoreo constante
         // Agregar EventHandler para detectar clic derecho
-        this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) { //Verificar si es clic derecho
-                double xLocalInicial = this.getStartX();
-                double yLocalInicial = this.getStartY();
-                double xLocalFinal = this.getEndX();
-                double yLocalFinal = this.getEndY();
-                filaInicial = (int) (yLocalInicial / 20);
-                columnaInicial = (int) (xLocalInicial / 20);
-                filaFinal = (int) (yLocalFinal / 20);
-                columnaFinal = (int) (xLocalFinal / 20);
-                filaInicial = ajustarFila(filaInicial);
-                columnaInicial = ajustarColumna(columnaInicial);
-                filaFinal = ajustarFila(filaFinal);
-                columnaFinal = ajustarColumna(columnaFinal);
-                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
-                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
-                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
-                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
-                pane.getChildren().remove(this); // Eliminar el cable del pane
-                pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
-                pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
-                estadoSwitch  = false;
-                Main.BotonBateria2();
-                Main.BotonBateria3();timeline.stop(); // Detener el monitoreo constante
-            }
-        });
+       
     }
 
     // Método para ajustar la fila según las reglas específicas
@@ -106,11 +81,39 @@ public class Switch extends Line {
         // Añadir EventHandler para eliminar el switch al hacer clic en la imagen
         this.imagenSwitch.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) { // Verificar si es clic izquierdo
+                System.out.println("Clic derecho detectado");
+                double xLocalInicial = this.getStartX();
+                double yLocalInicial = this.getStartY();
+                double xLocalFinal = this.getEndX();
+                double yLocalFinal = this.getEndY();
+                filaInicial = (int) (yLocalInicial / 20);
+                columnaInicial = (int) (xLocalInicial / 20);
+                filaFinal = (int) (yLocalFinal / 20);
+                columnaFinal = (int) (xLocalFinal / 20);
+                filaInicial = ajustarFila(filaInicial);
+                columnaInicial = ajustarColumna(columnaInicial);
+                filaFinal = ajustarFila(filaFinal);
+                columnaFinal = ajustarColumna(columnaFinal);
+
+                System.out.println(filaInicial);
+                System.out.println(columnaInicial);
+                System.out.println(filaFinal);
+                System.out.println(columnaFinal);
+
+                // Eliminar los espacios ocupados en matrizCables
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
+
                 pane.getChildren().remove(this); // Eliminar el cable del pane
                 pane.getChildren().remove(this.imagenSwitch); // Eliminar la imagen del switch del pane
                 pane.getChildren().remove(circle); // Eliminar el círculo del switch del pane
+                estadoSwitch = false;
+                Main.BotonBateria2();
+                Main.BotonBateria3();
                 timeline.stop(); // Detener el monitoreo constante
-            }
+             }
         });
     
         // Añadir la imagen y el círculo al pane
@@ -231,7 +234,7 @@ public class Switch extends Line {
     }
 
     private void iniciarMonitoreo() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.009), event -> monitorearEstado()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
@@ -548,8 +551,6 @@ public class Switch extends Line {
         // Calculate filaInicial and filaFinal
         filaInicial = (int) (this.getStartY() / 20);
         filaFinal = (int) (endY / 20);
-        System.out.println(filaInicial);
-        System.out.println(filaFinal);
         // Determine the size of the image based on filaInicial and filaFinal
         double imageWidth, imageHeight;
         if (filaInicial == 8 && filaFinal == 14 || filaFinal == 8 && filaInicial == 14) {
@@ -572,35 +573,6 @@ public class Switch extends Line {
         // Añadir el cable al nuevo pane
         nuevoPane.getChildren().add(this);
         // Volver a asignar el EventHandler de clic derecho para eliminar el cable
-        this.setOnMouseClicked(event -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                nuevoPane.getChildren().remove(this); // Asegurar que el cable se elimine del nuevo pane
-                nuevoPane.getChildren().remove(this.imagenSwitch);
-                nuevoPane.getChildren().remove(circle);
-                estadoSwitch = false;
-                timeline.stop();
-                double xLocalInicial = this.getStartX();
-                double yLocalInicial = this.getStartY();
-                double xLocalFinal = this.getEndX();
-                double yLocalFinal = this.getEndY();
-                filaInicial = (int) (yLocalInicial / 20);
-                columnaInicial = (int) (xLocalInicial / 20);
-                filaFinal = (int) (yLocalFinal / 20);
-                columnaFinal = (int) (xLocalFinal / 20);
-
-                filaInicial = ajustarFila(filaInicial);
-                columnaInicial = ajustarColumna(columnaInicial);
-                filaFinal = ajustarFila(filaFinal);
-                columnaFinal = ajustarColumna(columnaFinal);
-               
-                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaInicial, 0);
-                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaFinal, 0);
-                Main.matrizCentralProtoboard.setMatrizCables(filaFinal, columnaInicial, 0);
-                Main.matrizCentralProtoboard.setMatrizCables(filaInicial, columnaFinal, 0);
-                Main.BotonBateria2();
-                Main.BotonBateria3();
-            }
-        });
         crearImagenSwitch(imagenSwitch, 90, 100); // Update the image and circle when the cable drawing is finished
         
     }

@@ -24,13 +24,13 @@ public class SwitchOctogonal {
     private Timeline timeline;
     private boolean[] rectanguloEstado; // Array para almacenar el estado de los rectángulos clickeables
 
-    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz) {
+    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz){
         this.matrizEnteros = matrizEnteros;
         this.matriz = matriz;
         this.rectanguloEstado = new boolean[8]; // Inicializar el array de estados
     }
 
-    public void drawSwitch(Pane root) {
+    public void drawSwitch(Pane root){
         this.root = root;
         switchGroup = new Group();
 
@@ -119,29 +119,31 @@ public class SwitchOctogonal {
         root.getChildren().add(switchGroup);
     }
 
-    private void mostrarMenuContextual(MouseEvent event) {
+    private void mostrarMenuContextual(MouseEvent event){
         ContextMenu contextMenu = new ContextMenu();
 
         MenuItem eliminarItem = new MenuItem("Eliminar");
         eliminarItem.setOnAction(e -> {
-            restaurarColorPanes();
             root.getChildren().remove(switchGroup);
             if (timeline != null) {
                 timeline.stop();
             }
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         });
 
         MenuItem editarItem = new MenuItem("Editar");
         editarItem.setOnAction(e -> {
             acoplado = false;
             timeline.stop(); // Detener el monitoreo constante
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         });
-
         contextMenu.getItems().addAll(eliminarItem, editarItem);
         contextMenu.show(switchGroup, event.getScreenX(), event.getScreenY());
     }
 
-    private void acoplarSwitchSiEsPosible() {
+    private void acoplarSwitchSiEsPosible(){
         for (int col = 0; col <= matriz[0].length - 8; col++) {
             boolean patasSuperioresAcopladas = verificarPatas(4, 0, col);
             boolean patasInferioresAcopladas = verificarPatas(5, 8, col);
@@ -153,12 +155,14 @@ public class SwitchOctogonal {
                 posicionarGrupo(matriz[4][col].getLayoutX(), matriz[4][col].getLayoutY() + 15);
                 colInicio = col; // Actualizar el atributo colInicio
                 iniciarMonitoreo(); // Iniciar el monitoreo constante
+                Main.BotonBateria2();
+                Main.BotonBateria3();
                 break;
             }
         }
     }
 
-    private boolean verificarPatas(int fila, int offset, int colInicio) {
+    private boolean verificarPatas(int fila, int offset, int colInicio){
         boolean todasPatasAcopladas = true;
         for (int i = 0; i < 8; i++) {
             Pane pata = (Pane) switchGroup.getChildren().get(i + offset);
@@ -179,7 +183,7 @@ public class SwitchOctogonal {
         return todasPatasAcopladas;
     }
 
-    private int getColInicio() {
+    private int getColInicio(){
         double switchX = switchGroup.getLayoutX() + switchGroup.getTranslateX();
         for (int col = 0; col <= matriz[0].length - 8; col++) {
             double celdaX = matriz[4][col].getLayoutX();
@@ -190,60 +194,93 @@ public class SwitchOctogonal {
         return 0; // Default to 0 if no match found
     }
 
-    private void posicionarGrupo(double x, double y) {
+    private void posicionarGrupo(double x, double y){
         switchGroup.setLayoutX(x);
         switchGroup.setLayoutY(y);
     }
 
-    private void restaurarColorPanes() {
-        for (int fila = 4; fila <= 5; fila++) {
-            for (int col = 0; col < matriz[0].length; col++) {
-                matriz[fila][col].setStyle("-fx-background-color: black;");
-            }
-        }
-    }
-
-    private void handleRectangleClick(MouseEvent event, int index) {
+    private void handleRectangleClick(MouseEvent event, int index){
         rectanguloEstado[index] = !rectanguloEstado[index]; // Cambiar el estado del rectángulo
         Rectangle rect = (Rectangle) event.getSource();
         if (rectanguloEstado[index]) {
             rect.setFill(Color.LIGHTGRAY);
             rect.setY(20); // Mover el rectángulo hacia arriba
+            
         } else {
             rect.setFill(Color.WHITE);
             rect.setY(30); // Mover el rectángulo hacia abajo
+            Main.BotonBateria2();
+            Main.BotonBateria3();
         }
     }
 
-    private void iniciarMonitoreo() {
+    private void iniciarMonitoreo(){
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
-    private void monitorearEstado() {
+    private void monitorearEstado(){
+        boolean[] fila4Actualizada = new boolean[8];
+        boolean[] fila5Actualizada = new boolean[8];
+    
         for (int i = 0; i < 8; i++) {
             int col = colInicio + i;
-            if (rectanguloEstado[i]) { // Solo monitorear si el rectángulo está activado
-                if (matrizEnteros[5][col] != 0) {
+            if (rectanguloEstado[i]) {
+                if (matrizEnteros[5][col] == 1 || matrizEnteros[5][col] == -1){
+                    int valor = matrizEnteros[5][col];
+                    for (int fila = 0; fila <= 4; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
+                    }
+                    fila5Actualizada[i] = true;
+                }
+                if (matrizEnteros[4][col] == 1 || matrizEnteros[4][col] == -1){
+                    int valor = matrizEnteros[4][col];
+                    for (int fila = 5; fila <= 9; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
+                    }
+                    fila4Actualizada[i] = true;
+                }
+            } else {
+                if (!fila5Actualizada[i]) {
+                    for (int fila = 0; fila <= 4; fila++) {
+                        matrizEnteros[fila][col] = 0;
+                        cambiarColorCelda(fila, col, 0);
+                    }
+                }
+                if (!fila4Actualizada[i]) {
+                    for (int fila = 5; fila <= 9; fila++) {
+                        matrizEnteros[fila][col] = 0;
+                        cambiarColorCelda(fila, col, 0);
+                    }
+                }
+                
+            }
+        }
+        for (int i = 0; i < 8; i++) {
+            int col = colInicio + i;
+            if (rectanguloEstado[i]) {
+                if (fila5Actualizada[i] && (matrizEnteros[4][col] == 1 || matrizEnteros[4][col] == -1)) {
+                    int valor = matrizEnteros[4][col];
+                    for (int fila = 5; fila <= 9; fila++) {
+                        matrizEnteros[fila][col] = valor;
+                        cambiarColorCelda(fila, col, valor);
+                    }
+                }
+                if (fila4Actualizada[i] && (matrizEnteros[5][col] == 1 || matrizEnteros[5][col] == -1)) {
                     int valor = matrizEnteros[5][col];
                     for (int fila = 0; fila <= 4; fila++) {
                         matrizEnteros[fila][col] = valor;
                         cambiarColorCelda(fila, col, valor);
                     }
                 }
-            } else {
-                for (int fila = 0; fila <= 4; fila++) {
-                    if (matrizEnteros[fila][col] != 0) {
-                        matrizEnteros[fila][col] = 0;
-                        cambiarColorCelda(fila, col, 0);
-                    }
-                }
             }
         }
     }
 
-    private void cambiarColorCelda(int fila, int col, int valor) {
+    private void cambiarColorCelda(int fila, int col, int valor){
         Pane targetCell = matriz[fila][col];
         if (valor == 1) {
             targetCell.setStyle("-fx-background-color: red;");

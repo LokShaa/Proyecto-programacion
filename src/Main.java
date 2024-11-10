@@ -141,7 +141,7 @@ public class Main extends Application{
     
     public static void actualizarMatriz() {
         if (instance != null) {
-            instance.imprimirMatrices();
+            //instance.imprimirMatrices();
            //System.out.println("..............................................................");
         }
     }
@@ -204,14 +204,6 @@ public class Main extends Application{
         instance.botonConDesc(new ActionEvent());
     }
 
-    public static void BotonBateria4(){
-        instance.botonConDesc(null);
-    }
-
-    public static void BotonBateria5(){
-        instance.botonConDesc(new ActionEvent());
-    }
-    
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -641,7 +633,6 @@ public class Main extends Application{
                 // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
-                System.out.println(xEscena + " " + yEscena);
                 if (switch1 == null) {
                     for (Pane matrizActual : matrices1) {
                         double xinicial = matrizActual.sceneToLocal(xEscena, yEscena).getX();
@@ -681,7 +672,6 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices1) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        System.out.println(xLocal + " " + yLocal);
                         int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
                         int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
                         double distancia = Math.sqrt(Math.pow(xLocal - switch1.getXInicial(), 2) + Math.pow(yLocal - switch1.getYInicial(), 2));
@@ -749,7 +739,7 @@ public class Main extends Application{
     }
     
     @FXML
-    private ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
+    public static ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
 
     @FXML
     void botonLed(MouseEvent event) { 
@@ -804,6 +794,7 @@ public class Main extends Application{
         primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(scrollPane, 800, 500));
         primaryStage.show();
+        Main.colorPicker = (ColorPicker) loader.getNamespace().get("colorPicker");
     }
 
     public static void main(String[] args){

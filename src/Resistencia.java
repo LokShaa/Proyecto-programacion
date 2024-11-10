@@ -239,7 +239,7 @@ public class Resistencia {
     }
 
     private void startMonitoring() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> {
             actualizarMatrizCentral();
             Cables.revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
         }));

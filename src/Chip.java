@@ -237,7 +237,7 @@ public class Chip {
         if (timeline != null) {
             timeline.stop();
         }
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> monitorChip()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> monitorChip()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
@@ -322,6 +322,7 @@ public class Chip {
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 4] == 1) {
+
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
@@ -467,6 +468,7 @@ public class Chip {
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == -1 || matrizEnteros[fila5][colInicio + 4] == -1){
+
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
