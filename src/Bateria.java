@@ -15,7 +15,6 @@ public class Bateria{
         else{
             banderaBateria = false;
         }
-        System.out.println("Bateria: " + banderaBateria);
     }
    
     public static boolean isBanderaBateria() {
