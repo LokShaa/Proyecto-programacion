@@ -10,6 +10,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -139,7 +141,7 @@ public class Main extends Application{
     
     public static void actualizarMatriz() {
         if (instance != null) {
-            instance.imprimirMatrices();
+            //instance.imprimirMatrices();
            //System.out.println("..............................................................");
         }
     }
@@ -202,14 +204,6 @@ public class Main extends Application{
         instance.botonConDesc(new ActionEvent());
     }
 
-    public static void BotonBateria4(){
-        instance.botonConDesc(null);
-    }
-
-    public static void BotonBateria5(){
-        instance.botonConDesc(new ActionEvent());
-    }
-    
     @FXML
     void botonCableGris(MouseEvent event) { 
         imagenCableGris.setOnMouseEntered(enteredEvent -> { 
@@ -289,9 +283,38 @@ public class Main extends Application{
         });
 
         imagenChip.setOnMouseClicked(clickEvent -> {
-            // Crear una instancia de Chip y dibujar el rectángulo movible
-            Chip chip = new Chip();
-            chip.dibujarRectanguloMovible(matrizPane, 100, 200);
+            // Create a ContextMenu
+            ContextMenu contextMenu = new ContextMenu();
+
+            // Create MenuItems
+            MenuItem andOption = new MenuItem("AND");
+            MenuItem orOption = new MenuItem("OR");
+            MenuItem notOption = new MenuItem("NOT");
+
+            // Add MenuItems to ContextMenu
+            contextMenu.getItems().addAll(andOption, orOption, notOption);
+
+            // Variable to store the selected option
+            final String[] selectedOption = new String[1];
+
+            // Set actions for each MenuItem
+            andOption.setOnAction(e -> {
+                selectedOption[0] = "AND";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            orOption.setOnAction(e -> {
+                selectedOption[0] = "OR";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            notOption.setOnAction(e -> {
+                selectedOption[0] = "NOT";
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+            });
+
+            // Show the ContextMenu at the location of the click
+            contextMenu.show(imagenChip, clickEvent.getScreenX(), clickEvent.getScreenY());
         });
     }
 
@@ -304,6 +327,10 @@ public class Main extends Application{
 
         imagenDisplay.setOnMouseExited(exitEvent -> {
             imagenDisplay.setEffect(null);
+        });
+        
+        imagenDisplay.setOnMouseClicked(exitEvent -> {
+            Display display = new Display(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros());
         });
     }
 
@@ -606,7 +633,6 @@ public class Main extends Application{
                 // Convertir las coordenadas del clic a coordenadas de la escena
                 double xEscena = mouseClickedEvent.getSceneX();
                 double yEscena = mouseClickedEvent.getSceneY();
-                System.out.println(xEscena + " " + yEscena);
                 if (switch1 == null) {
                     for (Pane matrizActual : matrices1) {
                         double xinicial = matrizActual.sceneToLocal(xEscena, yEscena).getX();
@@ -646,7 +672,6 @@ public class Main extends Application{
                     for (Pane matrizActual : matrices1) {
                         double xLocal = matrizActual.sceneToLocal(xEscena, yEscena).getX();
                         double yLocal = matrizActual.sceneToLocal(xEscena, yEscena).getY();
-                        System.out.println(xLocal + " " + yLocal);
                         int fila = (int) (yLocal / cellAlt); // Calcular la fila basada en la coordenada Y
                         int columna = (int) (xLocal / cellAncho); // Calcular la columna basada en la coordenada X
                         double distancia = Math.sqrt(Math.pow(xLocal - switch1.getXInicial(), 2) + Math.pow(yLocal - switch1.getYInicial(), 2));
@@ -714,7 +739,7 @@ public class Main extends Application{
     }
     
     @FXML
-    private ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
+    public static ColorPicker colorPicker; // Asegúrate de tener un ColorPicker en tu FXML y enlazarlo aquí
 
     @FXML
     void botonLed(MouseEvent event) { 
@@ -769,6 +794,7 @@ public class Main extends Application{
         primaryStage.setTitle("Protoboard");
         primaryStage.setScene(new Scene(scrollPane, 800, 500));
         primaryStage.show();
+        Main.colorPicker = (ColorPicker) loader.getNamespace().get("colorPicker");
     }
 
     public static void main(String[] args){
