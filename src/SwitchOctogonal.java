@@ -211,16 +211,36 @@ public class SwitchOctogonal {
         switchGroup.setLayoutY(y);
     }
 
-    private void handleRectangleClick(MouseEvent event, int index){
-        rectanguloEstado[index] = !rectanguloEstado[index]; // Cambiar el estado del rectángulo
-        Rectangle rect = (Rectangle) event.getSource();
-        if (rectanguloEstado[index]) {
-            rect.setFill(Color.LIGHTGRAY);
-            rect.setY(20); // Mover el rectángulo hacia arriba
-            
+    private void handleRectangleClick(MouseEvent event, int index) {
+        int col = colInicio + index;
+        boolean energiaPositivaArriba = matrizEnteros[4][col] == 1;
+        boolean energiaNegativaAbajo = matrizEnteros[5][col] == -1;
+
+        boolean energiaNegativaArriba = matrizEnteros[4][col] == -1;
+        boolean energiaPositivaAbajo = matrizEnteros[5][col] == 1;
+
+        boolean energiaPositivaArriba1 = matrizEnteros[4][col] == 1;
+        boolean energiaPositivaAbajo1 = matrizEnteros[5][col] == 1;
+
+        boolean energiaNegativaArriba1 = matrizEnteros[4][col] == -1;
+        boolean energiaNegativaAbajo1 = matrizEnteros[5][col] == -1;
+    
+        if (energiaPositivaArriba && energiaNegativaAbajo || energiaNegativaArriba && energiaPositivaAbajo || energiaPositivaArriba1 && energiaPositivaAbajo1 || energiaNegativaArriba1 && energiaNegativaAbajo1) {
+            // Quemar el botón
+            Rectangle rect = (Rectangle) event.getSource();
+            rect.setFill(Color.BLACK);
+            rect.setDisable(true); // Deshabilitar el rectángulo
         } else {
-            rect.setFill(Color.WHITE);
-            rect.setY(30); // Mover el rectángulo hacia abajo
+            // Cambiar el estado del rectángulo
+            rectanguloEstado[index] = !rectanguloEstado[index];
+            Rectangle rect = (Rectangle) event.getSource();
+            if (rectanguloEstado[index]) {
+                rect.setFill(Color.LIGHTGRAY);
+                rect.setY(20); // Mover el rectángulo hacia arriba
+            } else {
+                rect.setFill(Color.WHITE);
+                rect.setY(30); // Mover el rectángulo hacia abajo
+            }
             Main.BotonBateria2();
             Main.BotonBateria3();
         }
@@ -255,20 +275,6 @@ public class SwitchOctogonal {
                     }
                     fila4Actualizada[i] = true;
                 }
-            } else {
-                if (!fila5Actualizada[i]) {
-                    for (int fila = 0; fila <= 4; fila++) {
-                        matrizEnteros[fila][col] = 0;
-                        cambiarColorCelda(fila, col, 0);
-                    }
-                }
-                if (!fila4Actualizada[i]) {
-                    for (int fila = 5; fila <= 9; fila++) {
-                        matrizEnteros[fila][col] = 0;
-                        cambiarColorCelda(fila, col, 0);
-                    }
-                }
-                
             }
         }
         for (int i = 0; i < 8; i++) {
