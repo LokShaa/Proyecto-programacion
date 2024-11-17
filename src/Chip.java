@@ -139,6 +139,10 @@ public class Chip {
             limpiarValoresChip();
             restaurarColorPanes();
             pane.getChildren().remove(chipGroup);
+            for(int i = 0; i < 7; i++){
+                Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 0);
+            }
             Main.BotonBateria2();
             Main.BotonBateria3();
         });
@@ -150,6 +154,10 @@ public class Chip {
             }
             limpiarEstadoMatriz();
             limpiarValoresChip();
+            for(int i = 0; i < 7; i++){
+                Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 0);
+                Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 0);
+            }
             acoplado = false;
         });
     
@@ -205,6 +213,10 @@ public class Chip {
                 posicionarGrupo(matriz[4][col].getLayoutX(), matriz[4][col].getLayoutY() + 10);
                 colInicio = col; // Actualizar el atributo colInicio
                 startMonitoring(); // Reiniciar el monitoreo
+                for(int i = 0; i < 7; i++){
+                    Main.matrizCentralProtoboard.setMatrizCables(4, colInicio + i, 1);
+                    Main.matrizCentralProtoboard.setMatrizCables(5, colInicio + i, 1);
+                }
                 Main.BotonBateria2();
                 Main.BotonBateria3();
                 break;
