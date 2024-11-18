@@ -249,33 +249,33 @@ public class Resistencia {
 
     private void generarHumo(double x, double y) {
     // Crear varios círculos pequeños que simularán el humo
-    for (int i = 0; i < 5; i++) {
-        Circle humo = new Circle(5 + Math.random() * 10); // Tamaños aleatorios
-        humo.setCenterX(x);
-        humo.setCenterY(y);
-        humo.setFill(Color.GRAY);
-        humo.setOpacity(0.8); // Humo inicialmente visible
+        for (int i = 0; i < 5; i++) {
+            Circle humo = new Circle(5 + Math.random() * 10); // Tamaños aleatorios
+            humo.setCenterX(x);
+            humo.setCenterY(y);
+            humo.setFill(Color.GRAY);
+            humo.setOpacity(0.8); // Humo inicialmente visible
 
-        // Animación de translación (movimiento hacia arriba)
-        TranslateTransition translate = new TranslateTransition(Duration.seconds(2), humo);
-        translate.setByY(-50 - Math.random() * 30); // Subir el humo
+            // Animación de translación (movimiento hacia arriba)
+            TranslateTransition translate = new TranslateTransition(Duration.seconds(2), humo);
+            translate.setByY(-50 - Math.random() * 30); // Subir el humo
 
-        // Animación de desvanecimiento
-        FadeTransition fade = new FadeTransition(Duration.seconds(2), humo);
-        fade.setToValue(0); // Se desvanece a 0
+            // Animación de desvanecimiento
+            FadeTransition fade = new FadeTransition(Duration.seconds(2), humo);
+            fade.setToValue(0); // Se desvanece a 0
 
-        // Combinar animaciones en una transición paralela
-        ParallelTransition transition = new ParallelTransition(translate, fade);
-        transition.setOnFinished(event -> matrizPane.getChildren().remove(humo)); // Remover círculo cuando termine la animación
+            // Combinar animaciones en una transición paralela
+            ParallelTransition transition = new ParallelTransition(translate, fade);
+            transition.setOnFinished(event -> matrizPane.getChildren().remove(humo)); // Remover círculo cuando termine la animación
 
-        // Añadir el humo al Pane y a la lista para su control
-        matrizPane.getChildren().add(humo);
-       
+            // Añadir el humo al Pane y a la lista para su control
+            matrizPane.getChildren().add(humo);
+        
 
-        // Iniciar la animación
-        transition.play();
-    }
-}
+            // Iniciar la animación
+            transition.play();
+        }
+    } 
 
     private void actualizarMatrizCentral() {
         for (int i = 0; i < resistenciaList.size(); i++) {

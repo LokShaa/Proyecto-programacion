@@ -11,8 +11,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -22,8 +24,8 @@ import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.BorderPane;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +94,6 @@ public class Main extends Application{
 
     private List<Pane> matricesProto;
     private List<Pane> matrices1;
-    private List<Pane> matrices2;
     private Switch switch1;
     private Led led;
     private Resistencia resistencia;
@@ -109,9 +110,49 @@ public class Main extends Application{
     private int filaSeleccionada = -1;
     private int columnaSeleccionada = -1;
     public boolean banderaDibujarSwitch = false;
-    private boolean obtenerValorActivo = false; // Bandera para controlar la obtención de valores
+    private boolean obtenerValorActivo = false;
     private boolean eventosActivos = false;
 
+    @FXML
+    void botonBeteriaMenu(MouseEvent event) {
+        bateriaCompleta.setOnMouseClicked(clickedEvent -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem voltaje = new MenuItem("Cambiar voltaje");
+
+            voltaje.setOnAction(e -> {
+                TextInputDialog dialogo = new TextInputDialog();
+                dialogo.setTitle("Cambiar Voltaje");
+                dialogo.setHeaderText("Ingrese el nuevo voltaje:");
+                dialogo.setContentText("Voltaje:");
+
+                // Mostrar el diálogo y esperar la entrada del usuario
+                dialogo.showAndWait().ifPresent(voltage -> {
+                    try {
+                        double nuevoVoltage = Double.parseDouble(voltage);
+                        if (nuevoVoltage < 1.5 || nuevoVoltage > 12) {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Error al cambiar el voltaje");
+                            alert.setContentText("El voltaje debe estar entre 1.5 y 12 V.");
+                            alert.showAndWait();
+                            return;
+                        }
+                        Bateria.voltaje = nuevoVoltage;
+                    } catch (NumberFormatException ex) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error al cambiar el voltaje");
+                        alert.setContentText("El voltaje debe ser un número.");
+                        alert.showAndWait();
+                    }
+                });
+            });
+
+            // Añadir los elementos al ContextMenu
+            contextMenu.getItems().addAll(voltaje);
+            contextMenu.show(bateriaCompleta, event.getScreenX(), event.getScreenY());
+        });
+    }
 
     @FXML
     void initialize() {
@@ -126,7 +167,6 @@ public class Main extends Application{
 
         matricesProto = new ArrayList<>();
         matrices1 = new ArrayList<>();
-        matrices2 = new ArrayList<>();
         matrices1.add(matrizPane);
 
         // Se agregan las matrices a una lista que sera utilizada para configurar los eventos de dibujo de cables
@@ -143,42 +183,6 @@ public class Main extends Application{
         if (instance != null) {
             //instance.imprimirMatrices();
            //System.out.println("..............................................................");
-        }
-    }
-
-    private void imprimirMatrices() {
-        // Obtener las matrices de los objetos Protoboard
-        int[][] matrizCentral = matrizCentralProtoboard.getMatrizEnteros();
-        int[][] matrizsuperior = matrizSuperior.getMatrizEnteros();
-        int[][] matrizinferior = matrizInferior.getMatrizEnteros();
-
-         // Imprimir matriz superior
-        for (int i = 0; i < matrizsuperior.length; i++) {
-            for (int j = 0; j < matrizsuperior[i].length; j++) {
-                System.out.print(matrizsuperior[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("-----------------------------------------------------------");
-
-        // Imprimir matriz central
-        for (int i = 0; i < matrizCentral.length; i++) {
-            if(i == 5){
-                System.out.println("-----------------------------------------------------------");
-            }
-            for (int j = 0; j < matrizCentral[i].length; j++){
-                System.out.print(matrizCentral[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println("-----------------------------------------------------------");
-
-        // Imprimir matriz inferior
-        for (int i = 0; i < matrizinferior.length; i++) {
-            for (int j = 0; j < matrizinferior[i].length; j++) {
-                System.out.print(matrizinferior[i][j] + " ");
-            }
-            System.out.println();
         }
     }
 
@@ -776,14 +780,41 @@ public class Main extends Application{
             });
         });
     }
-
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
 
+        // Crear la barra de menú
+        MenuBar menuBar = new MenuBar();
+
+        // Crear los menús y elementos del menú con nombres personalizados
+        String[] menuNames = {"Cables", "Display", "LED", "Resistencia", "Switch", "Switch Octogonal","Voltaje"};
+        String[] infoMessages = {
+            "Para colocar el cable se debe hacer click en la celda de inicio y luego en la celda de fin.",
+            "Para colocar el display hacemos click en el boton de display y este aparecera en la pantalla, podemos arrastrarlo dentro de protoboard y este se colocara automaticamente.",
+            "Para colocar el LED hacemos click en el boton de LED y aparecera el menu para seleccionar el color, luego hacemos click en la celda donde ira la parte positiva y luego click en donde ira la parte negativa, para borrarlo hacemos click derecho y seleccionamos eliminar , y tambien podemos editar su color haciendo click derecho sobre este.",
+            "Para colocar la resistencia hacemos click en el boton y luego click en dos celdas de 2x1",
+            "Para colocar el Switch hacemos click en el boton y luego click en dos celdas de 3x3 para que sea el tamano del switch. Los click son en diagonal ",
+            "Para colocar el Switch octogonal , clickeamos este y aparecera en la pantalla , luego podemos arrastrarlo para colocarlo en la posicion deseada.",
+            "Para cambiar el voltaje debemos hacer click derecho sobre la bateria y escribir un voltaje entre 1.5 y 12"
+        };
+
+        for (int i = 0; i < menuNames.length; i++) {
+            Menu menu = new Menu(menuNames[i]);
+            MenuItem infoItem = new MenuItem(infoMessages[i]);
+            menu.getItems().add(infoItem);
+            menuBar.getMenus().add(menu);
+        }
+
+        // Crear el layout principal
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(root);
+
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(root);
+        scrollPane.setContent(borderPane);
         scrollPane.setFitToWidth(true); // Ajusta el ancho del contenido al ancho del ScrollPane
         scrollPane.setFitToHeight(true); // Ajusta la altura del contenido a la altura del ScrollPane
 
@@ -796,7 +827,7 @@ public class Main extends Application{
         primaryStage.show();
         Main.colorPicker = (ColorPicker) loader.getNamespace().get("colorPicker");
     }
-
+    
     public static void main(String[] args){
         launch(args);
     }
