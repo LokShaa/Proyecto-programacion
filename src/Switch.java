@@ -266,7 +266,8 @@ public class Switch extends Line {
                         cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                     }
                 }
-            }else if(matrizEnteros[filaInicial][columnaInicial] == -1){
+            }
+            if(matrizEnteros[filaInicial][columnaInicial] == -1){
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = -1;
@@ -279,7 +280,8 @@ public class Switch extends Line {
                     }
                 }
             //esquina superior derecha con valor
-            }else if(matrizEnteros[filaInicial][columnaFinal] == 1){
+            } 
+            if(matrizEnteros[filaInicial][columnaFinal] == 1){
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = 1;
@@ -291,7 +293,8 @@ public class Switch extends Line {
                         cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                     }
                 }
-            }else if(matrizEnteros[filaInicial][columnaFinal] == -1){
+            }
+            if(matrizEnteros[filaInicial][columnaFinal] == -1){
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = -1;
@@ -304,7 +307,8 @@ public class Switch extends Line {
                     }
                 }
             //esquina inferior izquierda con valor
-            }else if(matrizEnteros[filaFinal][columnaInicial] == 1){
+            }
+            if(matrizEnteros[filaFinal][columnaInicial] == 1){
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = 1;
@@ -316,7 +320,8 @@ public class Switch extends Line {
                         cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                     }
                 }
-            }else if(matrizEnteros[filaFinal][columnaInicial] == -1){
+            }
+            if(matrizEnteros[filaFinal][columnaInicial] == -1){
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = -1;
@@ -329,7 +334,8 @@ public class Switch extends Line {
                     }
                 }
             //esquina inferior derecha con valor
-            }else if(matrizEnteros[filaFinal][columnaFinal] == 1){
+            }
+            if(matrizEnteros[filaFinal][columnaFinal] == 1){
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = 1;
@@ -341,7 +347,8 @@ public class Switch extends Line {
                         cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                     }
                 }
-            }else if(matrizEnteros[filaFinal][columnaFinal] == -1){
+            }
+            if(matrizEnteros[filaFinal][columnaFinal] == -1){
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = -1;
