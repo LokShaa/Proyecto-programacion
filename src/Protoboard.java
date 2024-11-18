@@ -9,6 +9,7 @@ public class Protoboard{
     private int filaRoja=-1,filaAzul=-1;
     private int columnaRoja=-1,columnaAzul=-1;
     public int[][] matrizCables;
+    public int[][] matrizVoltaje;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -16,6 +17,7 @@ public class Protoboard{
         matrizEnteros = new int[filas][columnas];
         matrizCables = new int[filas][columnas];
         matrizCortoCircuito = new int[filas][columnas];
+
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 matrizCables[i][j] = 0;
@@ -24,7 +26,7 @@ public class Protoboard{
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
-    
+
                 // Calcular la posición de la celda
                 double x = j * (cellAncho + padding1);
                 double y = i * (cellAlt + padding2);

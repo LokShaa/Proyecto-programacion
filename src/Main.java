@@ -13,16 +13,17 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,6 +113,46 @@ public class Main extends Application{
     private boolean obtenerValorActivo = false; // Bandera para controlar la obtención de valores
     private boolean eventosActivos = false;
 
+    @FXML
+    void botonBeteriaMenu(MouseEvent event) {
+        bateriaCompleta.setOnMouseClicked(clickedEvent -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem voltaje = new MenuItem("Cambiar voltaje");
+
+            voltaje.setOnAction(e -> {
+                TextInputDialog dialogo = new TextInputDialog();
+                dialogo.setTitle("Cambiar Voltaje");
+                dialogo.setHeaderText("Ingrese el nuevo voltaje:");
+                dialogo.setContentText("Voltaje:");
+
+                // Mostrar el diálogo y esperar la entrada del usuario
+                dialogo.showAndWait().ifPresent(voltage -> {
+                    try {
+                        double nuevoVoltage = Double.parseDouble(voltage);
+                        if (nuevoVoltage < 1.5 || nuevoVoltage > 12) {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Error al cambiar el voltaje");
+                            alert.setContentText("El voltaje debe estar entre 1.5 y 12 V.");
+                            alert.showAndWait();
+                            return;
+                        }
+                        Bateria.voltaje = nuevoVoltage;
+                    } catch (NumberFormatException ex) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error al cambiar el voltaje");
+                        alert.setContentText("El voltaje debe ser un número.");
+                        alert.showAndWait();
+                    }
+                });
+            });
+
+            // Añadir los elementos al ContextMenu
+            contextMenu.getItems().addAll(voltaje);
+            contextMenu.show(bateriaCompleta, event.getScreenX(), event.getScreenY());
+        });
+    }
 
     @FXML
     void initialize() {
