@@ -249,7 +249,7 @@ public class Chip {
         if (timeline != null) {
             timeline.stop();
         }
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> monitorChip()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> monitorChip()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }

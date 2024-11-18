@@ -1007,10 +1007,7 @@ public class Cables extends Line {
 
     // Método para ajustar la columna según las reglas específicas
     private int ajustarColumna(int columna) {
-        columna -= (columna / 2);
-        if (columna > 20) {
-            columna += 1;
-        }
+        
         return columna;
     }
 

@@ -219,13 +219,9 @@ public class SwitchOctogonal {
         boolean energiaNegativaArriba = matrizEnteros[4][col] == -1;
         boolean energiaPositivaAbajo = matrizEnteros[5][col] == 1;
 
-        boolean energiaPositivaArriba1 = matrizEnteros[4][col] == 1;
-        boolean energiaPositivaAbajo1 = matrizEnteros[5][col] == 1;
-
-        boolean energiaNegativaArriba1 = matrizEnteros[4][col] == -1;
-        boolean energiaNegativaAbajo1 = matrizEnteros[5][col] == -1;
+       
     
-        if (energiaPositivaArriba && energiaNegativaAbajo || energiaNegativaArriba && energiaPositivaAbajo || energiaPositivaArriba1 && energiaPositivaAbajo1 || energiaNegativaArriba1 && energiaNegativaAbajo1) {
+        if ((energiaPositivaArriba && energiaNegativaAbajo) || (energiaNegativaArriba && energiaPositivaAbajo) ) {
             // Quemar el botón
             Rectangle rect = (Rectangle) event.getSource();
             rect.setFill(Color.BLACK);
@@ -247,7 +243,7 @@ public class SwitchOctogonal {
     }
 
     private void iniciarMonitoreo(){
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.5), event -> monitorearEstado()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> monitorearEstado()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }

@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
@@ -22,8 +23,9 @@ import javafx.scene.effect.Glow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
-
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -776,14 +778,40 @@ public class Main extends Application{
             });
         });
     }
-
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("PrototipoV1.fxml"));
         Parent root = loader.load();
 
+        // Crear la barra de menú
+        MenuBar menuBar = new MenuBar();
+
+        // Crear los menús y elementos del menú con nombres personalizados
+        String[] menuNames = {"Cables", "Display", "LED", "Resistencia", "Switch", "Switch Octogonal"};
+        String[] infoMessages = {
+            "Para colocar el cable se debe hacer click en la celda de inicio y luego en la celda de fin.",
+            "Para colocar el display hacemos click en el boton de display y este aparecera en la pantalla, podemos arrastrarlo dentro de protoboard y este se colocara automaticamente.",
+            "Para colocar el LED hacemos click en el boton de LED y aparecera el menu para seleccionar el color, luego hacemos click en la celda donde ira la parte positiva y luego click en donde ira la parte negativa, para borrarlo hacemos click derecho y seleccionamos eliminar , y tambien podemos editar su color haciendo click derecho sobre este.",
+            "Para colocar la resistencia hacemos click en el boton y luego click en dos celdas de 2x1",
+            "Para colocar el Switch hacemos click en el boton y luego click en dos celdas de 3x3 para que sea el tamano del switch. Los click son en diagonal ",
+            "Para colocar el Switch octogonal , clickeamos este y aparecera en la pantalla , luego podemos arrastrarlo para colocarlo en la posicion deseada."
+        };
+
+        for (int i = 0; i < menuNames.length; i++) {
+            Menu menu = new Menu(menuNames[i]);
+            MenuItem infoItem = new MenuItem(infoMessages[i]);
+            menu.getItems().add(infoItem);
+            menuBar.getMenus().add(menu);
+        }
+
+        // Crear el layout principal
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(menuBar);
+        borderPane.setCenter(root);
+
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(root);
+        scrollPane.setContent(borderPane);
         scrollPane.setFitToWidth(true); // Ajusta el ancho del contenido al ancho del ScrollPane
         scrollPane.setFitToHeight(true); // Ajusta la altura del contenido a la altura del ScrollPane
 
@@ -797,6 +825,7 @@ public class Main extends Application{
         Main.colorPicker = (ColorPicker) loader.getNamespace().get("colorPicker");
     }
 
+    
     public static void main(String[] args){
         launch(args);
     }
