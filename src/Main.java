@@ -790,14 +790,15 @@ public class Main extends Application{
         MenuBar menuBar = new MenuBar();
 
         // Crear los menús y elementos del menú con nombres personalizados
-        String[] menuNames = {"Cables", "Display", "LED", "Resistencia", "Switch", "Switch Octogonal"};
+        String[] menuNames = {"Cables", "Display", "LED", "Resistencia", "Switch", "Switch Octogonal","Voltaje"};
         String[] infoMessages = {
             "Para colocar el cable se debe hacer click en la celda de inicio y luego en la celda de fin.",
             "Para colocar el display hacemos click en el boton de display y este aparecera en la pantalla, podemos arrastrarlo dentro de protoboard y este se colocara automaticamente.",
             "Para colocar el LED hacemos click en el boton de LED y aparecera el menu para seleccionar el color, luego hacemos click en la celda donde ira la parte positiva y luego click en donde ira la parte negativa, para borrarlo hacemos click derecho y seleccionamos eliminar , y tambien podemos editar su color haciendo click derecho sobre este.",
             "Para colocar la resistencia hacemos click en el boton y luego click en dos celdas de 2x1",
             "Para colocar el Switch hacemos click en el boton y luego click en dos celdas de 3x3 para que sea el tamano del switch. Los click son en diagonal ",
-            "Para colocar el Switch octogonal , clickeamos este y aparecera en la pantalla , luego podemos arrastrarlo para colocarlo en la posicion deseada."
+            "Para colocar el Switch octogonal , clickeamos este y aparecera en la pantalla , luego podemos arrastrarlo para colocarlo en la posicion deseada.",
+            "Para cambiar el voltaje debemos hacer click derecho sobre la bateria y escribir un voltaje entre 1.5 y 12"
         };
 
         for (int i = 0; i < menuNames.length; i++) {
@@ -826,7 +827,6 @@ public class Main extends Application{
         primaryStage.show();
         Main.colorPicker = (ColorPicker) loader.getNamespace().get("colorPicker");
     }
-
     
     public static void main(String[] args){
         launch(args);
