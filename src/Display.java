@@ -4,14 +4,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.Group;
-import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
-
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.KeyFrame;
@@ -29,6 +24,8 @@ public class Display {
     private Timeline timeline; // Declarar el Timeline aquí
     private List<List<Rectangle>> leds; // Lista de listas para almacenar los LEDs
     private Circle ledCircular;
+    private boolean displayQuemado = false;
+    private boolean led1 = false,led2 = false,led3=false,led4=false,led5 = false,led6=false,led7=false,led8 = false;
 
     public Display(Pane pane, double x, double y, Pane[][] matriz, int[][] matrizEnteros) {
         this.pane = pane;
@@ -303,159 +300,78 @@ public class Display {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-    
+
     private void monitorDisplay() {
-        int fila2 = 2;
-        int fila3 = 3;
-        int fila4 = 4;
-        int fila5 = 5;
-        int fila6 = 6;
-        int fila7 = 7;
-        if(Bateria.banderaBateria == true){
-            if (matrizEnteros[fila2][colInicio + 2] == -1 || matrizEnteros[fila5][colInicio + 2] == -1) {
-                if (matrizEnteros[fila2][colInicio] == 1) {
-                    setLedState(6, true);
-                }else{
-                    setLedState(6, false);
-                }
-                if(matrizEnteros[fila2][colInicio + 1] == 1){
-                    setLedState(5, true);
-                }else{
-                    setLedState(5, false);
-                }
-                if(matrizEnteros[fila2][colInicio + 3] == 1){
-                    setLedState(0, true);
-                }else{
-                    setLedState(0, false);
-                }
-                if(matrizEnteros[fila2][colInicio + 4] == 1){
-                    setLedState(1, true);
-                }else{
-                    setLedState(1, false);
-                }
-                if(matrizEnteros[fila5][colInicio] == 1){
-                    setLedState(4, true);
-                }else{
-                    setLedState(4, false);
-                }
-                if(matrizEnteros[fila5][colInicio + 1] == 1){
-                    setLedState(3, true);
-                }else{
-                    setLedState(3, false);
-                }
-                if(matrizEnteros[fila5][colInicio + 3] == 1){
-                    setLedState(2, true);
-                }else{
-                    setLedState(2, false);
-                }
-                if(matrizEnteros[fila5][colInicio + 4] == 1){
-                    ledCircular.setFill(Color.RED);
-                }else{
-                    ledCircular.setFill(Color.GRAY);
-                }
-            }else if (matrizEnteros[fila3][colInicio + 2] == -1 || matrizEnteros[fila6][colInicio + 2] == -1) {
-                if (matrizEnteros[fila3][colInicio] == 1) {
-                    setLedState(6, true);
-                }else{
-                    setLedState(6, false);
-                }
-                if(matrizEnteros[fila3][colInicio + 1] == 1){
-                    setLedState(5, true);
-                }else{
-                    setLedState(5, false);
-                }
-                if(matrizEnteros[fila3][colInicio + 3] == 1){
-                    setLedState(0, true);
-                }else{
-                    setLedState(0, false);
-                }
-                if(matrizEnteros[fila3][colInicio + 4] == 1){
-                    setLedState(1, true);
-                }else{
-                    setLedState(1, false);
-                }
-                if(matrizEnteros[fila6][colInicio] == 1){
-                    setLedState(4, true);
-                }else{
-                    setLedState(4, false);
-                }
-                if(matrizEnteros[fila6][colInicio + 1] == 1){
-                    setLedState(3, true);
-                }else{
-                    setLedState(3, false);
-                }
-                if(matrizEnteros[fila6][colInicio + 3] == 1){
-                    setLedState(2, true);
-                }else{
-                    setLedState(2, false);
-                }
-                if(matrizEnteros[fila6][colInicio + 4] == 1){
-                    ledCircular.setFill(Color.RED);
-                }else{
-                    ledCircular.setFill(Color.GRAY);
-                }
+        if (Bateria.banderaBateria) {
+            if (comprobarQuemadoDisplay()) {
+                displayQuemado = true;
+                Main.BotonBateria2();
+                Main.BotonBateria3();
+            } else {
+                actualizarLeds(2, 5);
+                actualizarLeds(3, 6);
+                actualizarLeds(4, 7);
             }
-            else if (matrizEnteros[fila4][colInicio + 2] == -1 || matrizEnteros[fila7][colInicio + 2] == -1) {
-                if (matrizEnteros[fila4][colInicio] == 1) {
-                    setLedState(6, true);
-                }else{
-                    setLedState(6, false);
-                }
-                if(matrizEnteros[fila4][colInicio + 1] == 1){
-                    setLedState(5, true);
-                }else{
-                    setLedState(5, false);
-                }
-                if(matrizEnteros[fila4][colInicio + 3] == 1){
-                    setLedState(0, true);
-                }else{
-                    setLedState(0, false);
-                }
-                if(matrizEnteros[fila4][colInicio + 4] == 1){
-                    setLedState(1, true);
-                }else{
-                    setLedState(1, false);
-                }
-                if(matrizEnteros[fila7][colInicio] == 1){
-                    setLedState(4, true);
-                }else{
-                    setLedState(4, false);
-                }
-                if(matrizEnteros[fila7][colInicio + 1] == 1){
-                    setLedState(3, true);
-                }else{
-                    setLedState(3, false);
-                }
-                if(matrizEnteros[fila7][colInicio + 3] == 1){
-                    setLedState(2, true);
-                }else{
-                    setLedState(2, false);
-                }
-                if(matrizEnteros[fila7][colInicio + 4] == 1){
-                    ledCircular.setFill(Color.RED);
-                }else{
-                    ledCircular.setFill(Color.GRAY);
-                }
-            }else{
-                setLedState(0, false);
-                setLedState(1, false);
-                setLedState(2, false);
-                setLedState(3, false);
-                setLedState(4, false);
-                setLedState(5, false);
-                setLedState(6, false);
-                ledCircular.setFill(Color.GRAY);
-            }
-        }else if(Bateria.banderaBateria == false){
-            setLedState(0, false);
-            setLedState(1, false);
-            setLedState(2, false);
-            setLedState(3, false);
-            setLedState(4, false);
-            setLedState(5, false);
-            setLedState(6, false);
-            ledCircular.setFill(Color.GRAY);
+        } else {
+            resetearLeds();
         }
+    }
+
+    private boolean comprobarQuemadoDisplay() {
+        return (matrizEnteros[2][colInicio + 2] == 1 || matrizEnteros[5][colInicio + 2] == 1 ||
+                matrizEnteros[3][colInicio + 2] == 1 || matrizEnteros[6][colInicio + 2] == 1 ||
+                matrizEnteros[4][colInicio + 2] == 1 || matrizEnteros[7][colInicio + 2] == 1) && !displayQuemado;
+    }
+
+    private void actualizarLeds(int fila1, int fila2) {
+        if ((matrizEnteros[fila1][colInicio + 2] == -1 || matrizEnteros[fila2][colInicio + 2] == -1) && !displayQuemado) {
+            if(led7 == false){
+                setLedState(6, matrizEnteros[fila1][colInicio] == 1);
+            }if(led6 == false){
+                setLedState(5, matrizEnteros[fila1][colInicio + 1] == 1);
+            }if(led1 == false){
+                setLedState(0, matrizEnteros[fila1][colInicio + 3] == 1);
+            }if(led2 == false){
+                setLedState(1, matrizEnteros[fila1][colInicio + 4] == 1);
+            }if(led5 == false){
+                setLedState(4, matrizEnteros[fila2][colInicio] == 1);
+            }if(led4 == false){
+                setLedState(3, matrizEnteros[fila2][colInicio + 1] == 1);
+            }if(led3 == false){
+                setLedState(2, matrizEnteros[fila2][colInicio + 3] == 1);
+            }if(led8 == false){
+                ledCircular.setFill(matrizEnteros[fila2][colInicio + 4] == 1 ? Color.RED : Color.GRAY);
+            }if(matrizEnteros[fila1][colInicio] == -1){
+                led7 = true;
+            }if(matrizEnteros[fila1][colInicio + 1] == -1){
+                led6 = true;
+            }if(matrizEnteros[fila1][colInicio + 3] == -1){
+                led1 = true;
+            }if(matrizEnteros[fila1][colInicio + 4] == -1){
+                led2 = true;
+            }if(matrizEnteros[fila2][colInicio] == -1){
+                led5 = true;
+            }if(matrizEnteros[fila2][colInicio + 1] == -1){
+                led4 = true;
+            }if(matrizEnteros[fila2][colInicio + 3] == -1){
+                led3= true;
+            }if(matrizEnteros[fila2][colInicio + 4] == -1){
+                led8 = true;
+            }
+        } else {
+            resetearLeds();
+        }
+    }
+
+    private void resetearLeds() {
+        setLedState(0, false);
+        setLedState(1, false);
+        setLedState(2, false);
+        setLedState(3, false);
+        setLedState(4, false);
+        setLedState(5, false);
+        setLedState(6, false);
+        ledCircular.setFill(Color.GRAY);
     }
     
     public void setLedState(int fila, boolean estado) {
