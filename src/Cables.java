@@ -36,7 +36,7 @@ public class Cables extends Line {
     
     private double[][] matrizvoltajeSuperior;
     private double[][] matrizvoltajeInferior;
-    private double[][] matrizvoltajeCentral;
+    private static double[][] matrizvoltajeCentral;
 
     private double voltaje;
 
@@ -346,6 +346,31 @@ public class Cables extends Line {
                 } else {
                     matriz[i][j].getChildren().clear();
                 }
+            }
+        }
+    }
+
+    public static void setMatrizVoltaje(int fila,int columna,double valor){
+        if (fila>=0 && fila<5){
+            for (int j = 0; j < 5; j++) {
+                matrizvoltajeCentral[j][columna] = matrizvoltajeCentral[j][columna] - valor;
+            }
+        }
+        else if (fila>=5 && fila<10){
+            for (int j = 5; j < 10; j++) {
+                matrizvoltajeCentral[j][columna] = matrizvoltajeCentral[j][columna] - valor;
+            }
+        }
+    }
+    public static void setMatrizVoltaje2(int fila,int columna,double valor){
+        if (fila>=0 && fila<5){
+            for (int j = 0; j < 5; j++) {
+                matrizvoltajeCentral[j][columna] = valor;
+            }
+        }
+        else if (fila>=5 && fila<10){
+            for (int j = 5; j < 10; j++) {
+                matrizvoltajeCentral[j][columna] = valor;
             }
         }
     }

@@ -233,26 +233,64 @@ public class Main extends Application{
             });
         });
     }
-    
+    double resistenciaO = 0.0;
+
     @FXML
     void botonResistencia(MouseEvent event) { 
         imagenResistencia.setOnMouseEntered(enteredEvent -> { 
             Glow glowRojo = new Glow(1);
             imagenResistencia.setEffect(glowRojo);
         });
-    
+
         imagenResistencia.setOnMouseExited(exitEvent -> { 
             imagenResistencia.setEffect(null);
         });
-        imagenResistencia.setOnMouseClicked(clickedEvent->{
-            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-            resistencia = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral);
-            
-            desactivarEventosDeDibujo(matrizPane);
-    
-            matrizPane.setOnMouseClicked(resistencia::handleMouseClick);
+
+        Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+        int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+
+        imagenResistencia.setOnMouseClicked(clickedEvent -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem resistencia = new MenuItem("Poner resistencia");
+
+            resistencia.setOnAction(e -> {
+                TextInputDialog dialogo = new TextInputDialog();
+                dialogo.setTitle("Resistencia");
+                dialogo.setHeaderText("Ingrese el valor de la resistencia:");
+                dialogo.setContentText("Resistencia:");
+
+                // Mostrar el diálogo y esperar la entrada del usuario
+                dialogo.showAndWait().ifPresent(resistenciaa -> {
+                    try {
+                        double resistenciA = Double.parseDouble(resistenciaa);
+                        if (resistenciA < 1.5 || resistenciA > 100) {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Error al poner la resistencia");
+                            alert.setContentText("La resistencia debe estar entre 1.5 y 100 O.");
+                            alert.showAndWait();
+                            return;
+                        }
+                        resistenciaO = resistenciA * 0.03;
+                        // Crear la instancia de Resistencia después de obtener el valor
+                        Resistencia resistenciaObj = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral, resistenciaO, matrizCentralProtoboard.getMatrizVoltaje());
+                        matrizPane.setOnMouseClicked(resistenciaObj::handleMouseClick);
+                    } catch (NumberFormatException ex) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error al poner la resistencia");
+                        alert.setContentText("La resistencia debe ser un número.");
+                        alert.showAndWait();
+                    }
+                });
+            });
+
+            // Añadir los elementos al ContextMenu
+            contextMenu.getItems().addAll(resistencia);
+            contextMenu.show(imagenResistencia, clickedEvent.getScreenX(), clickedEvent.getScreenY());
         });
+
+        desactivarEventosDeDibujo(matrizPane);
     }
 
     @FXML
