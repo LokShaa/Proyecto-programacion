@@ -25,11 +25,19 @@ public class Chip {
     private String tipoString;  
     private Timeline timeline; // Declarar el Timeline aquí
 
-    public Chip(Pane pane, double x, double y, Pane[][] matriz, int[][] matrizEnteros, String tipo) {
+    double[][] matrizVoltajes;
+    private Bateria bateria;
+    double voltaje;
+
+
+
+    public Chip(Pane pane, double x, double y, Pane[][] matriz, int[][] matrizEnteros, String tipo,double[][] matrizVoltajes) {
         this.pane = pane;
         this.matriz = matriz;
         this.matrizEnteros = matrizEnteros;
         this.tipoString = tipo;
+        this.matrizVoltajes = matrizVoltajes;
+        bateria = new Bateria();
         this.chipGroup = new Group();
         dibujarRectanguloMovible(x, y);
         addEventHandlers();
@@ -258,6 +266,7 @@ public class Chip {
         int fila4 = 4;
         int fila5 = 5;
         int colFin = colInicio + 6;
+        voltaje = bateria.getVoltaje();
     
         if (tipoString.equals("NOT")) {
             if (matrizEnteros[fila4][colInicio] == 1 && matrizEnteros[fila5][colFin] == -1) {
@@ -265,12 +274,14 @@ public class Chip {
                 if (matrizEnteros[fila4][colInicio + 1] == 1) {
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 2] = -1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila4][colInicio + 1] == -1) {
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 2] = 1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
                     }
                 }
@@ -278,12 +289,14 @@ public class Chip {
                 if (matrizEnteros[fila4][colInicio + 3] == 1) {
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 4] = -1;
+                        matrizVoltajes[i][colInicio + 4] = voltaje;
                         matriz[i][colInicio + 4].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila4][colInicio + 3] == -1) {
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 4] = 1;
+                        matrizVoltajes[i][colInicio + 4] = voltaje;
                         matriz[i][colInicio + 4].setStyle("-fx-background-color: red;");
                     }
                 }
@@ -291,12 +304,14 @@ public class Chip {
                 if (matrizEnteros[fila4][colInicio + 5] == -1) {
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = 1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
                     }
                 }
                 if (matrizEnteros[fila4][colInicio + 5] == 1) {
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = -1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -305,12 +320,14 @@ public class Chip {
                 if (matrizEnteros[fila5][colInicio] == 1) {
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 1] = -1;
+                        matrizVoltajes[i][colInicio + 1] = voltaje;
                         matriz[i][colInicio + 1].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio] == -1) {
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 1] = 1;
+                        matrizVoltajes[i][colInicio + 1] = voltaje;
                         matriz[i][colInicio + 1].setStyle("-fx-background-color: red;");
                     }
                 }
@@ -318,18 +335,21 @@ public class Chip {
                 if (matrizEnteros[fila5][colInicio + 2] == 1) {
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 3] = -1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 2] == -1) {
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 3] = 1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 4] == -1) {
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = 1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }
@@ -337,6 +357,7 @@ public class Chip {
 
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -348,21 +369,25 @@ public class Chip {
                 if(matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == 1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 3] = 1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
                     }
                 }else if(matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == -1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 3] = -1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }else if(matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == -1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 3] = -1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == 1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 3] = -1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -370,16 +395,19 @@ public class Chip {
                 if(matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == 1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = 1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == -1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = -1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }else if ((matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == -1) || (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1)){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = -1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1){
@@ -393,21 +421,25 @@ public class Chip {
                 if(matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == 1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 2] = 1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == -1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 2] = -1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == -1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 2] = -1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }else if(matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == 1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 2] = -1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -415,21 +447,25 @@ public class Chip {
                 if(matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == 1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = 1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == -1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == -1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }else if(matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == 1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -440,11 +476,13 @@ public class Chip {
                 if ((matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == -1) || (matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == 1) || (matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == 1)){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 3] = 1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
                     }
                 }else if(matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == -1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 3] = -1;
+                        matrizVoltajes[i][colInicio + 3] = voltaje;
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -452,11 +490,13 @@ public class Chip {
                 if ((matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == -1) || (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1) || (matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == 1)){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = 1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == -1){
                     for (int i = 0; i < 5; i++) {
                         matrizEnteros[i][colInicio + 6] = -1;
+                        matrizVoltajes[i][colInicio + 6] = voltaje;
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -465,11 +505,13 @@ public class Chip {
                 if ((matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio+1] == -1) || (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio+1] == 1) || (matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == 1)){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio+2] = 1;
+                        matrizVoltajes[i][colInicio+2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == -1){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 2] = -1;
+                        matrizVoltajes[i][colInicio + 2] = voltaje;
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -477,12 +519,14 @@ public class Chip {
                 if ((matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == -1) || (matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == 1) || (matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == 1)){
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = 1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == -1 || matrizEnteros[fila5][colInicio + 4] == -1){
 
                     for (int i = 5; i < 10; i++) {
                         matrizEnteros[i][colInicio + 5] = -1;
+                        matrizVoltajes[i][colInicio + 5] = voltaje;
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }

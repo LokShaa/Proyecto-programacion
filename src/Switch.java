@@ -22,14 +22,19 @@ public class Switch extends Line {
     int filaFinal;
     int columnaFinal;
     private Timeline timeline;
+    
+    double[][] matrizVoltajes;
+    private Bateria bateria;
+    double voltaje;
 
-    public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane){
+    public Switch(Pane pane, Color color, double startX, double startY, ImageView imagenSwitch, int[][] matrizEnteros, Pane matrizPane,double[][]matrizVoltajes){
         this.pane = pane;
         this.setStroke(color);
         this.setStrokeWidth(10);
         this.matrizEnteros = matrizEnteros;
         this.matrizPane = matrizPane;
-       
+        this.matrizVoltajes = matrizVoltajes;
+        bateria = new Bateria();
         // Inicializamos las coordenadas del cable
         this.setStartX(startX);
         this.setStartY(startY);
@@ -240,6 +245,7 @@ public class Switch extends Line {
     }
     
     private void monitorearEstado(){
+        voltaje = bateria.getVoltaje();
         double xLocalInicial = this.getStartX();
         double yLocalInicial = this.getStartY();
         double xLocalFinal = this.getEndX();
@@ -258,11 +264,13 @@ public class Switch extends Line {
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = 1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                     }
                 }else if(filaInicial>=5 && filaInicial<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaFinal] = 1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                     }
                 }
@@ -271,11 +279,13 @@ public class Switch extends Line {
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = -1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                     }
                 }else if(filaInicial>=5 && filaInicial<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaFinal] = -1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                     }
                 }
@@ -285,11 +295,13 @@ public class Switch extends Line {
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = 1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                     }
                 }else if(filaInicial>=5 && filaInicial<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaInicial] = 1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                     }
                 }
@@ -298,11 +310,13 @@ public class Switch extends Line {
                 if(filaInicial>=0 && filaInicial<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = -1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
                     }
                 }else if(filaInicial>=5 && filaInicial<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaInicial] = -1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
                     }
                 }
@@ -312,11 +326,13 @@ public class Switch extends Line {
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = 1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                     }
                 }else if(filaFinal>=5 && filaFinal<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaFinal] = 1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                     }
                 }
@@ -325,11 +341,13 @@ public class Switch extends Line {
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaFinal] = -1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                     }
                 }else if(filaFinal>=5 && filaFinal<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaFinal] = -1;
+                        matrizVoltajes[i][columnaFinal] = voltaje;
                         cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                     }
                 }
@@ -339,11 +357,13 @@ public class Switch extends Line {
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = 1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                     }
                 }else if(filaFinal>=5 && filaFinal<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaInicial] = 1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                     }
                 }
@@ -352,11 +372,13 @@ public class Switch extends Line {
                 if(filaFinal>=0 && filaFinal<5){
                     for(int i = 0; i < 5; i++){
                         matrizEnteros[i][columnaInicial] = -1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                     }
                 }else if(filaFinal>=5 && filaFinal<10){
                     for(int i = 5; i < 10; i++){
                         matrizEnteros[i][columnaInicial] = -1;
+                        matrizVoltajes[i][columnaInicial] = voltaje;
                         cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                     }
                 }
@@ -377,19 +399,23 @@ public class Switch extends Line {
                     if(filaFinal>=0 && filaFinal<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                         }
                     }else if(filaFinal>=5 && filaFinal<10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                         }
                     }
@@ -398,19 +424,23 @@ public class Switch extends Line {
                     if(filaFinal>=0 && filaFinal<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                         }
                     }else if(filaFinal>=5 && filaFinal<10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                         }
                     }
@@ -419,19 +449,23 @@ public class Switch extends Line {
                     if(filaFinal>=0 && filaFinal<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
                     }else if(filaFinal>=5 && filaFinal<10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.RED);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.RED);
                         }
                     }
@@ -439,19 +473,23 @@ public class Switch extends Line {
                     if(filaFinal>=0 && filaFinal<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
                     }else if(filaFinal>=5 && filaFinal<10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaFinal, columnaInicial, Color.BLUE);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaFinal, columnaFinal, Color.BLUE);
                         }
                     }
@@ -460,19 +498,23 @@ public class Switch extends Line {
                     if(filaInicial>=0 && filaInicial<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                         }
                     }else if(filaInicial>=5 && filaInicial<10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                         }
                         
@@ -481,19 +523,23 @@ public class Switch extends Line {
                     if(filaInicial>=0 && filaInicial<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
                         }
                     }else if(filaInicial>=5 && filaInicial<10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
                         }
                     }
@@ -502,19 +548,23 @@ public class Switch extends Line {
                     if(filaInicial>=0 && filaInicial<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                         }
                     }else if(filaInicial>=5 && filaInicial <10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = 1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.RED);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = 1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.RED);
                         }
                     }
@@ -522,19 +572,23 @@ public class Switch extends Line {
                     if(filaInicial>=0 && filaInicial<5){
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
                         }
                         for(int i = 0; i < 5; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                         }
                     }else if(filaInicial>=5 && filaInicial <10){
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaInicial] = -1;
+                            matrizVoltajes[i][columnaInicial] = voltaje;
                             cambiarColorCelda(filaInicial, columnaInicial, Color.BLUE);
                         }
                         for(int i = 5; i < 10; i++){
                             matrizEnteros[i][columnaFinal] = -1;
+                            matrizVoltajes[i][columnaFinal] = voltaje;
                             cambiarColorCelda(filaInicial, columnaFinal, Color.BLUE);
                         }
                     }
