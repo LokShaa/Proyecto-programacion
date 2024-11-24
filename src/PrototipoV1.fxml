@@ -51,14 +51,14 @@
             <Image url="@../Imagenes/IMG_0465-Photoroom.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="bateriaCompleta" fitHeight="239.0" fitWidth="168.0" layoutX="191.0" layoutY="529.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../Imagenes/Imagen1.png" />
-         </image>
-      </ImageView>
       <ImageView fx:id="luzRoja" fitHeight="319.0" fitWidth="343.0" layoutX="-46.0" layoutY="487.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../Imagenes/IMG_0466-Photoroom.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bateriaCompleta" fitHeight="239.0" fitWidth="168.0" layoutX="191.0" layoutY="529.0" onMouseClicked="#botonBeteriaMenu" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagenes/Imagen1.png" />
          </image>
       </ImageView>
       <Pane layoutX="56.0" layoutY="21.0" prefHeight="468.0" prefWidth="458.0" style="-fx-background-color: #c0c0c0;">

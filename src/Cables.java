@@ -2,11 +2,13 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
+import javafx.scene.text.Text;
 
 public class Cables extends Line {
     private Pane pane;
@@ -290,6 +292,76 @@ public class Cables extends Line {
         }
     }
 
+    private void agregarNumerosALadoDerechoCentral(Pane[][] matriz) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                if (matrizEnteros[i][j] == 1 || matrizEnteros[i][j] == -1) {
+                    // Crear o actualizar el Text
+                    Text text;
+                    if (matriz[i][j].getChildren().isEmpty()) {
+                        text = new Text();
+                        matriz[i][j].getChildren().add(text);
+                    } else {
+                        text = (Text) matriz[i][j].getChildren().get(0);
+                    }
+                    text.setText(String.valueOf(Bateria.voltaje));
+                    text.setStyle("-fx-fill: black;-fx-font-weight: bold;");
+                    // Ajustar la posición del texto
+                    text.setX(0);
+                    text.setY(30); 
+                } else {
+                    matriz[i][j].getChildren().clear();
+                }
+            }
+        }
+    }
+    private void agregarNumerosALadoDerechoSup(Pane[][] matriz) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                if (matriSup[i][j] == 1 || matriSup[i][j] == -1) {
+                    // Crear o actualizar el Text
+                    Text text;
+                    if (matriz[i][j].getChildren().isEmpty()) {
+                        text = new Text();
+                        matriz[i][j].getChildren().add(text);
+                    } else {
+                        text = (Text) matriz[i][j].getChildren().get(0);
+                    }
+                    text.setText(String.valueOf(Bateria.voltaje));
+                    text.setStyle("-fx-fill: black;-fx-font-weight: bold;");
+                    // Ajustar la posición del texto
+                    text.setX(0);
+                    text.setY(30);  
+                } else {
+                    matriz[i][j].getChildren().clear();
+                }
+            }
+        }
+    }
+    private void agregarNumerosALadoDerechoInf(Pane[][] matriz) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                if (matriInf[i][j] == 1 || matriInf[i][j] == -1) {
+                    // Crear o actualizar el Text
+                    Text text;
+                    if (matriz[i][j].getChildren().isEmpty()) {
+                        text = new Text();
+                        matriz[i][j].getChildren().add(text);
+                    } else {
+                        text = (Text) matriz[i][j].getChildren().get(0);
+                    }
+                    text.setText(String.valueOf(Bateria.voltaje));
+                    text.setStyle("-fx-fill: black;-fx-font-weight: bold;");
+                    // Ajustar la posición del texto
+                    text.setX(0);
+                    text.setY(30); 
+                } else {
+                    matriz[i][j].getChildren().clear();
+                }
+            }
+        }
+    }
+
     private void monitorearCeldas() {
         double xLocalInicial = this.getStartX();
         double yLocalInicial = this.getStartY();
@@ -310,6 +382,9 @@ public class Cables extends Line {
         String matrizFinal = identificarMatriz(xGlobalFinal, yGlobalFinal);
         //System.out.println("Matriz inicial: " + matrizInicial);
         //System.out.println("Matriz final: " + matrizFinal);
+        agregarNumerosALadoDerechoCentral(matrizPane);
+        agregarNumerosALadoDerechoSup(matrizPaneSup);
+        agregarNumerosALadoDerechoInf(matrizPaneInf);
         revisarYMantenerMatrizCentral(Main.matrizCentralProtoboard.getMatrizCortoCircuito(), Main.matrizCentralProtoboard.getMatriz());
         revisarYMantenerMatrizSup(Main.matrizSuperior.getMatrizCortoCircuito(), Main.matrizSuperior.getMatriz());
         revisarYMantenerMatrizInf(Main.matrizInferior.getMatrizCortoCircuito(), Main.matrizInferior.getMatriz());
@@ -1007,7 +1082,10 @@ public class Cables extends Line {
 
     // Método para ajustar la columna según las reglas específicas
     private int ajustarColumna(int columna) {
-        
+        columna -= (columna / 2);
+        if (columna >= 20) {
+            columna += 1;
+        } 
         return columna;
     }
 

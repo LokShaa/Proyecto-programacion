@@ -1,6 +1,7 @@
 import javafx.scene.image.ImageView;
 
 public class Bateria{
+    public static double voltaje = 5.0;
     public static boolean banderaBateria = false;
 
     public void botonConectadoDesconectado(ImageView luzRoja,ImageView luzVerde, ImageView bateriaCortada,ImageView bateriaCompleta,ImageView portaBaterias) { //Metodo para hacer aparecer y desaparecer la bateria completa y la bateria cortada, ademas las luces roja y verde
