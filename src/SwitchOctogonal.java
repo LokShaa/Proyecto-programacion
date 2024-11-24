@@ -23,11 +23,17 @@ public class SwitchOctogonal {
     private int colInicio; // Nuevo atributo para almacenar la columna de inicio
     private Timeline timeline;
     private boolean[] rectanguloEstado; // Array para almacenar el estado de los rectángulos clickeables
+    private double[][] matrizvoltaje;
 
-    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz){
+    private Bateria bateria;
+    private double voltaje;
+
+    public SwitchOctogonal(int[][] matrizEnteros, Pane[][] matriz,double[][] matrizvoltaje) {
         this.matrizEnteros = matrizEnteros;
         this.matriz = matriz;
         this.rectanguloEstado = new boolean[8]; // Inicializar el array de estados
+        this.matrizvoltaje = matrizvoltaje;
+        bateria = new Bateria();
     }
 
     public void drawSwitch(Pane root){
@@ -251,7 +257,8 @@ public class SwitchOctogonal {
     private void monitorearEstado(){
         boolean[] fila4Actualizada = new boolean[8];
         boolean[] fila5Actualizada = new boolean[8];
-    
+        
+        voltaje = bateria.getVoltaje();
         for (int i = 0; i < 8; i++) {
             int col = colInicio + i;
             if (rectanguloEstado[i]) {
@@ -259,6 +266,8 @@ public class SwitchOctogonal {
                     int valor = matrizEnteros[5][col];
                     for (int fila = 0; fila <= 4; fila++) {
                         matrizEnteros[fila][col] = valor;
+                        matrizvoltaje[fila][col] = voltaje;
+
                         cambiarColorCelda(fila, col, valor);
                     }
                     fila5Actualizada[i] = true;
@@ -267,6 +276,7 @@ public class SwitchOctogonal {
                     int valor = matrizEnteros[4][col];
                     for (int fila = 5; fila <= 9; fila++) {
                         matrizEnteros[fila][col] = valor;
+                        matrizvoltaje[fila][col] = voltaje;
                         cambiarColorCelda(fila, col, valor);
                     }
                     fila4Actualizada[i] = true;
@@ -280,6 +290,7 @@ public class SwitchOctogonal {
                     int valor = matrizEnteros[4][col];
                     for (int fila = 5; fila <= 9; fila++) {
                         matrizEnteros[fila][col] = valor;
+                        matrizvoltaje[fila][col] = voltaje;
                         cambiarColorCelda(fila, col, valor);
                     }
                 }
@@ -287,6 +298,7 @@ public class SwitchOctogonal {
                     int valor = matrizEnteros[5][col];
                     for (int fila = 0; fila <= 4; fila++) {
                         matrizEnteros[fila][col] = valor;
+                        matrizvoltaje[fila][col] = voltaje;
                         cambiarColorCelda(fila, col, valor);
                     }
                 }

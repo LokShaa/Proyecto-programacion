@@ -153,7 +153,7 @@ public class Main extends Application{
             contextMenu.show(bateriaCompleta, event.getScreenX(), event.getScreenY());
         });
     }
-
+    
     @FXML
     void initialize() {
         instance = this;
@@ -233,26 +233,64 @@ public class Main extends Application{
             });
         });
     }
-    
+    double resistenciaO = 0.0;
+
     @FXML
     void botonResistencia(MouseEvent event) { 
         imagenResistencia.setOnMouseEntered(enteredEvent -> { 
             Glow glowRojo = new Glow(1);
             imagenResistencia.setEffect(glowRojo);
         });
-    
+
         imagenResistencia.setOnMouseExited(exitEvent -> { 
             imagenResistencia.setEffect(null);
         });
-        imagenResistencia.setOnMouseClicked(clickedEvent->{
-            Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
-            int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-            resistencia = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral);
-            
-            desactivarEventosDeDibujo(matrizPane);
-    
-            matrizPane.setOnMouseClicked(resistencia::handleMouseClick);
+
+        Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
+        int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
+
+        imagenResistencia.setOnMouseClicked(clickedEvent -> {
+            ContextMenu contextMenu = new ContextMenu();
+            MenuItem resistencia = new MenuItem("Poner resistencia");
+
+            resistencia.setOnAction(e -> {
+                TextInputDialog dialogo = new TextInputDialog();
+                dialogo.setTitle("Resistencia");
+                dialogo.setHeaderText("Ingrese el valor de la resistencia:");
+                dialogo.setContentText("Resistencia:");
+
+                // Mostrar el diálogo y esperar la entrada del usuario
+                dialogo.showAndWait().ifPresent(resistenciaa -> {
+                    try {
+                        double resistenciA = Double.parseDouble(resistenciaa);
+                        if (resistenciA < 1.5 || resistenciA > 100) {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setHeaderText("Error al poner la resistencia");
+                            alert.setContentText("La resistencia debe estar entre 1.5 y 100 O.");
+                            alert.showAndWait();
+                            return;
+                        }
+                        resistenciaO = resistenciA * 0.03;
+                        // Crear la instancia de Resistencia después de obtener el valor
+                        Resistencia resistenciaObj = new Resistencia(matrizPane, matrizCentral, matrizEnterosCentral, resistenciaO, matrizCentralProtoboard.getMatrizVoltaje());
+                        matrizPane.setOnMouseClicked(resistenciaObj::handleMouseClick);
+                    } catch (NumberFormatException ex) {
+                        Alert alert = new Alert(AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Error al poner la resistencia");
+                        alert.setContentText("La resistencia debe ser un número.");
+                        alert.showAndWait();
+                    }
+                });
+            });
+
+            // Añadir los elementos al ContextMenu
+            contextMenu.getItems().addAll(resistencia);
+            contextMenu.show(imagenResistencia, clickedEvent.getScreenX(), clickedEvent.getScreenY());
         });
+
+        desactivarEventosDeDibujo(matrizPane);
     }
 
     @FXML
@@ -268,7 +306,7 @@ public class Main extends Application{
     
         imagenSwitchOctogonal.setOnMouseClicked(clickedEvent -> {
             // Crear una instancia de SwitchOctogonal
-            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz());
+            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizVoltaje());
     
             // Llamar al método drawSwitch y pasarle el Pane donde se dibujará el switch
             switchOctogonal.drawSwitch(matrizPane);
@@ -304,17 +342,17 @@ public class Main extends Application{
             // Set actions for each MenuItem
             andOption.setOnAction(e -> {
                 selectedOption[0] = "AND";
-                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0],matrizCentralProtoboard.getMatrizVoltaje());
             });
 
             orOption.setOnAction(e -> {
                 selectedOption[0] = "OR";
-                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0],matrizCentralProtoboard.getMatrizVoltaje());
             });
 
             notOption.setOnAction(e -> {
                 selectedOption[0] = "NOT";
-                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0],matrizCentralProtoboard.getMatrizVoltaje());
             });
 
             // Show the ContextMenu at the location of the click
@@ -402,7 +440,7 @@ public class Main extends Application{
                                         return;
                                     }
                                 }
-                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
+                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz(),matrizCentralProtoboard.getMatrizVoltaje(),matrizSuperior.getMatrizVoltaje(),matrizInferior.getMatrizVoltaje()); 
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 matrizPane.toFront();
                                 if (matrizActual == matrizPane) {
@@ -663,7 +701,7 @@ public class Main extends Application{
                                     return;
                                 }
 
-                                switch1 = new Switch(matrizActual, colorActual, xinicial, yinicial, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane);
+                                switch1 = new Switch(matrizActual, colorActual, xinicial, yinicial, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane,matrizCentralProtoboard.getMatrizVoltaje());
                                 switch1.iniciarDibujoCable(xinicial, yinicial);
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
@@ -767,7 +805,7 @@ public class Main extends Application{
                 // Inicializar la instancia de Led con el color seleccionado
                 Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
                 int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado);
+                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado, matrizCentralProtoboard.getMatrizVoltaje());
 
                 // Desactivar eventos de dibujo de LED en todas las matrices
                 desactivarEventosDeDibujo(matrizPane);
