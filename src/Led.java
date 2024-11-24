@@ -35,13 +35,15 @@ public class Led{
     private List<Line> lines = new ArrayList<>();
 
     private boolean quemado = false;
-    private Color color ;
+    private Color color;
+    private double[][] matrizVoltajes;
 
-    public Led(Pane matrizPane, Pane[][] matriz, int[][] matrizEnteros, Color color) {
+    public Led(Pane matrizPane, Pane[][] matriz, int[][] matrizEnteros, Color color,double[][] matrizVoltajes) {
         this.matrizPane = matrizPane;
         this.matriz = matriz;
         this.matrizEnteros = matrizEnteros;
         this.color = color;
+        this.matrizVoltajes = matrizVoltajes;
         startMonitoring();
     }
 
@@ -220,8 +222,12 @@ public class Led{
     
             int valorCelda1 = obtenerValorMatrizEnteros(startX, startY);
             int valorCelda2 = obtenerValorMatrizEnteros(endX, endY);
+
+            double voltajeInicial = obtenervalorVoltaje(startX, startY);
+            double voltajeFinal = obtenervalorVoltaje(endX, endY);
+            
             if (quemado == false) {
-                if (valorCelda1 == 1 && valorCelda2 == -1) {
+                if ((valorCelda1 == 1 && valorCelda2 == -1)&&(voltajeInicial == 5.0 && voltajeFinal == 5.0)) {
                     led.setFill(color);
                     led.setOpacity(1.0);
                     led.setEffect(new Glow(1.0));
@@ -277,6 +283,18 @@ public class Led{
                 Pane celda = matriz[i][j];
                 if (celda.getBoundsInParent().contains(x, y)) {
                     return matrizEnteros[i][j];
+                }
+            }
+        }
+        return -1;
+    }
+
+    private double obtenervalorVoltaje(double x,double y){
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[i].length; j++) {
+                Pane celda = matriz[i][j];
+                if (celda.getBoundsInParent().contains(x, y)) {
+                    return matrizVoltajes[i][j];
                 }
             }
         }

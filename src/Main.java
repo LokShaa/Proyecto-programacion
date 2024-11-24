@@ -153,7 +153,7 @@ public class Main extends Application{
             contextMenu.show(bateriaCompleta, event.getScreenX(), event.getScreenY());
         });
     }
-
+    
     @FXML
     void initialize() {
         instance = this;
@@ -767,7 +767,7 @@ public class Main extends Application{
                 // Inicializar la instancia de Led con el color seleccionado
                 Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
                 int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado);
+                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado, matrizCentralProtoboard.getMatrizVoltaje());
 
                 // Desactivar eventos de dibujo de LED en todas las matrices
                 desactivarEventosDeDibujo(matrizPane);
