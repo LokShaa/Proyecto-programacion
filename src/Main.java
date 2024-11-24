@@ -268,7 +268,7 @@ public class Main extends Application{
     
         imagenSwitchOctogonal.setOnMouseClicked(clickedEvent -> {
             // Crear una instancia de SwitchOctogonal
-            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz());
+            SwitchOctogonal switchOctogonal = new SwitchOctogonal(matrizCentralProtoboard.getMatrizEnteros(),matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizVoltaje());
     
             // Llamar al método drawSwitch y pasarle el Pane donde se dibujará el switch
             switchOctogonal.drawSwitch(matrizPane);
@@ -304,17 +304,17 @@ public class Main extends Application{
             // Set actions for each MenuItem
             andOption.setOnAction(e -> {
                 selectedOption[0] = "AND";
-                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0],matrizCentralProtoboard.getMatrizVoltaje());
             });
 
             orOption.setOnAction(e -> {
                 selectedOption[0] = "OR";
-                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0],matrizCentralProtoboard.getMatrizVoltaje());
             });
 
             notOption.setOnAction(e -> {
                 selectedOption[0] = "NOT";
-                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0]);
+                Chip chip = new Chip(matrizPane, 100, 200,matrizCentralProtoboard.getMatriz(),matrizCentralProtoboard.getMatrizEnteros(),selectedOption[0],matrizCentralProtoboard.getMatrizVoltaje());
             });
 
             // Show the ContextMenu at the location of the click
@@ -663,7 +663,7 @@ public class Main extends Application{
                                     return;
                                 }
 
-                                switch1 = new Switch(matrizActual, colorActual, xinicial, yinicial, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane);
+                                switch1 = new Switch(matrizActual, colorActual, xinicial, yinicial, imagenSwitch,matrizCentralProtoboard.getMatrizEnteros(),matrizPane,matrizCentralProtoboard.getMatrizVoltaje());
                                 switch1.iniciarDibujoCable(xinicial, yinicial);
                                 if (matrizActual == matrizPane) {
                                     matrizCentralProtoboard.setMatrizCables(fila, columna, 1);
