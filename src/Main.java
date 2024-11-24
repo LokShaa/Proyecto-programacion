@@ -402,7 +402,7 @@ public class Main extends Application{
                                         return;
                                     }
                                 }
-                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
+                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz(),matrizCentralProtoboard.getMatrizVoltaje(),matrizSuperior.getMatrizVoltaje(),matrizInferior.getMatrizVoltaje()); 
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 matrizPane.toFront();
                                 if (matrizActual == matrizPane) {

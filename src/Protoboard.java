@@ -10,6 +10,7 @@ public class Protoboard{
     private int columnaRoja=-1,columnaAzul=-1;
     public int[][] matrizCables;
     public int[][] matrizVoltaje;
+    public int[][] matrizVoltaje2;
     
     //metodo para iniciar la matriz central de panes
     public void inicializarMatrizCentral(int filas, int columnas, double cellAncho, double cellAlt, double padding1, double padding2, Pane matrizPane) {
@@ -17,12 +18,14 @@ public class Protoboard{
         matrizEnteros = new int[filas][columnas];
         matrizCables = new int[filas][columnas];
         matrizCortoCircuito = new int[filas][columnas];
+        matrizVoltaje2 = new int[filas][columnas];
 
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 matrizCables[i][j] = 0;
                 matrizEnteros[i][j] = 0; // inicializar matriz con 0
                 matrizCortoCircuito[i][j] = 0; 
+                matrizVoltaje2[i][j] = 0;
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -122,11 +125,13 @@ public class Protoboard{
         matrizEnteros = new int[filas][columnas];
         matrizCables = new int[filas][columnas];
         matrizCortoCircuito = new int[filas][columnas];
+        matrizVoltaje2 = new int[filas][columnas];
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++){
                 matrizEnteros[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE ENTEROS SOLO CON 0
                 matrizCables[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE CABLES SOLO CON 0
                 matrizCortoCircuito[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE CORTO CIRCUITO SOLO CON 0
+                matrizVoltaje2[i][j] = 0; //INICIALIZAMOS LA MATRIZ DE VOLTAJE SOLO CON 0
                 Pane cell = new Pane();
                 cell.setPrefSize(cellAncho, cellAlt);
                 cell.setStyle("-fx-border-color: black; -fx-border-width: 1; -fx-background-color: black;");
@@ -248,7 +253,11 @@ public class Protoboard{
     public int[][] getMatrizCortoCircuito() {
         return matrizCortoCircuito;
     }
-
+    
+    public int[][] getMatrizVoltaje() {
+        return matrizVoltaje2;
+    }
+    
     public void setMatrizCortoCircuito(int fila ,int columna, int valor){ 
         if (fila >= 0 && fila <5){
             for(int fil = 0; fil < 5; fil++){

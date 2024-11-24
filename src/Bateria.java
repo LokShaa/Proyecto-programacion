@@ -19,6 +19,11 @@ public class Bateria{
     }
    
     public static boolean isBanderaBateria() {
+
         return banderaBateria;
+    }
+    
+    public double getVoltaje(){
+        return voltaje;
     }
 }

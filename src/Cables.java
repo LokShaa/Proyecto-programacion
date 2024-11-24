@@ -34,7 +34,7 @@ public class Cables extends Line {
     
     private int caso; //se usa para ver que paso en el paso de corriente, si es 1 se paso de click inicial al final , si es dos se paso del final al inicial
     
-    public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros, int[][] matriSup, Pane[][] matrizPaneSup, int[][] matriInf, Pane[][] matrizPaneInf) {
+    public Cables(Pane pane, Pane[][] matrizPane, Color color, double startX, double startY, int[][] matrizEnteros, int[][] matriSup, Pane[][] matrizPaneSup, int[][] matriInf, Pane[][] matrizPaneInf,int[][] matrizvoltajeCentral, int[][] matrizvoltajeSuperior, int[][] matrizvoltajeInferior) {
         this.pane = pane;
         this.matrizPane = matrizPane;
         this.matrizEnteros = matrizEnteros;
@@ -315,6 +315,7 @@ public class Cables extends Line {
             }
         }
     }
+   
     private void agregarNumerosALadoDerechoSup(Pane[][] matriz) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
@@ -338,6 +339,7 @@ public class Cables extends Line {
             }
         }
     }
+  
     private void agregarNumerosALadoDerechoInf(Pane[][] matriz) {
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
