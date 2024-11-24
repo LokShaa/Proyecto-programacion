@@ -153,7 +153,7 @@ public class Main extends Application{
             contextMenu.show(bateriaCompleta, event.getScreenX(), event.getScreenY());
         });
     }
-
+    
     @FXML
     void initialize() {
         instance = this;
@@ -402,7 +402,7 @@ public class Main extends Application{
                                         return;
                                     }
                                 }
-                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz()); 
+                                cableActual = new Cables(matrizActual,matrizCentralProtoboard.getMatriz(), colorActual, xLocal, yLocal, matrizCentralProtoboard.getMatrizEnteros(),matrizSuperior.getMatrizEnteros(),matrizSuperior.getMatriz(),matrizInferior.getMatrizEnteros(),matrizInferior.getMatriz(),matrizCentralProtoboard.getMatrizVoltaje(),matrizSuperior.getMatrizVoltaje(),matrizInferior.getMatrizVoltaje()); 
                                 cableActual.iniciarDibujoCable(xLocal, yLocal);
                                 matrizPane.toFront();
                                 if (matrizActual == matrizPane) {
@@ -767,7 +767,7 @@ public class Main extends Application{
                 // Inicializar la instancia de Led con el color seleccionado
                 Pane[][] matrizCentral = matrizCentralProtoboard.getMatriz();
                 int[][] matrizEnterosCentral = matrizCentralProtoboard.getMatrizEnteros();
-                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado);
+                led = new Led(matrizPane, matrizCentral, matrizEnterosCentral, colorSeleccionado, matrizCentralProtoboard.getMatrizVoltaje());
 
                 // Desactivar eventos de dibujo de LED en todas las matrices
                 desactivarEventosDeDibujo(matrizPane);
