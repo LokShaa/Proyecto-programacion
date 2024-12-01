@@ -374,6 +374,9 @@ public class Cables extends Line {
             }
         }
     }
+    public static double getMatrizVoltaje(int fila,int columna){
+        return matrizvoltajeCentral[fila][columna];
+    }
    
     private void agregarNumerosALadoDerechoCentral(Pane[][] matriz) {
         for (int i = 0; i < matriz.length; i++) {

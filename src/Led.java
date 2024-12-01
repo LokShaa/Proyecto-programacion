@@ -227,7 +227,7 @@ public class Led{
             double voltajeFinal = obtenervalorVoltaje(endX, endY);
             
             if (quemado == false) {
-                if ((valorCelda1 == 1 && valorCelda2 == -1)&&(voltajeInicial == 5.0 && voltajeFinal == 5.0)) {
+                if ((valorCelda1 == 1 && valorCelda2 == -1)&&(voltajeInicial > 1.5 && voltajeFinal > 1.5)) {
                     led.setFill(color);
                     led.setOpacity(1.0);
                     led.setEffect(new Glow(1.0));
