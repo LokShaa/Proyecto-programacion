@@ -36,7 +36,6 @@ public class Resistencia {
     private List<Line> lines = new ArrayList<>();
     private List<Rectangle> rectangulosResistencias = new ArrayList<>();
     private double[][] matrizVoltaje;
-    Bateria bateria;
     private double voltaje;
 
     private boolean quemado = false;
@@ -47,8 +46,6 @@ public class Resistencia {
         this.matrizEnteros = matrizEnteros;
         this.resistenciaO = resistencia;
         this.matrizVoltaje = matrizVoltaje;
-        bateria = new Bateria();
-        voltaje = bateria.getVoltaje();
         startMonitoring();
     }
 
@@ -116,7 +113,8 @@ public class Resistencia {
             valorCelda2 = obtenerValorMatrizEnteros(event); // Obtener el valor de la segunda celda
             firstClick = true;
             drawResistencia(startX, startY, endX, endY);
-            Cables.setMatrizVoltaje(fila, columna,resistenciaO);
+            voltaje = Cables.getMatrizVoltaje(filaInicial, columnaInicial);
+            Cables.setMatrizVoltaje2(fila, columna,voltaje - resistenciaO);
         }
     }
 
@@ -316,12 +314,14 @@ public class Resistencia {
         if (filaTo < 5) {
             if (valor == 1) {
                 for (int i = 0; i < 5; i++) {
+                    voltaje = Cables.getMatrizVoltaje(filaFrom, columnaFrom);
                     matrizEnteros[i][columnaTo] = valor;
                     matriz[i][columnaTo].setStyle("-fx-background-color: red;");
                     Cables.setMatrizVoltaje2(filaTo, columnaTo, voltaje - resistenciaO);
                 }
             } else {
                 for (int i = 0; i < 5; i++) {
+                    voltaje = Cables.getMatrizVoltaje(filaFrom, columnaFrom);
                     matrizEnteros[i][columnaTo] = valor;
                     matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
                     Cables.setMatrizVoltaje2(filaTo, columnaTo, voltaje - resistenciaO);
@@ -330,12 +330,14 @@ public class Resistencia {
         } else {
             if (valor == 1) {
                 for (int i = 5; i < 10; i++) {
+                    voltaje = Cables.getMatrizVoltaje(filaFrom, columnaFrom);
                     matrizEnteros[i][columnaTo] = valor;
                     matriz[i][columnaTo].setStyle("-fx-background-color: red;");
                     Cables.setMatrizVoltaje2(filaTo, columnaTo, voltaje - resistenciaO);
                 }
             } else {
                 for (int i = 5; i < 10; i++) {
+                    voltaje = Cables.getMatrizVoltaje(filaFrom, columnaFrom);
                     matrizEnteros[i][columnaTo] = valor;
                     matriz[i][columnaTo].setStyle("-fx-background-color: blue;");
                     Cables.setMatrizVoltaje2(filaTo, columnaTo, voltaje - resistenciaO);

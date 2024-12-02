@@ -25,19 +25,11 @@ public class Chip {
     private String tipoString;  
     private Timeline timeline; // Declarar el Timeline aquí
 
-    double[][] matrizVoltajes;
-    private Bateria bateria;
-    double voltaje;
-
-
-
     public Chip(Pane pane, double x, double y, Pane[][] matriz, int[][] matrizEnteros, String tipo,double[][] matrizVoltajes) {
         this.pane = pane;
         this.matriz = matriz;
         this.matrizEnteros = matrizEnteros;
         this.tipoString = tipo;
-        this.matrizVoltajes = matrizVoltajes;
-        bateria = new Bateria();
         this.chipGroup = new Group();
         dibujarRectanguloMovible(x, y);
         addEventHandlers();
@@ -266,52 +258,58 @@ public class Chip {
         int fila4 = 4;
         int fila5 = 5;
         int colFin = colInicio + 6;
-        voltaje = bateria.getVoltaje();
-    
+        double voltaje;
+        double voltaje1,voltaje2;
         if (tipoString.equals("NOT")) {
             if (matrizEnteros[fila4][colInicio] == 1 && matrizEnteros[fila5][colFin] == -1) {
                 // Revisamos fila 4
                 if (matrizEnteros[fila4][colInicio + 1] == 1) {
                     for (int i = 0; i < 5; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 1);
                         matrizEnteros[i][colInicio + 2] = -1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje);
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila4][colInicio + 1] == -1) {
                     for (int i = 0; i < 5; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 1);
                         matrizEnteros[i][colInicio + 2] = 1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje);
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
                     }
                 }
     
                 if (matrizEnteros[fila4][colInicio + 3] == 1) {
                     for (int i = 0; i < 5; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 3);
                         matrizEnteros[i][colInicio + 4] = -1;
-                        matrizVoltajes[i][colInicio + 4] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 4, voltaje);
                         matriz[i][colInicio + 4].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila4][colInicio + 3] == -1) {
                     for (int i = 0; i < 5; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 3);
                         matrizEnteros[i][colInicio + 4] = 1;
-                        matrizVoltajes[i][colInicio + 4] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 4, voltaje);
                         matriz[i][colInicio + 4].setStyle("-fx-background-color: red;");
                     }
                 }
     
                 if (matrizEnteros[fila4][colInicio + 5] == -1) {
                     for (int i = 0; i < 5; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = 1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje);
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
                     }
                 }
                 if (matrizEnteros[fila4][colInicio + 5] == 1) {
                     for (int i = 0; i < 5; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = -1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje);
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -319,45 +317,51 @@ public class Chip {
                 // Revisamos fila 5
                 if (matrizEnteros[fila5][colInicio] == 1) {
                     for (int i = 5; i < 10; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio);
                         matrizEnteros[i][colInicio + 1] = -1;
-                        matrizVoltajes[i][colInicio + 1] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 1, voltaje);
                         matriz[i][colInicio + 1].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio] == -1) {
                     for (int i = 5; i < 10; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio);
                         matrizEnteros[i][colInicio + 1] = 1;
-                        matrizVoltajes[i][colInicio + 1] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 1, voltaje);
                         matriz[i][colInicio + 1].setStyle("-fx-background-color: red;");
                     }
                 }
     
                 if (matrizEnteros[fila5][colInicio + 2] == 1) {
                     for (int i = 5; i < 10; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = -1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje);
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 2] == -1) {
                     for (int i = 5; i < 10; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = 1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje);
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 4] == -1) {
                     for (int i = 5; i < 10; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 4);
                         matrizEnteros[i][colInicio + 5] = 1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje);
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }
                 if (matrizEnteros[fila5][colInicio + 4] == 1) {
 
                     for (int i = 5; i < 10; i++) {
+                        voltaje = Cables.getMatrizVoltaje(i, colInicio + 4);
                         matrizEnteros[i][colInicio + 5] = -1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje);
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -368,51 +372,100 @@ public class Chip {
                 
                 if(matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == 1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 1);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = 1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje1);
+                        }
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
                     }
                 }else if(matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == -1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 1);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = -1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje1);
+                        }
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }else if(matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == -1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 1);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = -1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje1);
+                        }
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == 1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 1);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = -1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje1);
+                        }
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }
 
                 if(matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == 1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 4);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = 1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje1);
+                        }
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == -1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 4);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = -1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje1);
+                        }
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }else if ((matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == -1) || (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1)){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 4);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = -1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje1);
+                        }
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 4);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = -1;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje1);
+                        }
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -420,52 +473,100 @@ public class Chip {
                 //revisamos fila 5
                 if(matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == 1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+1);
                         matrizEnteros[i][colInicio + 2] = 1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje1);
+                        }
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == -1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+1);
                         matrizEnteros[i][colInicio + 2] = -1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje1);
+                        }
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == -1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+1);
                         matrizEnteros[i][colInicio + 2] = -1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje1);
+                        }
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }else if(matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == 1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+1);
                         matrizEnteros[i][colInicio + 2] = -1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje1);
+                        }
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }
                 
                 if(matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == 1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio+3);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+4);
                         matrizEnteros[i][colInicio + 5] = 1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje1);
+                        }
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == -1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio+3);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+4);
                         matrizEnteros[i][colInicio + 5] = -1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje1);
+                        }
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == -1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio+3);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+4);
                         matrizEnteros[i][colInicio + 5] = -1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje1);
+                        }
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }else if(matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == 1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio+3);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+4);
                         matrizEnteros[i][colInicio + 5] = -1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje1);
+                        }
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -475,28 +576,52 @@ public class Chip {
                 //revisamos fila 4
                 if ((matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == -1) || (matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == 1) || (matrizEnteros[fila4][colInicio + 1] == 1 && matrizEnteros[fila4][colInicio + 2] == 1)){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 1);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = 1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje1);
+                        }
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: red;");
                     }
                 }else if(matrizEnteros[fila4][colInicio + 1] == -1 && matrizEnteros[fila4][colInicio + 2] == -1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 1);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 2);
                         matrizEnteros[i][colInicio + 3] = -1;
-                        matrizVoltajes[i][colInicio + 3] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 3, voltaje1);
+                        }
                         matriz[i][colInicio + 3].setStyle("-fx-background-color: blue;");
                     }
                 }
 
                 if ((matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == -1) || (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == 1) || (matrizEnteros[fila4][colInicio + 4] == 1 && matrizEnteros[fila4][colInicio + 5] == 1)){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 4);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = 1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje1);
+                        }
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila4][colInicio + 4] == -1 && matrizEnteros[fila4][colInicio + 5] == -1){
                     for (int i = 0; i < 5; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio + 4);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio + 5);
                         matrizEnteros[i][colInicio + 6] = -1;
-                        matrizVoltajes[i][colInicio + 6] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 6, voltaje1);
+                        }
                         matriz[i][colInicio + 6].setStyle("-fx-background-color: blue;");
                     }
                 }
@@ -504,29 +629,53 @@ public class Chip {
                 //revisamos fila 5
                 if ((matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio+1] == -1) || (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio+1] == 1) || (matrizEnteros[fila5][colInicio] == 1 && matrizEnteros[fila5][colInicio + 1] == 1)){
                     for (int i = 5; i < 10; i++) {
-                        matrizEnteros[i][colInicio+2] = 1;
-                        matrizVoltajes[i][colInicio+2] = voltaje;
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+1);
+                        matrizEnteros[i][colInicio + 2] = 1;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje1);
+                        }
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio] == -1 && matrizEnteros[fila5][colInicio + 1] == -1){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+1);
                         matrizEnteros[i][colInicio + 2] = -1;
-                        matrizVoltajes[i][colInicio + 2] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 2, voltaje1);
+                        }
                         matriz[i][colInicio + 2].setStyle("-fx-background-color: blue;");
                     }
                 }
 
                 if ((matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == -1) || (matrizEnteros[fila5][colInicio + 3] == -1 && matrizEnteros[fila5][colInicio + 4] == 1) || (matrizEnteros[fila5][colInicio + 3] == 1 && matrizEnteros[fila5][colInicio + 4] == 1)){
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio+3);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+4);
                         matrizEnteros[i][colInicio + 5] = 1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje1);
+                        }
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: red;");
                     }
                 }else if (matrizEnteros[fila5][colInicio + 3] == -1 || matrizEnteros[fila5][colInicio + 4] == -1){
 
                     for (int i = 5; i < 10; i++) {
+                        voltaje1 = Cables.getMatrizVoltaje(i, colInicio+3);
+                        voltaje2 = Cables.getMatrizVoltaje(i, colInicio+4);
                         matrizEnteros[i][colInicio + 5] = -1;
-                        matrizVoltajes[i][colInicio + 5] = voltaje;
+                        if(voltaje1>voltaje2){
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje2);
+                        }else{
+                            Cables.setMatrizVoltaje2(i, colInicio + 5, voltaje1);
+                        }
                         matriz[i][colInicio + 5].setStyle("-fx-background-color: blue;");
                     }
                 }
