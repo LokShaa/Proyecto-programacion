@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
 import javafx.scene.text.Text;
+import java.text.DecimalFormat;
 
 public class Cables extends Line {
     private Pane pane;
@@ -303,6 +304,7 @@ public class Cables extends Line {
     }
 
     private void agregarNumerosALadoDerechoSup(Pane[][] matriz) {
+        DecimalFormat df = new DecimalFormat("0.00");
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
                 if (matriSup[i][j] == 1 || matriSup[i][j] == -1) {
@@ -314,7 +316,11 @@ public class Cables extends Line {
                     } else {
                         text = (Text) matriz[i][j].getChildren().get(0);
                     }
-                    text.setText(String.valueOf(matrizvoltajeSuperior[i][j]));
+                    double valor = matrizvoltajeSuperior[i][j];
+                    if (valor < 0) {
+                        valor = 0;
+                    }
+                    text.setText(df.format(valor));
                     text.setStyle("-fx-fill: black;-fx-font-weight: bold;");
                     // Ajustar la posición del texto
                     text.setX(0);
@@ -325,8 +331,9 @@ public class Cables extends Line {
             }
         }
     }
-
+    
     private void agregarNumerosALadoDerechoInf(Pane[][] matriz) {
+        DecimalFormat df = new DecimalFormat("0.00");
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
                 if (matriInf[i][j] == 1 || matriInf[i][j] == -1) {
@@ -338,7 +345,11 @@ public class Cables extends Line {
                     } else {
                         text = (Text) matriz[i][j].getChildren().get(0);
                     }
-                    text.setText(String.valueOf(matrizvoltajeInferior[i][j]));
+                    double valor = matrizvoltajeInferior[i][j];
+                    if (valor < 0) {
+                        valor = 0;
+                    }
+                    text.setText(df.format(valor));
                     text.setStyle("-fx-fill: black;-fx-font-weight: bold;");
                     // Ajustar la posición del texto
                     text.setX(0);
@@ -350,18 +361,6 @@ public class Cables extends Line {
         }
     }
 
-    public static void setMatrizVoltaje(int fila,int columna,double valor){
-        if (fila>=0 && fila<5){
-            for (int j = 0; j < 5; j++) {
-                matrizvoltajeCentral[j][columna] = matrizvoltajeCentral[j][columna] - valor;
-            }
-        }
-        else if (fila>=5 && fila<10){
-            for (int j = 5; j < 10; j++) {
-                matrizvoltajeCentral[j][columna] = matrizvoltajeCentral[j][columna] - valor;
-            }
-        }
-    }
     public static void setMatrizVoltaje2(int fila,int columna,double valor){
         if (fila>=0 && fila<5){
             for (int j = 0; j < 5; j++) {
@@ -374,11 +373,21 @@ public class Cables extends Line {
             }
         }
     }
+    
     public static double getMatrizVoltaje(int fila,int columna){
         return matrizvoltajeCentral[fila][columna];
     }
+    
+    public double getMatrizVoltajeSup(int fila,int columna){
+        return matrizvoltajeSuperior[fila][columna];
+    }
+    
+    public double getMatrizVoltajeInf(int fila,int columna){
+        return matrizvoltajeInferior[fila][columna];
+    }
    
     private void agregarNumerosALadoDerechoCentral(Pane[][] matriz) {
+        DecimalFormat df = new DecimalFormat("0.00");
         for (int i = 0; i < matriz.length; i++) {
             for (int j = 0; j < matriz[0].length; j++) {
                 if (matrizEnteros[i][j] == 1 || matrizEnteros[i][j] == -1) {
@@ -390,7 +399,11 @@ public class Cables extends Line {
                     } else {
                         text = (Text) matriz[i][j].getChildren().get(0);
                     }
-                    text.setText(String.valueOf(matrizvoltajeCentral[i][j]));
+                    double valor = matrizvoltajeCentral[i][j];
+                    if (valor < 0) {
+                        valor = 0;
+                    }
+                    text.setText(df.format(valor));
                     text.setStyle("-fx-fill: black;-fx-font-weight: bold;");
                     // Ajustar la posición del texto
                     text.setX(0);
@@ -405,7 +418,6 @@ public class Cables extends Line {
     private void monitorearCeldas() {
 
         //System.out.println(bateria.getVoltaje());
-        voltaje = bateria.getVoltaje();
         double xLocalInicial = this.getStartX();
         double yLocalInicial = this.getStartY();
         double xLocalFinal = this.getEndX();
@@ -663,6 +675,7 @@ public class Cables extends Line {
     }
 
     private void actualizarMatrizCentralBateria(int filaFinal, int columnaFinal, int valorInicial){
+        voltaje = bateria.getVoltaje();
         if (filaFinal >= 0 && filaFinal < matrizEnteros.length && columnaFinal >= 0 && columnaFinal < matrizEnteros[0].length) {
             int valorFinal = matrizEnteros[filaFinal][columnaFinal];
             
@@ -679,6 +692,7 @@ public class Cables extends Line {
 
     //metodo para actualizar matriz central a superior
     private void actualizarMatrizBateriaASuperior(int filaFinal, int columnaFinal,int valorInicial) {
+        voltaje = bateria.getVoltaje();
         if (filaFinal >= 0 && filaFinal < matriSup.length && columnaFinal >= 0 && columnaFinal < matriSup[0].length) {
             int valorFinal = matriSup[filaFinal][columnaFinal];
 
@@ -694,6 +708,7 @@ public class Cables extends Line {
     }
    
     private void actualizarMatrizBateriaAInferior(int filaFinal, int columnaFinal,int valorInicial) {
+        voltaje = bateria.getVoltaje();
         if (filaFinal >= 0 && filaFinal < matriSup.length && columnaFinal >= 0 && columnaFinal < matriSup[0].length) {
             int valorFinal = matriInf[filaFinal][columnaFinal];
 
@@ -769,11 +784,13 @@ public class Cables extends Line {
 
             else if (!(valorInicial != 0 && valorFinal != 0)) {
                 if (valorInicial == 1  || valorInicial == -1){
+                    voltaje = getMatrizVoltaje(filaInicial, columnaInicial);
                     actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane,matrizvoltajeCentral,voltaje);
                     caso = 1;
                 }
 
                 if (valorFinal == 1 || valorFinal == -1) {
+                    voltaje = getMatrizVoltaje(filaInicial, columnaInicial);
                     actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane,matrizvoltajeCentral,voltaje);
                     caso = 2;
                 }
@@ -816,9 +833,11 @@ public class Cables extends Line {
                 Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
             }
             else if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
+                voltaje = getMatrizVoltajeSup(filaInicial, columnaInicial);
                 actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane,matrizvoltajeCentral,voltaje);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
+                voltaje = getMatrizVoltaje(filaFinal, columnaFinal);
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup, matrizPaneSup,matrizvoltajeSuperior,voltaje);
                 caso = 2;
             }
@@ -844,9 +863,11 @@ public class Cables extends Line {
                 Main.matrizCentralProtoboard.setMatrizCortoCircuito(filaFinal, columnaFinal, 1);
             }
             else if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
+                voltaje = getMatrizVoltajeInf(filaInicial, columnaInicial);
                 actualizarCeldas(filaFinal, columnaFinal, valorInicial, matrizEnteros, matrizPane,matrizvoltajeCentral,voltaje);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
+                voltaje = getMatrizVoltaje(filaFinal, columnaFinal);
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf,matrizvoltajeInferior,voltaje);
                 caso = 2;
             }
@@ -868,9 +889,11 @@ public class Cables extends Line {
                 Main.matrizSuperior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
             }
             else if (valorInicial == 1 || valorInicial == -1) {
+                voltaje = getMatrizVoltaje(filaInicial, columnaInicial);
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriSup, matrizPaneSup,matrizvoltajeSuperior,voltaje);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
+                voltaje = getMatrizVoltajeSup(filaFinal, columnaFinal);
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane,matrizvoltajeCentral,voltaje);
                 caso = 2;   
             }
@@ -895,9 +918,11 @@ public class Cables extends Line {
                 Main.matrizInferior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
             }    
             else if ((valorInicial == 1 || valorInicial == -1) && valorFinal == 0) {
+                voltaje = getMatrizVoltaje(filaInicial, columnaInicial);
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf,matrizvoltajeInferior,voltaje);
                 caso = 1;
             } else if (valorFinal == 1 || valorFinal == -1) {
+                voltaje = getMatrizVoltajeInf(filaFinal, columnaFinal);
                 actualizarCeldas(filaInicial, columnaInicial, valorFinal, matrizEnteros, matrizPane,matrizvoltajeCentral,voltaje);
                 caso = 2;
             }
@@ -922,9 +947,11 @@ public class Cables extends Line {
                 Main.matrizInferior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
             }
             else if((valorInicial == 1 || valorInicial == -1)){
+                voltaje = getMatrizVoltajeSup(filaInicial, columnaInicial);
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriInf, matrizPaneInf,matrizvoltajeInferior,voltaje);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
+                voltaje = getMatrizVoltajeInf(filaFinal, columnaFinal);
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriSup,  matrizPaneSup,matrizvoltajeSuperior,voltaje);
                 caso = 2;   
             }
@@ -948,9 +975,11 @@ public class Cables extends Line {
                 Main.matrizSuperior.setMatrizCortoCircuitoSupInf(filaFinal, columnaFinal, 1);
             }
             else if((valorInicial == 1 || valorInicial == -1)){
+                voltaje = getMatrizVoltajeInf(filaInicial, columnaInicial);
                 actualizarceldasSUPEINF(filaFinal, columnaFinal, valorInicial, matriSup, matrizPaneSup,matrizvoltajeSuperior,voltaje);
                 caso = 1;
             }else if(valorFinal == 1 || valorFinal == -1){
+                voltaje = getMatrizVoltajeSup(filaFinal, columnaFinal);
                 actualizarceldasSUPEINF(filaInicial, columnaInicial, valorFinal, matriInf, matrizPaneInf,matrizvoltajeInferior,voltaje);
                 caso = 2;
             }
@@ -1138,10 +1167,135 @@ public class Cables extends Line {
 
     // Método para ajustar la columna según las reglas específicas
     private int ajustarColumna(int columna) {
-        columna -= (columna / 2);
-        if (columna >= 20) {
-            columna += 1;
-        } 
+        if(columna == 0){
+            columna = 0;
+        }
+        if(columna == 2){
+            columna = 1 ;
+        }
+        if(columna == 4){
+            columna = 2;
+        }
+        if(columna == 6){
+            columna = 3;
+        }
+        if(columna == 8){
+            columna =4 ;
+        }
+        if(columna ==7){
+            columna =4;
+        }
+        if(columna == 9){
+            columna =5;
+        }
+        if(columna == 10){
+            columna =5;
+        }
+        if(columna == 11){
+            columna = 6;
+        }
+        if(columna == 12){
+            columna = 6;
+        }
+        if(columna == 13){
+            columna =7;
+        }
+        if(columna == 14){
+            columna = 7;
+        }
+        if(columna == 15){
+            columna = 8;
+        }
+        if(columna == 16){
+            columna = 8;
+        }
+        if(columna == 17){
+            columna = 9;
+        }
+        if(columna == 18){
+            columna = 9;
+        }
+        if(columna == 19){
+            columna = 10;
+        }
+        if(columna == 21){
+            columna = 11;
+        }
+        if (columna == 22){
+            columna = 11;
+        }
+        if(columna == 23){
+            columna = 12;
+        }
+        if(columna == 25){
+            columna = 13;
+        }
+        if(columna == 27){
+            columna = 14;
+        }
+        if(columna == 29){
+            columna = 15;
+        }
+        if(columna == 31){
+            columna = 16;
+        }
+        if(columna == 33){
+            columna = 17;
+        }
+        if(columna == 35){
+            columna = 18;
+        }
+        if(columna == 36){
+            columna =18;
+        }
+        if(columna == 37){
+            columna = 19;
+        }
+        if(columna == 38){
+            columna = 20;
+        }
+        if(columna == 39){
+            columna = 20;
+        }
+        if(columna == 40){
+            columna = 21;
+        }
+        if(columna == 41){
+            columna = 21;
+        }
+        if(columna == 42){
+            columna = 22;
+        }
+        if(columna == 43){
+            columna = 22;
+        }
+        if(columna == 44){
+            columna = 23;
+        }
+        if(columna == 45){
+            columna = 23;
+        }
+        if(columna == 46){
+            columna = 24;
+        }
+        if(columna == 47){
+            columna = 24;
+        }
+        if(columna == 48){
+            columna = 25;
+        }
+        if(columna ==50){
+            columna = 26;
+        }
+        if(columna == 52){
+            columna = 27;
+        }
+        if(columna == 54){
+            columna = 28;
+        }
+        if(columna == 56){
+            columna = 29;
+        }
         return columna;
     }
 
